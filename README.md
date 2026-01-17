@@ -1,6 +1,29 @@
-Welcome to your new TanStack app!
+# Test Preparation Platform
 
-# Getting Started
+A marketplace platform that connects content publishers with learners preparing for exams, certifications, or assessments. Publishers create and sell subscription-based question banks, while learners purchase access to practice with those questions through flexible, adaptive study sessions.
+
+## Overview
+
+### For Learners
+- **Browse and Subscribe**: Discover high-quality practice question decks created by subject matter experts, with monthly or yearly subscription options
+- **Flexible Practice Sessions**: Create custom practice exams with configurable question counts, topic focus, timing, and feedback modes
+- **Multiple Study Modes**: Immediate feedback for learning, exam simulation for test readiness, timed or untimed options
+- **Rich Question Content**: Questions include formatted text, images, diagrams, equations, and detailed explanations
+- **Performance Insights**: Track accuracy by topic, view trends over time, and compare anonymously to other learners
+
+### For Publishers
+- **Professional Publishing Tools**: Rich text editor supporting complex content like code samples, equations, images, and tables
+- **Team Collaboration**: WordPress-style workflow with Writer, Editor, and Admin roles
+- **Flexible Pricing**: Set your own monthly and yearly subscription prices
+- **Revenue Share**: 70/30 split with direct deposits and full transaction transparency
+- **Performance Analytics**: Track subscribers, question difficulty, and learner engagement
+
+### For Organizations
+- **Organization Workspace**: Manage multiple team members working on one or more decks
+- **Role-Based Permissions**: Granular roles including Writers, Editors, Admins, Owners, and Viewers
+- **Content Review Workflow**: Enforce quality standards with required Editor approval before publishing
+
+## Getting Started
 
 To run this application:
 
