@@ -11,3 +11,9 @@ count.txt
 .output
 .vinxi
 todos.json
+
+# Testing
+coverage
+playwright-report
+playwright/.cache
+test-results
