@@ -41,6 +41,12 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 - **i18n**: ParaglideJS with URL-based locale strategy - messages in `project.inlang/messages/`
 - **Styling**: Tailwind CSS v4
 
+### Database Validation
+- Use Zod schemas for validating database records going in and coming out of the database
+- Zod schemas are defined in `src/db/validators.ts` - co-located with the database schema for maintainability
+- Always validate database records with Zod schemas instead of using type casting (`as`) or manual type guards
+- This ensures runtime type safety and catches data inconsistencies early
+
 ### Project Structure
 - `src/routes/` - File-based routes (TanStack Router). Files prefixed with `demo` are examples.
 - `src/routes/demo/api.*.ts` - API route handlers (server functions)
@@ -73,6 +79,34 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 
 - Prefer pure functional programming
 - One function or concern per file
+
+### JSDoc Documentation
+
+All functions must have JSDoc comments following this format:
+
+```typescript
+/**
+ * ## functionName
+ *
+ * Describe what the function does and why it exists. Focus on the purpose and behavior,
+ * not the implementation details. Explain the problem it solves or the role it plays.
+ *
+ * @example
+ * const result = functionName(arg1, arg2)
+ * console.log(result)
+ *
+ * @example
+ * // Another example showing a different use case
+ * functionName(specialCase)
+ */
+```
+
+Guidelines:
+- Start with an `##` heading containing the function name
+- Describe **what** the function does and **why** it exists, not **how** it's implemented
+- Include one or two `@example` blocks showing typical usage
+- Do **not** include `@param` or `@return` tags
+- Focus on the function's purpose and behavior from the caller's perspective
 
 ## Code Quality
 
