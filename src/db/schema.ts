@@ -1,5 +1,4 @@
-import { check, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
-import { sql } from 'drizzle-orm'
+import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
 export const userProfiles = pgTable(
@@ -16,9 +15,6 @@ export const userProfiles = pgTable(
 		createdAt: timestamp('created_at').defaultNow(),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
-	(table) => [
-		check('user_type_check', sql`${table.userType} IN ('learner', 'publisher')`),
-	],
 )
 
 export type UserProfile = InferSelectModel<typeof userProfiles>
