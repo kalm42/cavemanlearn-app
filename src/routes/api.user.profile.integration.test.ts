@@ -4,7 +4,7 @@ import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 
 import { handleCreateProfile, handleGetProfile } from './api.user.profile'
-import type { NewUserProfile } from '@/db/schema.ts';
+import type { NewUserProfile } from '@/db/schema.ts'
 import { userProfiles } from '@/db/schema.ts'
 import { createMockAuthHeader } from '@/test/utils/clerk'
 
@@ -15,7 +15,7 @@ const mockVerifyToken = vi.mocked(verifyToken)
 
 /**
  * ## GET /api/user/profile - Integration
- * 
+ *
  * Integration test for the GET /api/user/profile endpoint.
  */
 describe('GET /api/user/profile - Integration', () => {
@@ -82,7 +82,7 @@ describe('GET /api/user/profile - Integration', () => {
 
 /**
  * ## POST /api/user/profile - Integration
- * 
+ *
  * Integration test for the POST /api/user/profile endpoint.
  */
 describe('POST /api/user/profile - Integration', () => {
@@ -141,11 +141,7 @@ describe('POST /api/user/profile - Integration', () => {
 		const userName = 'user_publisher'
 		const email = 'publisher@example.com'
 		const userType = 'publisher'
-		const authHeader = createMockAuthHeader(
-			mockVerifyToken,
-			userName,
-			email,
-		)
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },
@@ -182,11 +178,7 @@ describe('POST /api/user/profile - Integration', () => {
 			userType,
 		})
 
-		const authHeader = createMockAuthHeader(
-			mockVerifyToken,
-			userName,
-			email,
-		)
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },

@@ -12,7 +12,7 @@ const mockVerifyToken = vi.mocked(verifyToken)
 
 /**
  * ## getCurrentUser
- * 
+ *
  * Integration test for the getCurrentUser function. Almost end2end, but not quite.
  */
 describe('getCurrentUser', () => {

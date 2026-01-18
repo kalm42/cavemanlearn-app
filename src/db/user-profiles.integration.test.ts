@@ -5,8 +5,8 @@ import { userProfiles } from './schema'
 
 /**
  * ## userProfiles
- * 
- * Tests the userProfiles table in the database. This is making sure that the database is 
+ *
+ * Tests the userProfiles table in the database. This is making sure that the database is
  * working as expected.
  */
 describe('userProfiles', () => {

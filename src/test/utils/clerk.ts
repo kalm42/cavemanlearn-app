@@ -1,6 +1,8 @@
 import type { verifyToken } from '@clerk/backend'
 import type { vi } from 'vitest'
 
+type MockVerifyToken = ReturnType<typeof vi.mocked<typeof verifyToken>>
+
 /**
  * ## createMockAuthHeader
  *
@@ -22,13 +24,20 @@ import type { vi } from 'vitest'
  * })
  */
 export function createMockAuthHeader(
-	mockVerifyToken: ReturnType<typeof vi.mocked<typeof verifyToken>>,
+	mockVerifyToken: MockVerifyToken,
 	userId: string,
 	email: string,
 ): string {
+	// Provide a mock resolved value for the verifyToken function.
 	mockVerifyToken.mockResolvedValueOnce({
 		sub: userId,
 		email,
-	} as never)
+		__raw: '',
+		iss: '',
+		sid: '',
+		nbf: 0,
+		exp: 0,
+		iat: 0,
+	})
 	return 'Bearer mock-token'
 }
