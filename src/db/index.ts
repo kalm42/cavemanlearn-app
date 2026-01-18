@@ -1,6 +1,5 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 
-import { z } from 'zod'
 import * as schema from './schema.ts'
 
 // Create production db instance
@@ -14,7 +13,7 @@ const productionDb = drizzle(process.env.DATABASE_URL!, { schema })
  * test database without mocking.
  */
 function getDb() {
-	if (z.object({ testDb: z.any() }).safeParse(globalThis).success) {
+	if ('testDb' in globalThis) {
 		return globalThis.testDb
 	}
 	return productionDb
