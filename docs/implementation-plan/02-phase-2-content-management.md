@@ -316,11 +316,13 @@ pnpm add @aws-sdk/client-s3
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 when not org member
-- Unit test: Returns 400 for invalid file type
-- Unit test: Returns 400 for oversized file
-- Unit test: Successfully uploads and returns URL
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 when not org member
+- Integration test: Returns 400 for invalid file type
+- Integration test: Returns 400 for oversized file
+- Integration test: Successfully uploads and returns URL
+- Integration test: Upload creates mediaAsset record in database
+- Integration test: Upload validates organization membership
 - MSW: Mock R2 upload
 
 ---
@@ -554,13 +556,16 @@ pnpm add katex @types/katex
 
 ### Testing
 
-- Unit test: GET returns 400 without orgId
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns decks with counts
-- Unit test: GET filters by status
-- Unit test: POST creates deck successfully
-- Unit test: POST generates unique slug
-- Unit test: POST returns 403 for viewers
+- Integration test: GET returns 400 without orgId
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns decks with counts
+- Integration test: GET filters by status
+- Integration test: POST creates deck successfully
+- Integration test: POST generates unique slug
+- Integration test: POST returns 403 for viewers
+- Integration test: Deck creation with organization settings pre-fill
+- Integration test: Deck list filters by status
+- Integration test: Deck list includes question counts
 
 ---
 
@@ -600,13 +605,13 @@ pnpm add katex @types/katex
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns deck with details
-- Unit test: PUT updates deck successfully
-- Unit test: PUT returns 403 for viewers
-- Unit test: DELETE returns 403 for non-admins
-- Unit test: DELETE fails for published deck
-- Unit test: DELETE succeeds for draft deck
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns deck with details
+- Integration test: PUT updates deck successfully
+- Integration test: PUT returns 403 for viewers
+- Integration test: DELETE returns 403 for non-admins
+- Integration test: DELETE fails for published deck
+- Integration test: DELETE succeeds for draft deck
 
 ---
 
@@ -642,11 +647,14 @@ pnpm add katex @types/katex
 
 ### Testing
 
-- Unit test: Returns 403 for writers
-- Unit test: Returns 400 if no approved questions
-- Unit test: Returns 400 if no topics
-- Unit test: Successfully publishes deck
-- Unit test: Sets publishedAt timestamp
+- Integration test: Returns 403 for writers
+- Integration test: Returns 400 if no approved questions
+- Integration test: Returns 400 if no topics
+- Integration test: Successfully publishes deck
+- Integration test: Sets publishedAt timestamp
+- Integration test: Publishing requires approved questions
+- Integration test: Publishing requires topics
+- Integration test: Publishing sets publishedAt timestamp
 
 ---
 
@@ -721,10 +729,10 @@ scheduledPublishAt: timestamp("scheduled_publish_at"),
 
 ### Testing
 
-- Unit test: Returns 403 for writers
-- Unit test: Validates future date
-- Unit test: Sets scheduledPublishAt
-- Unit test: DELETE clears scheduled date
+- Integration test: Returns 403 for writers
+- Integration test: Validates future date
+- Integration test: Sets scheduledPublishAt
+- Integration test: DELETE clears scheduled date
 
 ---
 
@@ -769,11 +777,13 @@ pnpm add bullmq
 
 ### Testing
 
-- Unit test: Job finds scheduled decks
-- Unit test: Job publishes when requirements met
-- Unit test: Job skips when requirements not met
-- Unit test: Job creates notification
+- Integration test: Job finds scheduled decks
+- Integration test: Job publishes when requirements met
+- Integration test: Job skips when requirements not met
+- Integration test: Job creates notification
 - Integration test: Schedule deck and verify it publishes
+- Integration test: Job runs and publishes scheduled decks
+- Integration test: Job creates notification on publish
 
 ---
 
@@ -856,11 +866,11 @@ pnpm add bullmq
 
 ### Testing
 
-- Unit test: GET returns topics in order
-- Unit test: POST creates with correct sortOrder
-- Unit test: PUT updates topic
-- Unit test: DELETE removes topic
-- Unit test: Reorder updates all sortOrders
+- Integration test: GET returns topics in order
+- Integration test: POST creates with correct sortOrder
+- Integration test: PUT updates topic
+- Integration test: DELETE removes topic
+- Integration test: Reorder updates all sortOrders
 
 ---
 
@@ -906,13 +916,16 @@ pnpm add bullmq
 
 ### Testing
 
-- Unit test: GET returns questions with options
-- Unit test: GET filters by topic
-- Unit test: GET filters by status
-- Unit test: GET paginates correctly
-- Unit test: POST creates question and options
-- Unit test: POST validates correct answer exists
-- Unit test: POST sets createdBy
+- Integration test: GET returns questions with options
+- Integration test: GET filters by topic
+- Integration test: GET filters by status
+- Integration test: GET paginates correctly
+- Integration test: POST creates question and options
+- Integration test: POST validates correct answer exists
+- Integration test: POST sets createdBy
+- Integration test: Question creation with answer options
+- Integration test: Question list filters by topic and status
+- Integration test: Question pagination
 
 ---
 
@@ -953,11 +966,11 @@ pnpm add bullmq
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns question with all data
-- Unit test: PUT updates question and options
-- Unit test: PUT resets approved status on edit
-- Unit test: DELETE removes question
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns question with all data
+- Integration test: PUT updates question and options
+- Integration test: PUT resets approved status on edit
+- Integration test: DELETE removes question
 
 ---
 
@@ -1071,12 +1084,15 @@ currentVersion: integer("current_version").notNull().default(1),
 
 ### Testing
 
-- Unit test: PUT creates version record
-- Unit test: PUT increments version number
-- Unit test: PUT invalidates attempts when requested
-- Unit test: PUT stores change explanation
-- Unit test: GET returns all versions
-- Unit test: Invalidated attempts excluded from analytics
+- Integration test: PUT creates version record
+- Integration test: PUT increments version number
+- Integration test: PUT invalidates attempts when requested
+- Integration test: PUT stores change explanation
+- Integration test: GET returns all versions
+- Integration test: Invalidated attempts excluded from analytics
+- Integration test: Version creation on question update
+- Integration test: Attempt invalidation when requested
+- Integration test: Version history retrieval
 
 ---
 
@@ -1159,11 +1175,13 @@ currentVersion: integer("current_version").notNull().default(1),
 
 ### Testing
 
-- Unit test: Approve returns 403 for writers
-- Unit test: Approve fails if not in review status
-- Unit test: Approve sets all fields correctly
-- Unit test: Reject resets status to draft
-- Unit test: Submit sets status to review
+- Integration test: Approve returns 403 for writers
+- Integration test: Approve fails if not in review status
+- Integration test: Approve sets all fields correctly
+- Integration test: Reject resets status to draft
+- Integration test: Submit sets status to review
+- Integration test: Approval workflow (draft → review → approved)
+- Integration test: Rejection resets to draft
 
 ---
 
@@ -1278,12 +1296,15 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns comments in order
-- Unit test: POST creates comment and notification
-- Unit test: POST sets revisionRequested when editor comments
-- Unit test: PUT updates own comment
-- Unit test: DELETE removes comment
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns comments in order
+- Integration test: POST creates comment and notification
+- Integration test: POST sets revisionRequested when editor comments
+- Integration test: PUT updates own comment
+- Integration test: DELETE removes comment
+- Integration test: Comment creation creates notification
+- Integration test: Comment sets revisionRequested flag
+- Integration test: Threaded comments (parentCommentId)
 
 ---
 
@@ -1329,10 +1350,10 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### Testing
 
-- Unit test: Reject with revisionRequested sets flag
-- Unit test: Reject creates comment if reason provided
-- Unit test: Submit clears revisionRequested flag
-- Unit test: Notifications created correctly
+- Integration test: Reject with revisionRequested sets flag
+- Integration test: Reject creates comment if reason provided
+- Integration test: Submit clears revisionRequested flag
+- Integration test: Notifications created correctly
 
 ---
 

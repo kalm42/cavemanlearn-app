@@ -390,11 +390,13 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns requested number of questions
-- Unit test: Only returns approved questions
-- Unit test: Filters by selected topics
-- Unit test: Randomizes order
-- Unit test: Handles fewer questions than requested
+- Integration test: Returns requested number of questions
+- Integration test: Only returns approved questions
+- Integration test: Filters by selected topics
+- Integration test: Randomizes order
+- Integration test: Handles fewer questions than requested
+- Integration test: Selects questions from multiple topics
+- Integration test: Respects question count limit
 
 ---
 
@@ -432,12 +434,14 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Validates configuration
-- Unit test: Creates session with correct config
-- Unit test: Selects correct number of questions
-- Unit test: Returns session ID
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Validates configuration
+- Integration test: Creates session with correct config
+- Integration test: Selects correct number of questions
+- Integration test: Returns session ID
+- Integration test: Creates session with all related records (sessionTopics, sessionQuestions)
+- Integration test: Verifies subscription before creating session
 
 ---
 
@@ -468,11 +472,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 404 for non-existent session
-- Unit test: Returns session details
-- Unit test: Calculates progress correctly
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 404 for non-existent session
+- Integration test: Returns session details
+- Integration test: Calculates progress correctly
 
 ---
 
@@ -504,11 +508,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns questions in order
-- Unit test: Does not expose correct answers
-- Unit test: Indicates answered questions
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns questions in order
+- Integration test: Does not expose correct answers
+- Integration test: Indicates answered questions
 
 ---
 
@@ -550,15 +554,18 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 for invalid question
-- Unit test: Returns 400 for completed session
-- Unit test: Creates attempt record
-- Unit test: Returns feedback in immediate mode
-- Unit test: Returns only confirmation in exam mode
-- Unit test: Updates topic performance
-- Unit test: Updates daily performance
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 for invalid question
+- Integration test: Returns 400 for completed session
+- Integration test: Creates attempt record
+- Integration test: Returns feedback in immediate mode
+- Integration test: Returns only confirmation in exam mode
+- Integration test: Updates topic performance
+- Integration test: Updates daily performance
+- Integration test: Creates questionAttempt record
+- Integration test: Updates topicPerformance aggregate
+- Integration test: Updates dailyPerformance aggregate
 
 ---
 
@@ -594,12 +601,12 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 if already completed
-- Unit test: Sets status to completed
-- Unit test: Sets completedAt timestamp
-- Unit test: Abandon sets status to abandoned
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 if already completed
+- Integration test: Sets status to completed
+- Integration test: Sets completedAt timestamp
+- Integration test: Abandon sets status to abandoned
 
 ---
 
@@ -636,12 +643,12 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 if session in_progress
-- Unit test: Returns overall score
-- Unit test: Returns topic breakdown
-- Unit test: Returns question details with answers
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 if session in_progress
+- Integration test: Returns overall score
+- Integration test: Returns topic breakdown
+- Integration test: Returns question details with answers
 
 ---
 
@@ -679,11 +686,14 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns totals correctly
-- Unit test: Calculates accuracy correctly
-- Unit test: Current streak counts consecutive days
-- Unit test: Streak resets after missed day
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns totals correctly
+- Integration test: Calculates accuracy correctly
+- Integration test: Current streak counts consecutive days
+- Integration test: Streak resets after missed day
+- Integration test: Calculates current streak correctly
+- Integration test: Calculates best streak correctly
+- Integration test: Returns performance by deck
 
 ---
 
@@ -715,10 +725,10 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Returns deck-specific statistics
-- Unit test: Calculates improvement trend
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Returns deck-specific statistics
+- Integration test: Calculates improvement trend
 
 ---
 
@@ -749,11 +759,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns all topics when no deckId
-- Unit test: Filters by deckId when provided
-- Unit test: Sorts by accuracy ascending
-- Unit test: Calculates accuracy per topic
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns all topics when no deckId
+- Integration test: Filters by deckId when provided
+- Integration test: Sorts by accuracy ascending
+- Integration test: Calculates accuracy per topic
 
 ---
 
@@ -784,11 +794,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns data for date range
-- Unit test: Fills zeros for missing days
-- Unit test: Filters by deckId when provided
-- Unit test: Respects date range parameters
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns data for date range
+- Integration test: Fills zeros for missing days
+- Integration test: Filters by deckId when provided
+- Integration test: Respects date range parameters
 
 ---
 
@@ -825,11 +835,13 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Returns percentile ranking
-- Unit test: Returns distribution without user identification
-- Unit test: Handles decks with few learners gracefully
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Returns percentile ranking
+- Integration test: Returns distribution without user identification
+- Integration test: Handles decks with few learners gracefully
+- Integration test: Calculates percentile ranking
+- Integration test: Returns distribution without user identification
 
 ---
 

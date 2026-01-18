@@ -127,13 +127,16 @@ export const userProfiles = pgTable("user_profiles", {
 
 ### Testing
 
-- Unit test: getCurrentUser returns null when not authenticated
-- Unit test: getCurrentUser returns user when authenticated
-- Unit test: GET returns 401 when not authenticated
-- Unit test: GET returns 404 when profile doesn't exist
-- Unit test: GET returns profile when exists
-- Unit test: POST creates profile successfully
-- Unit test: POST returns 409 when profile already exists
+- Unit test: getCurrentUser returns null when not authenticated (pure function)
+- Unit test: getCurrentUser returns user when authenticated (pure function)
+- Integration test: GET returns 401 when not authenticated
+- Integration test: GET returns 404 when profile doesn't exist
+- Integration test: GET returns profile when exists
+- Integration test: POST creates profile successfully
+- Integration test: POST returns 409 when profile already exists
+- Integration test: GET endpoint with real database
+- Integration test: POST endpoint creates profile and returns it
+- Integration test: POST endpoint handles duplicate clerkId
 - MSW handlers for Clerk auth
 
 ---
@@ -168,10 +171,10 @@ export const userProfiles = pgTable("user_profiles", {
 
 ### Testing
 
-- Unit test: PUT returns 401 when not authenticated
-- Unit test: PUT returns 404 when profile doesn't exist
-- Unit test: PUT updates profile successfully
-- Unit test: PUT validates input correctly
+- Integration test: PUT returns 401 when not authenticated
+- Integration test: PUT returns 404 when profile doesn't exist
+- Integration test: PUT updates profile successfully
+- Integration test: PUT validates input correctly
 
 ---
 
@@ -213,11 +216,13 @@ pnpm add svix
 
 ### Testing
 
-- Unit test: Webhook rejects invalid signatures
-- Unit test: Webhook handles user.created event
-- Unit test: Webhook handles user.updated event
-- Unit test: Webhook handles user.deleted event
-- Unit test: Webhook ignores unknown events
+- Integration test: Webhook rejects invalid signatures (or unit test with mocked verification)
+- Integration test: Webhook handles user.created event
+- Integration test: Webhook handles user.updated event
+- Integration test: Webhook handles user.deleted event
+- Integration test: Webhook ignores unknown events
+- Integration test: Full webhook flow creates/updates/deletes profile
+- Integration test: Webhook signature verification
 
 ---
 
@@ -459,13 +464,15 @@ export const organizationMembers = pgTable(
 
 ### Testing
 
-- Unit test: GET returns empty array for user with no orgs
-- Unit test: GET returns orgs with roles
-- Unit test: POST creates org successfully
-- Unit test: POST makes creator the owner
-- Unit test: POST validates input
-- Unit test: Slug generation handles special characters
-- Unit test: Slug generation handles duplicates
+- Integration test: GET returns empty array for user with no orgs
+- Integration test: GET returns orgs with roles
+- Integration test: POST creates org successfully
+- Integration test: POST makes creator the owner
+- Integration test: POST validates input
+- Integration test: Organization creation with slug generation
+- Integration test: Organization creation adds creator as owner
+- Unit test: Slug generation handles special characters (pure function)
+- Unit test: Slug generation handles duplicates (pure function)
 
 ---
 
@@ -504,12 +511,12 @@ export const organizationMembers = pgTable(
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns org details for members
-- Unit test: PUT returns 403 for insufficient role
-- Unit test: PUT updates org successfully
-- Unit test: DELETE returns 403 for non-owners
-- Unit test: DELETE deletes org successfully
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns org details for members
+- Integration test: PUT returns 403 for insufficient role
+- Integration test: PUT updates org successfully
+- Integration test: DELETE returns 403 for non-owners
+- Integration test: DELETE deletes org successfully
 
 ---
 
@@ -552,14 +559,17 @@ export const organizationMembers = pgTable(
 
 ### Testing
 
-- Unit test: GET returns all members
-- Unit test: POST adds member successfully
-- Unit test: POST rejects duplicate members
-- Unit test: POST rejects owner role
-- Unit test: PUT updates role successfully
-- Unit test: PUT cannot change owner role
-- Unit test: DELETE removes member
-- Unit test: DELETE cannot remove owner
+- Integration test: GET returns all members
+- Integration test: POST adds member successfully
+- Integration test: POST rejects duplicate members
+- Integration test: POST rejects owner role
+- Integration test: PUT updates role successfully
+- Integration test: PUT cannot change owner role
+- Integration test: DELETE removes member
+- Integration test: DELETE cannot remove owner
+- Integration test: Adding member creates organizationMembers record
+- Integration test: Updating member role
+- Integration test: Removing member
 
 ---
 
@@ -898,10 +908,10 @@ export const organizationSettings = pgTable("organization_settings", {
 
 ### Testing
 
-- Unit test: GET returns 403 for non-admins
-- Unit test: GET returns settings or creates default
-- Unit test: PUT validates pricing values
-- Unit test: PUT updates settings successfully
+- Integration test: GET returns 403 for non-admins
+- Integration test: GET returns settings or creates default
+- Integration test: PUT validates pricing values
+- Integration test: PUT updates settings successfully
 
 ---
 
@@ -1000,12 +1010,12 @@ export const organizationSettings = pgTable("organization_settings", {
 
 ### Testing
 
-- Unit test: GET returns user's notifications
-- Unit test: GET filters by read status
-- Unit test: PUT marks notification as read
-- Unit test: PUT read-all marks all as read
-- Unit test: createNotification creates correct notification
-- Unit test: notifyQuestionSubmitted notifies editors/admins
+- Integration test: GET returns user's notifications
+- Integration test: GET filters by read status
+- Integration test: PUT marks notification as read
+- Integration test: PUT read-all marks all as read
+- Integration test: createNotification creates correct notification
+- Integration test: notifyQuestionSubmitted notifies editors/admins
 
 ---
 

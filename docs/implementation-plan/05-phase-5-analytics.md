@@ -228,10 +228,12 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Creates record on first attempt
-- Unit test: Updates existing record correctly
-- Unit test: Running average calculation is accurate
-- Unit test: Concurrent updates are handled
+- Integration test: Creates record on first attempt
+- Integration test: Updates existing record correctly
+- Integration test: Running average calculation is accurate
+- Integration test: Concurrent updates are handled
+- Integration test: Performance update on answer submission
+- Integration test: Upsert creates record if not exists
 
 ---
 
@@ -260,10 +262,12 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Revenue record created with correct amounts
-- Unit test: 70/30 split is accurate
-- Unit test: Links to correct organization
-- Unit test: Handles various invoice scenarios
+- Integration test: Revenue record created with correct amounts
+- Integration test: 70/30 split is accurate
+- Integration test: Links to correct organization
+- Integration test: Handles various invoice scenarios
+- Integration test: Revenue record created on invoice payment
+- Integration test: Links to correct organization
 
 ---
 
@@ -300,12 +304,15 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Returns 400 for invalid reason
-- Unit test: Returns 409 for duplicate pending report
-- Unit test: Creates report successfully
-- Unit test: Increments question report count
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Returns 400 for invalid reason
+- Integration test: Returns 409 for duplicate pending report
+- Integration test: Creates report successfully
+- Integration test: Increments question report count
+- Integration test: Report creation increments questionPerformance.reportCount
+- Integration test: Duplicate report prevention
+- Integration test: Subscription verification
 
 ---
 
@@ -339,12 +346,13 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-publishers
-- Unit test: Returns 403 for non-members
-- Unit test: Filters by status
-- Unit test: Returns reports with question info
-- Unit test: Pagination works correctly
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-publishers
+- Integration test: Returns 403 for non-members
+- Integration test: Filters by status
+- Integration test: Returns reports with question info
+- Integration test: Pagination works correctly
+- Integration test: Returns reports for org's decks
 
 ---
 
@@ -387,12 +395,14 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns full report details
-- Unit test: PUT returns 403 for writers
-- Unit test: PUT validates status transitions
-- Unit test: PUT sets resolver info
-- Unit test: PUT updates status correctly
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns full report details
+- Integration test: PUT returns 403 for writers
+- Integration test: PUT validates status transitions
+- Integration test: PUT sets resolver info
+- Integration test: PUT updates status correctly
+- Integration test: Status transition validation
+- Integration test: Sets resolvedBy and resolvedAt
 
 ---
 
@@ -427,11 +437,13 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-publishers
-- Unit test: Returns correct totals
-- Unit test: Returns deck breakdown
-- Unit test: Handles org with no decks
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-publishers
+- Integration test: Returns correct totals
+- Integration test: Returns deck breakdown
+- Integration test: Handles org with no decks
+- Integration test: Returns correct totals across all decks
+- Integration test: Returns pending reports count
 
 ---
 
@@ -465,11 +477,13 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-members
-- Unit test: Returns deck-specific stats
-- Unit test: Returns topic breakdown
-- Unit test: Returns pending reports count
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-members
+- Integration test: Returns deck-specific stats
+- Integration test: Returns topic breakdown
+- Integration test: Returns pending reports count
+- Integration test: Returns deck-specific subscriber count
+- Integration test: Returns deck-specific revenue
 
 ---
 
@@ -503,11 +517,11 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-members
-- Unit test: Returns questions with stats
-- Unit test: Sorting works correctly
-- Unit test: Flags problematic questions
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-members
+- Integration test: Returns questions with stats
+- Integration test: Sorting works correctly
+- Integration test: Flags problematic questions
 
 ---
 
@@ -539,11 +553,12 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-members
-- Unit test: Returns subscriber trends
-- Unit test: Calculates churn rate correctly
-- Unit test: Returns billing interval breakdown
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-members
+- Integration test: Returns subscriber trends
+- Integration test: Calculates churn rate correctly
+- Integration test: Returns billing interval breakdown
+- Integration test: Returns subscriber count over time
 
 ---
 
@@ -577,11 +592,11 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-owners
-- Unit test: Returns correct revenue totals
-- Unit test: Returns deck breakdown
-- Unit test: Respects date range filter
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-owners
+- Integration test: Returns correct revenue totals
+- Integration test: Returns deck breakdown
+- Integration test: Respects date range filter
 
 ---
 
@@ -619,11 +634,11 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-owners
-- Unit test: Generates valid CSV
-- Unit test: CSV headers match expected format
-- Unit test: Special characters are escaped
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-owners
+- Integration test: Generates valid CSV
+- Integration test: CSV headers match expected format
+- Integration test: Special characters are escaped
 
 ---
 

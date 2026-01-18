@@ -353,11 +353,13 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: GET returns 403 for non-members
-- Unit test: GET returns pricing or null
-- Unit test: PUT returns 403 for non-admins
-- Unit test: PUT validates positive prices
-- Unit test: PUT creates Stripe product
+- Integration test: GET returns 403 for non-members
+- Integration test: GET returns pricing or null
+- Integration test: PUT returns 403 for non-admins
+- Integration test: PUT validates positive prices
+- Integration test: PUT creates Stripe product (with mocked Stripe)
+- Integration test: Pricing creation stores Stripe IDs in database
+- Integration test: Pricing update syncs to Stripe
 - MSW: Mock Stripe product/price creation
 
 ---
@@ -400,12 +402,15 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: GET returns samples for published deck
-- Unit test: GET returns 404 for unpublished deck (non-member)
-- Unit test: PUT returns 403 for writers
-- Unit test: PUT validates question ownership
-- Unit test: PUT enforces 5 sample limit
-- Unit test: PUT replaces all samples
+- Integration test: GET returns samples for published deck
+- Integration test: GET returns 404 for unpublished deck (non-member)
+- Integration test: PUT returns 403 for writers
+- Integration test: PUT validates question ownership
+- Integration test: PUT enforces 5 sample limit
+- Integration test: PUT replaces all samples
+- Integration test: Sample questions are limited to 5
+- Integration test: Sample questions must be approved
+- Integration test: Sample questions are ordered by sortOrder
 
 ---
 
@@ -443,12 +448,12 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns only published decks
-- Unit test: Returns empty for unpublished decks
-- Unit test: Search filters by title/description
-- Unit test: Pagination works correctly
-- Unit test: Sorting works for all options
-- Unit test: Includes pricing and org info
+- Integration test: Returns only published decks
+- Integration test: Returns empty for unpublished decks
+- Integration test: Search filters by title/description
+- Integration test: Pagination works correctly
+- Integration test: Sorting works for all options
+- Integration test: Includes pricing and org info
 
 ---
 
@@ -480,11 +485,11 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 404 for unpublished deck
-- Unit test: Returns 404 for non-existent slug
-- Unit test: Returns deck with samples
-- Unit test: Includes subscription status when authenticated
-- Unit test: Excludes subscription status when unauthenticated
+- Integration test: Returns 404 for unpublished deck
+- Integration test: Returns 404 for non-existent slug
+- Integration test: Returns deck with samples
+- Integration test: Includes subscription status when authenticated
+- Integration test: Excludes subscription status when unauthenticated
 
 ---
 
@@ -515,10 +520,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns empty array for user with no subscriptions
-- Unit test: Returns subscriptions with deck info
-- Unit test: Orders active subscriptions first
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns empty array for user with no subscriptions
+- Integration test: Returns subscriptions with deck info
+- Integration test: Orders active subscriptions first
 
 ---
 
@@ -562,11 +567,13 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 400 for invalid deckId
-- Unit test: Returns 409 if already subscribed
-- Unit test: Creates checkout session successfully
-- Unit test: Returns session ID and URL
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 400 for invalid deckId
+- Integration test: Returns 409 if already subscribed
+- Integration test: Creates checkout session successfully (with mocked Stripe)
+- Integration test: Returns session ID and URL
+- Integration test: Creates subscription record on checkout completion
+- Integration test: Links subscription to user and deck
 - MSW: Mock Stripe checkout session creation
 
 ---
@@ -598,9 +605,9 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 404 if no customer record
-- Unit test: Returns portal URL
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 404 if no customer record
+- Integration test: Returns portal URL
 - MSW: Mock Stripe portal session creation
 
 ---
@@ -635,11 +642,11 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's subscription
-- Unit test: Returns 404 for non-existent subscription
-- Unit test: Cancels subscription at period end
-- Unit test: Reactivates canceled subscription
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's subscription
+- Integration test: Returns 404 for non-existent subscription
+- Integration test: Cancels subscription at period end
+- Integration test: Reactivates canceled subscription
 - MSW: Mock Stripe subscription update
 
 ---
@@ -671,10 +678,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Rejects invalid signature
-- Unit test: Accepts valid signature
-- Unit test: Routes events to correct handlers
-- Unit test: Returns 200 for unhandled events
+- Integration test: Rejects invalid signature (or unit test with mocked verification)
+- Integration test: Accepts valid signature
+- Integration test: Routes events to correct handlers
+- Integration test: Returns 200 for unhandled events
 
 ---
 
@@ -703,10 +710,12 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Creates subscription record
-- Unit test: Sets correct status and dates
-- Unit test: Links to correct user and deck
-- Unit test: Handles missing metadata gracefully
+- Integration test: Creates subscription record
+- Integration test: Sets correct status and dates
+- Integration test: Links to correct user and deck
+- Integration test: Handles missing metadata gracefully
+- Integration test: Webhook creates subscription in database
+- Integration test: Webhook sets correct status and dates
 
 ---
 
@@ -734,11 +743,14 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Updates status correctly
-- Unit test: Updates period dates
-- Unit test: Handles cancel_at_period_end flag
-- Unit test: Marks deleted subscription as canceled
-- Unit test: Ignores unknown subscription IDs
+- Integration test: Updates status correctly
+- Integration test: Updates period dates
+- Integration test: Handles cancel_at_period_end flag
+- Integration test: Marks deleted subscription as canceled
+- Integration test: Ignores unknown subscription IDs
+- Integration test: Webhook updates subscription status
+- Integration test: Webhook updates period dates
+- Integration test: Webhook handles cancel_at_period_end flag
 
 ---
 
@@ -765,9 +777,11 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Payment succeeded updates past_due to active
-- Unit test: Payment failed updates to past_due
-- Unit test: Handles missing subscription gracefully
+- Integration test: Payment succeeded updates past_due to active
+- Integration test: Payment failed updates to past_due
+- Integration test: Handles missing subscription gracefully
+- Integration test: Invoice payment succeeded updates subscription
+- Integration test: Invoice payment failed updates to past_due
 
 ---
 
@@ -804,11 +818,11 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-publishers
-- Unit test: Returns 403 for non-admins
-- Unit test: Creates Connect account
-- Unit test: Returns onboarding URL
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-publishers
+- Integration test: Returns 403 for non-admins
+- Integration test: Creates Connect account (with mocked Stripe)
+- Integration test: Returns onboarding URL
 - MSW: Mock Stripe Connect account creation
 
 ---
@@ -840,10 +854,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for non-admins
-- Unit test: Returns 404 if no Connect account
-- Unit test: Returns dashboard URL
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for non-admins
+- Integration test: Returns 404 if no Connect account
+- Integration test: Returns dashboard URL
 - MSW: Mock Stripe login link creation
 
 ---
@@ -868,10 +882,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Updates charges_enabled flag
-- Unit test: Updates payouts_enabled flag
-- Unit test: Sets onboardingComplete when both enabled
-- Unit test: Ignores unknown account IDs
+- Integration test: Updates charges_enabled flag
+- Integration test: Updates payouts_enabled flag
+- Integration test: Sets onboardingComplete when both enabled
+- Integration test: Ignores unknown account IDs
 
 ---
 
@@ -1386,11 +1400,11 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: hasActiveSubscription returns true for active
-- Unit test: hasActiveSubscription returns false for canceled
-- Unit test: hasActiveSubscription returns false for past_due after grace
-- Unit test: Questions API returns 403 without subscription
-- Unit test: Questions API returns questions with subscription
+- Integration test: hasActiveSubscription returns true for active
+- Integration test: hasActiveSubscription returns false for canceled
+- Integration test: hasActiveSubscription returns false for past_due after grace
+- Integration test: Questions API returns 403 without subscription
+- Integration test: Questions API returns questions with subscription
 
 ---
 
@@ -1454,12 +1468,15 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: hasAccessToQuestionContent requires active subscription
-- Unit test: hasAccessToPerformanceData works for past subscriptions
-- Unit test: Questions API returns 403 without active subscription
-- Unit test: Session results return aggregates without subscription
-- Unit test: Session results hide content without subscription
-- Unit test: Analytics work for past subscriptions
+- Integration test: hasAccessToQuestionContent requires active subscription
+- Integration test: hasAccessToPerformanceData works for past subscriptions
+- Integration test: Questions API returns 403 without active subscription
+- Integration test: Session results return aggregates without subscription
+- Integration test: Session results hide content without subscription
+- Integration test: Analytics work for past subscriptions
+- Integration test: Session results return aggregates without subscription
+- Integration test: Session results hide content without subscription
+- Integration test: Analytics work for past subscriptions
 - E2E test: Cancel subscription, verify analytics still accessible
 - E2E test: Cancel subscription, verify question content hidden
 
@@ -1509,10 +1526,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### Testing
 
-- Unit test: Session results show aggregates without subscription
-- Unit test: Session results hide content without subscription
-- Unit test: Analytics show historical data
-- Unit test: Library shows past subscriptions
+- Integration test: Session results show aggregates without subscription
+- Integration test: Session results hide content without subscription
+- Integration test: Analytics show historical data
+- Integration test: Library shows past subscriptions
 - E2E test: View analytics after canceling subscription
 - E2E test: View session results after canceling subscription
 
