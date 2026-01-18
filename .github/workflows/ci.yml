@@ -58,7 +58,7 @@ jobs:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
 
       - name: Run tests with coverage
-        run: pnpm test:coverage
+        run: pnpm test:ci
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
