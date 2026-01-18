@@ -5,6 +5,7 @@ export const env = createEnv({
 	server: {
 		SERVER_URL: z.url().optional(),
 		CLERK_SECRET_KEY: z.string().min(1).optional(),
+		CLERK_WEBHOOK_SECRET: z.string().min(1).optional(),
 	},
 
 	/**
