@@ -3,6 +3,12 @@ import { describe, expect, it } from 'vitest'
 
 import { userProfiles } from './schema'
 
+/**
+ * ## userProfiles
+ *
+ * Tests the userProfiles table in the database. This is making sure that the database is
+ * working as expected.
+ */
 describe('userProfiles', () => {
 	it('creates a user profile', async () => {
 		const newUser = {
@@ -14,13 +20,13 @@ describe('userProfiles', () => {
 		const [inserted] = await globalThis.testDb.insert(userProfiles).values(newUser).returning()
 
 		expect(inserted).toMatchObject({
-			clerkId: 'clerk_123',
-			email: 'test@example.com',
-			displayName: 'Test User',
+			clerkId: newUser.clerkId,
+			email: newUser.email,
+			displayName: newUser.displayName,
 			userType: 'learner',
 		})
-		expect(inserted.id).toBeDefined()
-		expect(inserted.createdAt).toBeDefined()
+		expect(inserted.id).toBeTruthy()
+		expect(inserted.createdAt).toBeInstanceOf(Date)
 	})
 
 	it('reads a user profile by clerkId', async () => {
@@ -33,11 +39,11 @@ describe('userProfiles', () => {
 		const [found] = await globalThis.testDb
 			.select()
 			.from(userProfiles)
-			.where(eq(userProfiles.clerkId, 'clerk_456'))
+			.where(eq(userProfiles.clerkId, newUser.clerkId))
 
 		expect(found).toMatchObject({
-			clerkId: 'clerk_456',
-			email: 'read@example.com',
+			clerkId: newUser.clerkId,
+			email: newUser.email,
 			userType: 'learner',
 		})
 	})

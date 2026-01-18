@@ -37,8 +37,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          cache: "pnpm"
+          node-version: '24'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -58,10 +58,11 @@ jobs:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
 
       - name: Run tests with coverage
-        run: pnpm test:coverage
+        run: pnpm test:ci
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
 
       - name: Build
         run: pnpm build

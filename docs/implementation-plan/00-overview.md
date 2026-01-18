@@ -75,8 +75,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          cache: "pnpm"
+          node-version: '24'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -111,19 +111,19 @@ Update `vitest.config.ts` to enforce coverage:
 
 ```typescript
 export default defineConfig({
-  test: {
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json-summary", "html"],
-      thresholds: {
-        lines: 50, // Update to 70 after Phase 2
-        functions: 50,
-        branches: 50,
-        statements: 50,
-      },
-    },
-  },
-});
+	test: {
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'json-summary', 'html'],
+			thresholds: {
+				lines: 50, // Update to 70 after Phase 2
+				functions: 50,
+				branches: 50,
+				statements: 50,
+			},
+		},
+	},
+})
 ```
 
 ---

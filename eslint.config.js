@@ -14,6 +14,10 @@ const eslintConfig = defineConfig(
 	{
 		files: ['**/*.{test,spec}.{ts,tsx}', '**/test/**/*.{ts,tsx}'],
 		...testingLibrary.configs['flat/react'],
+		rules: {
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/no-unsafe-member-access': 'off',
+		},
 	},
 	{
 		ignores: [

@@ -12,11 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
+import { Route as ApiUserProfileRouteImport } from './routes/api.user.profile'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
@@ -37,11 +37,6 @@ const DemoI18nRoute = DemoI18nRouteImport.update({
 	path: '/demo/i18n',
 	getParentRoute: () => rootRouteImport,
 } as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-	id: '/demo/drizzle',
-	path: '/demo/drizzle',
-	getParentRoute: () => rootRouteImport,
-} as any)
 const DemoClerkRoute = DemoClerkRouteImport.update({
 	id: '/demo/clerk',
 	path: '/demo/clerk',
@@ -60,6 +55,11 @@ const DemoApiTqTodosRoute = DemoApiTqTodosRouteImport.update({
 const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
 	id: '/demo/api/names',
 	path: '/demo/api/names',
+	getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUserProfileRoute = ApiUserProfileRouteImport.update({
+	id: '/api/user/profile',
+	path: '/api/user/profile',
 	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
@@ -86,9 +86,9 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 export interface FileRoutesByFullPath {
 	'/': typeof IndexRoute
 	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/drizzle': typeof DemoDrizzleRoute
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -100,9 +100,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
 	'/': typeof IndexRoute
 	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/drizzle': typeof DemoDrizzleRoute
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -115,9 +115,9 @@ export interface FileRoutesById {
 	__root__: typeof rootRouteImport
 	'/': typeof IndexRoute
 	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/drizzle': typeof DemoDrizzleRoute
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -131,9 +131,9 @@ export interface FileRouteTypes {
 	fullPaths:
 		| '/'
 		| '/demo/clerk'
-		| '/demo/drizzle'
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
+		| '/api/user/profile'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -145,9 +145,9 @@ export interface FileRouteTypes {
 	to:
 		| '/'
 		| '/demo/clerk'
-		| '/demo/drizzle'
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
+		| '/api/user/profile'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -159,9 +159,9 @@ export interface FileRouteTypes {
 		| '__root__'
 		| '/'
 		| '/demo/clerk'
-		| '/demo/drizzle'
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
+		| '/api/user/profile'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -174,9 +174,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute
 	DemoClerkRoute: typeof DemoClerkRoute
-	DemoDrizzleRoute: typeof DemoDrizzleRoute
 	DemoI18nRoute: typeof DemoI18nRoute
 	DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+	ApiUserProfileRoute: typeof ApiUserProfileRoute
 	DemoApiNamesRoute: typeof DemoApiNamesRoute
 	DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
 	DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -209,13 +209,6 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof DemoI18nRouteImport
 			parentRoute: typeof rootRouteImport
 		}
-		'/demo/drizzle': {
-			id: '/demo/drizzle'
-			path: '/demo/drizzle'
-			fullPath: '/demo/drizzle'
-			preLoaderRoute: typeof DemoDrizzleRouteImport
-			parentRoute: typeof rootRouteImport
-		}
 		'/demo/clerk': {
 			id: '/demo/clerk'
 			path: '/demo/clerk'
@@ -242,6 +235,13 @@ declare module '@tanstack/react-router' {
 			path: '/demo/api/names'
 			fullPath: '/demo/api/names'
 			preLoaderRoute: typeof DemoApiNamesRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/api/user/profile': {
+			id: '/api/user/profile'
+			path: '/api/user/profile'
+			fullPath: '/api/user/profile'
+			preLoaderRoute: typeof ApiUserProfileRouteImport
 			parentRoute: typeof rootRouteImport
 		}
 		'/demo/start/ssr/': {
@@ -278,9 +278,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
 	DemoClerkRoute: DemoClerkRoute,
-	DemoDrizzleRoute: DemoDrizzleRoute,
 	DemoI18nRoute: DemoI18nRoute,
 	DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+	ApiUserProfileRoute: ApiUserProfileRoute,
 	DemoApiNamesRoute: DemoApiNamesRoute,
 	DemoApiTqTodosRoute: DemoApiTqTodosRoute,
 	DemoStartApiRequestRoute: DemoStartApiRequestRoute,

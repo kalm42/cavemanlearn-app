@@ -5,6 +5,7 @@ A marketplace platform that connects content publishers with learners preparing 
 ## Overview
 
 ### For Learners
+
 - **Browse and Subscribe**: Discover high-quality practice question decks created by subject matter experts, with monthly or yearly subscription options
 - **Flexible Practice Sessions**: Create custom practice exams with configurable question counts, topic focus, timing, and feedback modes
 - **Multiple Study Modes**: Immediate feedback for learning, exam simulation for test readiness, timed or untimed options
@@ -12,6 +13,7 @@ A marketplace platform that connects content publishers with learners preparing 
 - **Performance Insights**: Track accuracy by topic, view trends over time, and compare anonymously to other learners
 
 ### For Publishers
+
 - **Professional Publishing Tools**: Rich text editor supporting complex content like code samples, equations, images, and tables
 - **Team Collaboration**: WordPress-style workflow with Writer, Editor, and Admin roles
 - **Flexible Pricing**: Set your own monthly and yearly subscription prices
@@ -19,6 +21,7 @@ A marketplace platform that connects content publishers with learners preparing 
 - **Performance Analytics**: Track subscribers, question difficulty, and learner engagement
 
 ### For Organizations
+
 - **Organization Workspace**: Manage multiple team members working on one or more decks
 - **Role-Based Permissions**: Granular roles including Writers, Editors, Admins, Owners, and Viewers
 - **Content Review Workflow**: Enforce quality standards with required Editor approval before publishing

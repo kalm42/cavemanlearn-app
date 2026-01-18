@@ -2,7 +2,6 @@
 
 > **See [00-overview.md](./00-overview.md) for project overview, codebase state, and quality requirements.**
 
-
 **Goal**: Enable learners to practice with subscribed decks and track performance.
 
 **Coverage Target**: Maintain 70% minimum.
@@ -47,25 +46,25 @@ pnpm add recharts
 ### Database Schema
 
 ```typescript
-export const practiceSessions = pgTable("practice_sessions", {
-  id: uuid().primaryKey().defaultRandom(),
-  userId: uuid("user_id")
-    .references(() => userProfiles.id)
-    .notNull(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id)
-    .notNull(),
-  mode: text({ enum: ["immediate_feedback", "exam_simulation"] }).notNull(),
-  timedMode: boolean("timed_mode").notNull().default(false),
-  totalTimeSeconds: integer("total_time_seconds"),
-  timePerQuestionSeconds: integer("time_per_question_seconds"),
-  questionCount: integer("question_count").notNull(),
-  status: text({ enum: ["in_progress", "completed", "abandoned"] })
-    .notNull()
-    .default("in_progress"),
-  completedAt: timestamp("completed_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const practiceSessions = pgTable('practice_sessions', {
+	id: uuid().primaryKey().defaultRandom(),
+	userId: uuid('user_id')
+		.references(() => userProfiles.id)
+		.notNull(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id)
+		.notNull(),
+	mode: text({ enum: ['immediate_feedback', 'exam_simulation'] }).notNull(),
+	timedMode: boolean('timed_mode').notNull().default(false),
+	totalTimeSeconds: integer('total_time_seconds'),
+	timePerQuestionSeconds: integer('time_per_question_seconds'),
+	questionCount: integer('question_count').notNull(),
+	status: text({ enum: ['in_progress', 'completed', 'abandoned'] })
+		.notNull()
+		.default('in_progress'),
+	completedAt: timestamp('completed_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -102,15 +101,15 @@ export const practiceSessions = pgTable("practice_sessions", {
 ### Database Schema
 
 ```typescript
-export const sessionTopics = pgTable("session_topics", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  topicId: uuid("topic_id")
-    .references(() => topics.id)
-    .notNull(),
-});
+export const sessionTopics = pgTable('session_topics', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	topicId: uuid('topic_id')
+		.references(() => topics.id)
+		.notNull(),
+})
 ```
 
 ### Tasks
@@ -144,16 +143,16 @@ export const sessionTopics = pgTable("session_topics", {
 ### Database Schema
 
 ```typescript
-export const sessionQuestions = pgTable("session_questions", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  questionId: uuid("question_id")
-    .references(() => questions.id)
-    .notNull(),
-  sortOrder: integer("sort_order").notNull(),
-});
+export const sessionQuestions = pgTable('session_questions', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	questionId: uuid('question_id')
+		.references(() => questions.id)
+		.notNull(),
+	sortOrder: integer('sort_order').notNull(),
+})
 ```
 
 ### Tasks
@@ -187,20 +186,20 @@ export const sessionQuestions = pgTable("session_questions", {
 ### Database Schema
 
 ```typescript
-export const questionAttempts = pgTable("question_attempts", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  questionId: uuid("question_id")
-    .references(() => questions.id)
-    .notNull(),
-  selectedOptionIds: jsonb("selected_option_ids").notNull(),
-  isCorrect: boolean("is_correct").notNull(),
-  invalidated: boolean().notNull().default(false),
-  timeSpentSeconds: integer("time_spent_seconds"),
-  attemptedAt: timestamp("attempted_at").defaultNow(),
-});
+export const questionAttempts = pgTable('question_attempts', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	questionId: uuid('question_id')
+		.references(() => questions.id)
+		.notNull(),
+	selectedOptionIds: jsonb('selected_option_ids').notNull(),
+	isCorrect: boolean('is_correct').notNull(),
+	invalidated: boolean().notNull().default(false),
+	timeSpentSeconds: integer('time_spent_seconds'),
+	attemptedAt: timestamp('attempted_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -236,24 +235,24 @@ export const questionAttempts = pgTable("question_attempts", {
 
 ```typescript
 export const topicPerformance = pgTable(
-  "topic_performance",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .references(() => userProfiles.id)
-      .notNull(),
-    topicId: uuid("topic_id")
-      .references(() => topics.id)
-      .notNull(),
-    totalAttempts: integer("total_attempts").notNull().default(0),
-    correctAttempts: integer("correct_attempts").notNull().default(0),
-    lastAttemptedAt: timestamp("last_attempted_at"),
-    updatedAt: timestamp("updated_at").defaultNow(),
-  },
-  (table) => ({
-    uniqueUserTopic: unique().on(table.userId, table.topicId),
-  }),
-);
+	'topic_performance',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		userId: uuid('user_id')
+			.references(() => userProfiles.id)
+			.notNull(),
+		topicId: uuid('topic_id')
+			.references(() => topics.id)
+			.notNull(),
+		totalAttempts: integer('total_attempts').notNull().default(0),
+		correctAttempts: integer('correct_attempts').notNull().default(0),
+		lastAttemptedAt: timestamp('last_attempted_at'),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		uniqueUserTopic: unique().on(table.userId, table.topicId),
+	}),
+)
 ```
 
 ### Tasks
@@ -289,23 +288,23 @@ export const topicPerformance = pgTable(
 
 ```typescript
 export const dailyPerformance = pgTable(
-  "daily_performance",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .references(() => userProfiles.id)
-      .notNull(),
-    deckId: uuid("deck_id")
-      .references(() => decks.id)
-      .notNull(),
-    date: date().notNull(),
-    totalAttempts: integer("total_attempts").notNull().default(0),
-    correctAttempts: integer("correct_attempts").notNull().default(0),
-  },
-  (table) => ({
-    uniqueUserDeckDate: unique().on(table.userId, table.deckId, table.date),
-  }),
-);
+	'daily_performance',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		userId: uuid('user_id')
+			.references(() => userProfiles.id)
+			.notNull(),
+		deckId: uuid('deck_id')
+			.references(() => decks.id)
+			.notNull(),
+		date: date().notNull(),
+		totalAttempts: integer('total_attempts').notNull().default(0),
+		correctAttempts: integer('correct_attempts').notNull().default(0),
+	},
+	(table) => ({
+		uniqueUserDeckDate: unique().on(table.userId, table.deckId, table.date),
+	}),
+)
 ```
 
 ### Tasks
@@ -390,11 +389,13 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns requested number of questions
-- Unit test: Only returns approved questions
-- Unit test: Filters by selected topics
-- Unit test: Randomizes order
-- Unit test: Handles fewer questions than requested
+- Integration test: Returns requested number of questions
+- Integration test: Only returns approved questions
+- Integration test: Filters by selected topics
+- Integration test: Randomizes order
+- Integration test: Handles fewer questions than requested
+- Integration test: Selects questions from multiple topics
+- Integration test: Respects question count limit
 
 ---
 
@@ -432,12 +433,14 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Validates configuration
-- Unit test: Creates session with correct config
-- Unit test: Selects correct number of questions
-- Unit test: Returns session ID
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Validates configuration
+- Integration test: Creates session with correct config
+- Integration test: Selects correct number of questions
+- Integration test: Returns session ID
+- Integration test: Creates session with all related records (sessionTopics, sessionQuestions)
+- Integration test: Verifies subscription before creating session
 
 ---
 
@@ -447,8 +450,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                     | Method | Purpose             |
-| ---------------------------- | ------ | ------------------- |
+| Endpoint                   | Method | Purpose             |
+| -------------------------- | ------ | ------------------- |
 | `/api/practice/:sessionId` | GET    | Get session details |
 
 ### Tasks
@@ -468,11 +471,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 404 for non-existent session
-- Unit test: Returns session details
-- Unit test: Calculates progress correctly
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 404 for non-existent session
+- Integration test: Returns session details
+- Integration test: Calculates progress correctly
 
 ---
 
@@ -482,8 +485,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                               | Method | Purpose               |
-| -------------------------------------- | ------ | --------------------- |
+| Endpoint                             | Method | Purpose               |
+| ------------------------------------ | ------ | --------------------- |
 | `/api/practice/:sessionId/questions` | GET    | Get session questions |
 
 ### Tasks
@@ -504,11 +507,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns questions in order
-- Unit test: Does not expose correct answers
-- Unit test: Indicates answered questions
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns questions in order
+- Integration test: Does not expose correct answers
+- Integration test: Indicates answered questions
 
 ---
 
@@ -518,9 +521,9 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                            | Method | Purpose         |
-| ----------------------------------- | ------ | --------------- |
-| `/api/practice/:sessionId/submit` | POST   | Submit answer   |
+| Endpoint                          | Method | Purpose       |
+| --------------------------------- | ------ | ------------- |
+| `/api/practice/:sessionId/submit` | POST   | Submit answer |
 
 ### Tasks
 
@@ -550,15 +553,18 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 for invalid question
-- Unit test: Returns 400 for completed session
-- Unit test: Creates attempt record
-- Unit test: Returns feedback in immediate mode
-- Unit test: Returns only confirmation in exam mode
-- Unit test: Updates topic performance
-- Unit test: Updates daily performance
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 for invalid question
+- Integration test: Returns 400 for completed session
+- Integration test: Creates attempt record
+- Integration test: Returns feedback in immediate mode
+- Integration test: Returns only confirmation in exam mode
+- Integration test: Updates topic performance
+- Integration test: Updates daily performance
+- Integration test: Creates questionAttempt record
+- Integration test: Updates topicPerformance aggregate
+- Integration test: Updates dailyPerformance aggregate
 
 ---
 
@@ -568,8 +574,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                              | Method | Purpose          |
-| ------------------------------------- | ------ | ---------------- |
+| Endpoint                            | Method | Purpose          |
+| ----------------------------------- | ------ | ---------------- |
 | `/api/practice/:sessionId/complete` | POST   | Complete session |
 
 ### Tasks
@@ -594,12 +600,12 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 if already completed
-- Unit test: Sets status to completed
-- Unit test: Sets completedAt timestamp
-- Unit test: Abandon sets status to abandoned
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 if already completed
+- Integration test: Sets status to completed
+- Integration test: Sets completedAt timestamp
+- Integration test: Abandon sets status to abandoned
 
 ---
 
@@ -609,8 +615,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                             | Method | Purpose             |
-| ------------------------------------ | ------ | ------------------- |
+| Endpoint                           | Method | Purpose             |
+| ---------------------------------- | ------ | ------------------- |
 | `/api/practice/:sessionId/results` | GET    | Get session results |
 
 ### Tasks
@@ -636,12 +642,12 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 for other user's session
-- Unit test: Returns 400 if session in_progress
-- Unit test: Returns overall score
-- Unit test: Returns topic breakdown
-- Unit test: Returns question details with answers
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 for other user's session
+- Integration test: Returns 400 if session in_progress
+- Integration test: Returns overall score
+- Integration test: Returns topic breakdown
+- Integration test: Returns question details with answers
 
 ---
 
@@ -651,8 +657,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                 | Method | Purpose                   |
-| ------------------------ | ------ | ------------------------- |
+| Endpoint                  | Method | Purpose                   |
+| ------------------------- | ------ | ------------------------- |
 | `/api/analytics/overview` | GET    | User performance overview |
 
 ### Tasks
@@ -679,11 +685,14 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns totals correctly
-- Unit test: Calculates accuracy correctly
-- Unit test: Current streak counts consecutive days
-- Unit test: Streak resets after missed day
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns totals correctly
+- Integration test: Calculates accuracy correctly
+- Integration test: Current streak counts consecutive days
+- Integration test: Streak resets after missed day
+- Integration test: Calculates current streak correctly
+- Integration test: Calculates best streak correctly
+- Integration test: Returns performance by deck
 
 ---
 
@@ -693,8 +702,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                        | Method | Purpose               |
-| ------------------------------- | ------ | --------------------- |
+| Endpoint                      | Method | Purpose                 |
+| ----------------------------- | ------ | ----------------------- |
 | `/api/analytics/deck/:deckId` | GET    | Deck-specific analytics |
 
 ### Tasks
@@ -715,10 +724,10 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Returns deck-specific statistics
-- Unit test: Calculates improvement trend
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Returns deck-specific statistics
+- Integration test: Calculates improvement trend
 
 ---
 
@@ -728,8 +737,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint              | Method | Purpose         |
-| --------------------- | ------ | --------------- |
+| Endpoint                | Method | Purpose         |
+| ----------------------- | ------ | --------------- |
 | `/api/analytics/topics` | GET    | Topic breakdown |
 
 ### Tasks
@@ -749,11 +758,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns all topics when no deckId
-- Unit test: Filters by deckId when provided
-- Unit test: Sorts by accuracy ascending
-- Unit test: Calculates accuracy per topic
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns all topics when no deckId
+- Integration test: Filters by deckId when provided
+- Integration test: Sorts by accuracy ascending
+- Integration test: Calculates accuracy per topic
 
 ---
 
@@ -763,8 +772,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint              | Method | Purpose              |
-| --------------------- | ------ | -------------------- |
+| Endpoint                | Method | Purpose               |
+| ----------------------- | ------ | --------------------- |
 | `/api/analytics/trends` | GET    | Performance over time |
 
 ### Tasks
@@ -784,11 +793,11 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns data for date range
-- Unit test: Fills zeros for missing days
-- Unit test: Filters by deckId when provided
-- Unit test: Respects date range parameters
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns data for date range
+- Integration test: Fills zeros for missing days
+- Integration test: Filters by deckId when provided
+- Integration test: Respects date range parameters
 
 ---
 
@@ -798,8 +807,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint               | Method | Purpose                 |
-| ---------------------- | ------ | ----------------------- |
+| Endpoint                 | Method | Purpose                   |
+| ------------------------ | ------ | ------------------------- |
 | `/api/analytics/compare` | GET    | Anonymous comparison data |
 
 ### Tasks
@@ -825,11 +834,13 @@ export const dailyPerformance = pgTable(
 
 ### Testing
 
-- Unit test: Returns 401 when not authenticated
-- Unit test: Returns 403 without subscription
-- Unit test: Returns percentile ranking
-- Unit test: Returns distribution without user identification
-- Unit test: Handles decks with few learners gracefully
+- Integration test: Returns 401 when not authenticated
+- Integration test: Returns 403 without subscription
+- Integration test: Returns percentile ranking
+- Integration test: Returns distribution without user identification
+- Integration test: Handles decks with few learners gracefully
+- Integration test: Calculates percentile ranking
+- Integration test: Returns distribution without user identification
 
 ---
 
@@ -839,8 +850,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route               | Purpose               |
-| ------------------- | --------------------- |
+| Route               | Purpose                 |
+| ------------------- | ----------------------- |
 | `/learner/practice` | Select deck to practice |
 
 ### Tasks
@@ -872,8 +883,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                            | Purpose           |
-| -------------------------------- | ----------------- |
+| Route                       | Purpose            |
+| --------------------------- | ------------------ |
 | `/learner/practice/:deckId` | Deck practice home |
 
 ### Tasks
@@ -906,8 +917,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                  | Purpose               |
-| -------------------------------------- | --------------------- |
+| Route                              | Purpose               |
+| ---------------------------------- | --------------------- |
 | `/learner/practice/:deckId/config` | Session configuration |
 
 ### Tasks
@@ -1097,8 +1108,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                                     | Purpose        |
-| --------------------------------------------------------- | -------------- |
+| Route                                          | Purpose        |
+| ---------------------------------------------- | -------------- |
 | `/learner/practice/:deckId/session/:sessionId` | Active session |
 
 ### Tasks
@@ -1143,8 +1154,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                                              | Purpose |
-| ------------------------------------------------------------------ | ------- |
+| Route                                                  | Purpose |
+| ------------------------------------------------------ | ------- |
 | `/learner/practice/:deckId/session/:sessionId/results` | Results |
 
 ### Tasks
@@ -1193,8 +1204,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                | Purpose             |
-| -------------------- | ------------------- |
+| Route                | Purpose               |
+| -------------------- | --------------------- |
 | `/learner/analytics` | Performance dashboard |
 
 ### Tasks
@@ -1303,8 +1314,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                          | Purpose        |
-| ------------------------------ | -------------- |
+| Route                        | Purpose        |
+| ---------------------------- | -------------- |
 | `/learner/analytics/:deckId` | Deck analytics |
 
 ### Tasks
@@ -1371,4 +1382,3 @@ export const dailyPerformance = pgTable(
 - E2E test: Refresh during session and resume
 
 ---
-
