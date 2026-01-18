@@ -4,7 +4,6 @@ import { useState } from 'react'
 import {
 	ChevronDown,
 	ChevronRight,
-	Database,
 	Globe,
 	Home,
 	Languages,
@@ -186,20 +185,6 @@ export default function Header() {
 						<span className="font-medium">Clerk</span>
 					</Link>
 
-					<Link
-						to="/demo/drizzle"
-						onClick={() => {
-							setIsOpen(false)
-						}}
-						className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							className:
-								'flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2',
-						}}
-					>
-						<Database size={20} />
-						<span className="font-medium">Drizzle</span>
-					</Link>
 
 					<Link
 						to="/demo/i18n"
