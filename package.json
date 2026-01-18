@@ -19,7 +19,8 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:push": "drizzle-kit push",
 		"db:pull": "drizzle-kit pull",
-		"db:studio": "drizzle-kit studio"
+		"db:studio": "drizzle-kit studio",
+		"db:reset": "docker compose down -v && docker compose up -d && sleep 2 && drizzle-kit push"
 	},
 	"dependencies": {
 		"@clerk/clerk-react": "^5.49.0",
