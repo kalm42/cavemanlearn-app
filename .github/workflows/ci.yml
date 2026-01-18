@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Paraglide files
+        run: npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./src/paraglide
+
       - name: Type check
         run: pnpm typecheck
 
