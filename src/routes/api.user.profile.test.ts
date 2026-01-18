@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { handleCreateProfile, handleGetProfile } from './api.user.profile'
+import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from './api.user.profile'
 import { db } from '@/db/index.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth'
 
@@ -11,6 +11,7 @@ vi.mock('@/db/index.ts', () => ({
 	db: {
 		select: vi.fn(),
 		insert: vi.fn(),
+		update: vi.fn(),
 	},
 }))
 
@@ -195,5 +196,194 @@ describe('POST /api/user/profile', () => {
 		expect(response.status).toBe(201)
 		const body = await response.json()
 		expect(body.userType).toBe('publisher')
+	})
+})
+
+describe('PUT /api/user/profile', () => {
+	beforeEach(() => {
+		vi.clearAllMocks()
+		vi.stubEnv('CLERK_SECRET_KEY', 'test-secret-key')
+	})
+
+	it('returns 401 when not authenticated', async () => {
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			body: JSON.stringify({ displayName: 'New Name' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(401)
+		const body = await response.json()
+		expect(body).toEqual({ error: 'Unauthorized' })
+	})
+
+	it('returns 400 when no fields are provided', async () => {
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({}),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(400)
+		const body = await response.json()
+		expect(body.error).toBe('At least one field (displayName or avatarUrl) must be provided')
+	})
+
+	it('returns 400 when displayName is empty string', async () => {
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ displayName: '' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(400)
+	})
+
+	it('returns 400 when avatarUrl is invalid URL', async () => {
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ avatarUrl: 'not-a-url' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(400)
+	})
+
+	it('returns 404 when profile does not exist', async () => {
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+		mockGetUserProfile.mockResolvedValueOnce(null)
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ displayName: 'New Name' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(404)
+		const body = await response.json()
+		expect(body).toEqual({ error: 'Profile not found' })
+	})
+
+	it('updates displayName successfully', async () => {
+		const updatedProfile = { ...mockProfile, displayName: 'New Name' }
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+		mockGetUserProfile.mockResolvedValueOnce(mockProfile)
+		// Mock database update
+		const mockSet = vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([updatedProfile]),
+			}),
+		})
+		mockDb.update.mockReturnValue({ set: mockSet } as never)
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ displayName: 'New Name' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBe('New Name')
+	})
+
+	it('updates avatarUrl successfully', async () => {
+		const updatedProfile = { ...mockProfile, avatarUrl: 'https://example.com/avatar.png' }
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+		mockGetUserProfile.mockResolvedValueOnce(mockProfile)
+		// Mock database update
+		const mockSet = vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([updatedProfile]),
+			}),
+		})
+		mockDb.update.mockReturnValue({ set: mockSet } as never)
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ avatarUrl: 'https://example.com/avatar.png' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.avatarUrl).toBe('https://example.com/avatar.png')
+	})
+
+	it('updates both displayName and avatarUrl successfully', async () => {
+		const updatedProfile = {
+			...mockProfile,
+			displayName: 'New Name',
+			avatarUrl: 'https://example.com/avatar.png',
+		}
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+		mockGetUserProfile.mockResolvedValueOnce(mockProfile)
+		// Mock database update
+		const mockSet = vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([updatedProfile]),
+			}),
+		})
+		mockDb.update.mockReturnValue({ set: mockSet } as never)
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({
+				displayName: 'New Name',
+				avatarUrl: 'https://example.com/avatar.png',
+			}),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBe('New Name')
+		expect(body.avatarUrl).toBe('https://example.com/avatar.png')
+	})
+
+	it('allows setting displayName to null', async () => {
+		const updatedProfile = { ...mockProfile, displayName: null }
+		mockGetCurrentUser.mockResolvedValueOnce({ userId: 'user_123', email: 'test@example.com' })
+		mockGetUserProfile.mockResolvedValueOnce({ ...mockProfile, displayName: 'Old Name' })
+		// Mock database update
+		const mockSet = vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([updatedProfile]),
+			}),
+		})
+		mockDb.update.mockReturnValue({ set: mockSet } as never)
+
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: 'Bearer valid-token' },
+			body: JSON.stringify({ displayName: null }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBeNull()
 	})
 })
