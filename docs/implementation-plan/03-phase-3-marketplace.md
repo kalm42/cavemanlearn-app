@@ -2,7 +2,6 @@
 
 > **See [00-overview.md](./00-overview.md) for project overview, codebase state, and quality requirements.**
 
-
 **Goal**: Enable learners to discover, preview, and subscribe to decks via Stripe.
 
 **Coverage Target**: Maintain 70% minimum.
@@ -113,20 +112,20 @@ pnpm add stripe @stripe/stripe-js
 ### Database Schema
 
 ```typescript
-export const deckPricing = pgTable("deck_pricing", {
-  id: uuid().primaryKey().defaultRandom(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id, { onDelete: "cascade" })
-    .notNull()
-    .unique(),
-  monthlyPriceCents: integer("monthly_price_cents").notNull(),
-  yearlyPriceCents: integer("yearly_price_cents").notNull(),
-  stripePriceIdMonthly: text("stripe_price_id_monthly"),
-  stripePriceIdYearly: text("stripe_price_id_yearly"),
-  stripeProductId: text("stripe_product_id"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export const deckPricing = pgTable('deck_pricing', {
+	id: uuid().primaryKey().defaultRandom(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id, { onDelete: 'cascade' })
+		.notNull()
+		.unique(),
+	monthlyPriceCents: integer('monthly_price_cents').notNull(),
+	yearlyPriceCents: integer('yearly_price_cents').notNull(),
+	stripePriceIdMonthly: text('stripe_price_id_monthly'),
+	stripePriceIdYearly: text('stripe_price_id_yearly'),
+	stripeProductId: text('stripe_product_id'),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -162,33 +161,33 @@ export const deckPricing = pgTable("deck_pricing", {
 
 ```typescript
 export const subscriptions = pgTable(
-  "subscriptions",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .references(() => userProfiles.id)
-      .notNull(),
-    deckId: uuid("deck_id")
-      .references(() => decks.id)
-      .notNull(),
-    stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
-    stripeCustomerId: text("stripe_customer_id").notNull(),
-    status: text({
-      enum: ["active", "canceled", "past_due", "trialing", "incomplete"],
-    }).notNull(),
-    billingInterval: text("billing_interval", {
-      enum: ["month", "year"],
-    }).notNull(),
-    currentPeriodStart: timestamp("current_period_start").notNull(),
-    currentPeriodEnd: timestamp("current_period_end").notNull(),
-    cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
-    canceledAt: timestamp("canceled_at"),
-    createdAt: timestamp("created_at").defaultNow(),
-  },
-  (table) => ({
-    uniqueUserDeck: unique().on(table.userId, table.deckId),
-  }),
-);
+	'subscriptions',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		userId: uuid('user_id')
+			.references(() => userProfiles.id)
+			.notNull(),
+		deckId: uuid('deck_id')
+			.references(() => decks.id)
+			.notNull(),
+		stripeSubscriptionId: text('stripe_subscription_id').notNull().unique(),
+		stripeCustomerId: text('stripe_customer_id').notNull(),
+		status: text({
+			enum: ['active', 'canceled', 'past_due', 'trialing', 'incomplete'],
+		}).notNull(),
+		billingInterval: text('billing_interval', {
+			enum: ['month', 'year'],
+		}).notNull(),
+		currentPeriodStart: timestamp('current_period_start').notNull(),
+		currentPeriodEnd: timestamp('current_period_end').notNull(),
+		cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+		canceledAt: timestamp('canceled_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		uniqueUserDeck: unique().on(table.userId, table.deckId),
+	}),
+)
 ```
 
 ### Tasks
@@ -225,17 +224,17 @@ export const subscriptions = pgTable(
 ### Database Schema
 
 ```typescript
-export const sampleQuestions = pgTable("sample_questions", {
-  id: uuid().primaryKey().defaultRandom(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id, { onDelete: "cascade" })
-    .notNull(),
-  questionId: uuid("question_id")
-    .references(() => questions.id, { onDelete: "cascade" })
-    .notNull(),
-  sortOrder: integer("sort_order").notNull().default(0),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const sampleQuestions = pgTable('sample_questions', {
+	id: uuid().primaryKey().defaultRandom(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id, { onDelete: 'cascade' })
+		.notNull(),
+	questionId: uuid('question_id')
+		.references(() => questions.id, { onDelete: 'cascade' })
+		.notNull(),
+	sortOrder: integer('sort_order').notNull().default(0),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -271,19 +270,19 @@ export const sampleQuestions = pgTable("sample_questions", {
 ### Database Schema
 
 ```typescript
-export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
-  id: uuid().primaryKey().defaultRandom(),
-  organizationId: uuid("organization_id")
-    .references(() => organizations.id)
-    .notNull()
-    .unique(),
-  stripeAccountId: text("stripe_account_id").notNull().unique(),
-  chargesEnabled: boolean("charges_enabled").notNull().default(false),
-  payoutsEnabled: boolean("payouts_enabled").notNull().default(false),
-  onboardingComplete: boolean("onboarding_complete").notNull().default(false),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export const publisherStripeAccounts = pgTable('publisher_stripe_accounts', {
+	id: uuid().primaryKey().defaultRandom(),
+	organizationId: uuid('organization_id')
+		.references(() => organizations.id)
+		.notNull()
+		.unique(),
+	stripeAccountId: text('stripe_account_id').notNull().unique(),
+	chargesEnabled: boolean('charges_enabled').notNull().default(false),
+	payoutsEnabled: boolean('payouts_enabled').notNull().default(false),
+	onboardingComplete: boolean('onboarding_complete').notNull().default(false),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -317,10 +316,10 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                     | Method | Purpose           |
-| ---------------------------- | ------ | ----------------- |
-| `/api/decks/:deckId/pricing` | GET    | Get deck pricing  |
-| `/api/decks/:deckId/pricing` | PUT    | Set deck pricing  |
+| Endpoint                     | Method | Purpose          |
+| ---------------------------- | ------ | ---------------- |
+| `/api/decks/:deckId/pricing` | GET    | Get deck pricing |
+| `/api/decks/:deckId/pricing` | PUT    | Set deck pricing |
 
 ### Tasks
 
@@ -370,8 +369,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                     | Method | Purpose              |
-| ---------------------------- | ------ | -------------------- |
+| Endpoint                     | Method | Purpose               |
+| ---------------------------- | ------ | --------------------- |
 | `/api/decks/:deckId/samples` | GET    | List sample questions |
 | `/api/decks/:deckId/samples` | PUT    | Set sample questions  |
 
@@ -420,9 +419,9 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint          | Method | Purpose                   |
-| ----------------- | ------ | ------------------------- |
-| `/api/marketplace` | GET    | List published decks      |
+| Endpoint           | Method | Purpose              |
+| ------------------ | ------ | -------------------- |
+| `/api/marketplace` | GET    | List published decks |
 
 ### Tasks
 
@@ -463,9 +462,9 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                      | Method | Purpose                      |
-| ----------------------------- | ------ | ---------------------------- |
-| `/api/marketplace/:deckSlug` | GET    | Get deck details + samples   |
+| Endpoint                     | Method | Purpose                    |
+| ---------------------------- | ------ | -------------------------- |
+| `/api/marketplace/:deckSlug` | GET    | Get deck details + samples |
 
 ### Tasks
 
@@ -499,8 +498,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint            | Method | Purpose                  |
-| ------------------- | ------ | ------------------------ |
+| Endpoint             | Method | Purpose                   |
+| -------------------- | ------ | ------------------------- |
 | `/api/subscriptions` | GET    | List user's subscriptions |
 
 ### Tasks
@@ -533,8 +532,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                      | Method | Purpose                       |
-| ----------------------------- | ------ | ----------------------------- |
+| Endpoint                      | Method | Purpose                        |
+| ----------------------------- | ------ | ------------------------------ |
 | `/api/subscriptions/checkout` | POST   | Create Stripe Checkout session |
 
 ### Tasks
@@ -584,8 +583,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                    | Method | Purpose                      |
-| --------------------------- | ------ | ---------------------------- |
+| Endpoint                    | Method | Purpose                        |
+| --------------------------- | ------ | ------------------------------ |
 | `/api/subscriptions/portal` | POST   | Create Customer Portal session |
 
 ### Tasks
@@ -618,8 +617,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                                   | Method | Purpose             |
-| ------------------------------------------ | ------ | ------------------- |
+| Endpoint                                    | Method | Purpose             |
+| ------------------------------------------- | ------ | ------------------- |
 | `/api/subscriptions/:subscriptionId/cancel` | POST   | Cancel subscription |
 
 ### Tasks
@@ -791,8 +790,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                          | Method | Purpose                     |
-| --------------------------------- | ------ | --------------------------- |
+| Endpoint                        | Method | Purpose                        |
+| ------------------------------- | ------ | ------------------------------ |
 | `/api/publisher/stripe/onboard` | POST   | Create Connect onboarding link |
 
 ### Tasks
@@ -833,8 +832,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### API Endpoints
 
-| Endpoint                           | Method | Purpose                    |
-| ---------------------------------- | ------ | -------------------------- |
+| Endpoint                          | Method | Purpose                    |
+| --------------------------------- | ------ | -------------------------- |
 | `/api/publisher/stripe/dashboard` | GET    | Get Express Dashboard link |
 
 ### Tasks
@@ -895,8 +894,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                   | Purpose        |
-| ----------------------- | -------------- |
+| Route          | Purpose          |
+| -------------- | ---------------- |
 | `/marketplace` | Browse all decks |
 
 ### Tasks
@@ -975,8 +974,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                       | Purpose          |
-| --------------------------- | ---------------- |
+| Route                    | Purpose           |
+| ------------------------ | ----------------- |
 | `/marketplace/:deckSlug` | Deck preview page |
 
 ### Tasks
@@ -1079,9 +1078,9 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                | Purpose             |
-| -------------------- | ------------------- |
-| `/checkout/success` | Post-checkout success |
+| Route                | Purpose               |
+| -------------------- | --------------------- |
+| `/checkout/success`  | Post-checkout success |
 | `/checkout/canceled` | Checkout canceled     |
 
 ### Tasks
@@ -1166,8 +1165,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                     | Purpose               |
-| ------------------------- | --------------------- |
+| Route                    | Purpose                 |
+| ------------------------ | ----------------------- |
 | `/learner/subscriptions` | Subscription management |
 
 ### Tasks
@@ -1214,8 +1213,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                               | Purpose        |
-| ----------------------------------- | -------------- |
+| Route                              | Purpose          |
+| ---------------------------------- | ---------------- |
 | `/publisher/decks/:deckId/pricing` | Set deck pricing |
 
 ### Tasks
@@ -1296,8 +1295,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                        | Purpose            |
-| ---------------------------- | ------------------ |
+| Route                       | Purpose             |
+| --------------------------- | ------------------- |
 | `/publisher/stripe-onboard` | Stripe Connect flow |
 
 ### Tasks
@@ -1337,8 +1336,8 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 
 ### UI Routes
 
-| Route                 | Purpose          |
-| --------------------- | ---------------- |
+| Route                | Purpose          |
+| -------------------- | ---------------- |
 | `/publisher/payouts` | Payout dashboard |
 
 ### Tasks
@@ -1534,4 +1533,3 @@ export const publisherStripeAccounts = pgTable("publisher_stripe_accounts", {
 - E2E test: View session results after canceling subscription
 
 ---
-

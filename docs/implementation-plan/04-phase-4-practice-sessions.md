@@ -2,7 +2,6 @@
 
 > **See [00-overview.md](./00-overview.md) for project overview, codebase state, and quality requirements.**
 
-
 **Goal**: Enable learners to practice with subscribed decks and track performance.
 
 **Coverage Target**: Maintain 70% minimum.
@@ -47,25 +46,25 @@ pnpm add recharts
 ### Database Schema
 
 ```typescript
-export const practiceSessions = pgTable("practice_sessions", {
-  id: uuid().primaryKey().defaultRandom(),
-  userId: uuid("user_id")
-    .references(() => userProfiles.id)
-    .notNull(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id)
-    .notNull(),
-  mode: text({ enum: ["immediate_feedback", "exam_simulation"] }).notNull(),
-  timedMode: boolean("timed_mode").notNull().default(false),
-  totalTimeSeconds: integer("total_time_seconds"),
-  timePerQuestionSeconds: integer("time_per_question_seconds"),
-  questionCount: integer("question_count").notNull(),
-  status: text({ enum: ["in_progress", "completed", "abandoned"] })
-    .notNull()
-    .default("in_progress"),
-  completedAt: timestamp("completed_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const practiceSessions = pgTable('practice_sessions', {
+	id: uuid().primaryKey().defaultRandom(),
+	userId: uuid('user_id')
+		.references(() => userProfiles.id)
+		.notNull(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id)
+		.notNull(),
+	mode: text({ enum: ['immediate_feedback', 'exam_simulation'] }).notNull(),
+	timedMode: boolean('timed_mode').notNull().default(false),
+	totalTimeSeconds: integer('total_time_seconds'),
+	timePerQuestionSeconds: integer('time_per_question_seconds'),
+	questionCount: integer('question_count').notNull(),
+	status: text({ enum: ['in_progress', 'completed', 'abandoned'] })
+		.notNull()
+		.default('in_progress'),
+	completedAt: timestamp('completed_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -102,15 +101,15 @@ export const practiceSessions = pgTable("practice_sessions", {
 ### Database Schema
 
 ```typescript
-export const sessionTopics = pgTable("session_topics", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  topicId: uuid("topic_id")
-    .references(() => topics.id)
-    .notNull(),
-});
+export const sessionTopics = pgTable('session_topics', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	topicId: uuid('topic_id')
+		.references(() => topics.id)
+		.notNull(),
+})
 ```
 
 ### Tasks
@@ -144,16 +143,16 @@ export const sessionTopics = pgTable("session_topics", {
 ### Database Schema
 
 ```typescript
-export const sessionQuestions = pgTable("session_questions", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  questionId: uuid("question_id")
-    .references(() => questions.id)
-    .notNull(),
-  sortOrder: integer("sort_order").notNull(),
-});
+export const sessionQuestions = pgTable('session_questions', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	questionId: uuid('question_id')
+		.references(() => questions.id)
+		.notNull(),
+	sortOrder: integer('sort_order').notNull(),
+})
 ```
 
 ### Tasks
@@ -187,20 +186,20 @@ export const sessionQuestions = pgTable("session_questions", {
 ### Database Schema
 
 ```typescript
-export const questionAttempts = pgTable("question_attempts", {
-  id: uuid().primaryKey().defaultRandom(),
-  sessionId: uuid("session_id")
-    .references(() => practiceSessions.id, { onDelete: "cascade" })
-    .notNull(),
-  questionId: uuid("question_id")
-    .references(() => questions.id)
-    .notNull(),
-  selectedOptionIds: jsonb("selected_option_ids").notNull(),
-  isCorrect: boolean("is_correct").notNull(),
-  invalidated: boolean().notNull().default(false),
-  timeSpentSeconds: integer("time_spent_seconds"),
-  attemptedAt: timestamp("attempted_at").defaultNow(),
-});
+export const questionAttempts = pgTable('question_attempts', {
+	id: uuid().primaryKey().defaultRandom(),
+	sessionId: uuid('session_id')
+		.references(() => practiceSessions.id, { onDelete: 'cascade' })
+		.notNull(),
+	questionId: uuid('question_id')
+		.references(() => questions.id)
+		.notNull(),
+	selectedOptionIds: jsonb('selected_option_ids').notNull(),
+	isCorrect: boolean('is_correct').notNull(),
+	invalidated: boolean().notNull().default(false),
+	timeSpentSeconds: integer('time_spent_seconds'),
+	attemptedAt: timestamp('attempted_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -236,24 +235,24 @@ export const questionAttempts = pgTable("question_attempts", {
 
 ```typescript
 export const topicPerformance = pgTable(
-  "topic_performance",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .references(() => userProfiles.id)
-      .notNull(),
-    topicId: uuid("topic_id")
-      .references(() => topics.id)
-      .notNull(),
-    totalAttempts: integer("total_attempts").notNull().default(0),
-    correctAttempts: integer("correct_attempts").notNull().default(0),
-    lastAttemptedAt: timestamp("last_attempted_at"),
-    updatedAt: timestamp("updated_at").defaultNow(),
-  },
-  (table) => ({
-    uniqueUserTopic: unique().on(table.userId, table.topicId),
-  }),
-);
+	'topic_performance',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		userId: uuid('user_id')
+			.references(() => userProfiles.id)
+			.notNull(),
+		topicId: uuid('topic_id')
+			.references(() => topics.id)
+			.notNull(),
+		totalAttempts: integer('total_attempts').notNull().default(0),
+		correctAttempts: integer('correct_attempts').notNull().default(0),
+		lastAttemptedAt: timestamp('last_attempted_at'),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		uniqueUserTopic: unique().on(table.userId, table.topicId),
+	}),
+)
 ```
 
 ### Tasks
@@ -289,23 +288,23 @@ export const topicPerformance = pgTable(
 
 ```typescript
 export const dailyPerformance = pgTable(
-  "daily_performance",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .references(() => userProfiles.id)
-      .notNull(),
-    deckId: uuid("deck_id")
-      .references(() => decks.id)
-      .notNull(),
-    date: date().notNull(),
-    totalAttempts: integer("total_attempts").notNull().default(0),
-    correctAttempts: integer("correct_attempts").notNull().default(0),
-  },
-  (table) => ({
-    uniqueUserDeckDate: unique().on(table.userId, table.deckId, table.date),
-  }),
-);
+	'daily_performance',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		userId: uuid('user_id')
+			.references(() => userProfiles.id)
+			.notNull(),
+		deckId: uuid('deck_id')
+			.references(() => decks.id)
+			.notNull(),
+		date: date().notNull(),
+		totalAttempts: integer('total_attempts').notNull().default(0),
+		correctAttempts: integer('correct_attempts').notNull().default(0),
+	},
+	(table) => ({
+		uniqueUserDeckDate: unique().on(table.userId, table.deckId, table.date),
+	}),
+)
 ```
 
 ### Tasks
@@ -451,8 +450,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                     | Method | Purpose             |
-| ---------------------------- | ------ | ------------------- |
+| Endpoint                   | Method | Purpose             |
+| -------------------------- | ------ | ------------------- |
 | `/api/practice/:sessionId` | GET    | Get session details |
 
 ### Tasks
@@ -486,8 +485,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                               | Method | Purpose               |
-| -------------------------------------- | ------ | --------------------- |
+| Endpoint                             | Method | Purpose               |
+| ------------------------------------ | ------ | --------------------- |
 | `/api/practice/:sessionId/questions` | GET    | Get session questions |
 
 ### Tasks
@@ -522,9 +521,9 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                            | Method | Purpose         |
-| ----------------------------------- | ------ | --------------- |
-| `/api/practice/:sessionId/submit` | POST   | Submit answer   |
+| Endpoint                          | Method | Purpose       |
+| --------------------------------- | ------ | ------------- |
+| `/api/practice/:sessionId/submit` | POST   | Submit answer |
 
 ### Tasks
 
@@ -575,8 +574,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                              | Method | Purpose          |
-| ------------------------------------- | ------ | ---------------- |
+| Endpoint                            | Method | Purpose          |
+| ----------------------------------- | ------ | ---------------- |
 | `/api/practice/:sessionId/complete` | POST   | Complete session |
 
 ### Tasks
@@ -616,8 +615,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                             | Method | Purpose             |
-| ------------------------------------ | ------ | ------------------- |
+| Endpoint                           | Method | Purpose             |
+| ---------------------------------- | ------ | ------------------- |
 | `/api/practice/:sessionId/results` | GET    | Get session results |
 
 ### Tasks
@@ -658,8 +657,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                 | Method | Purpose                   |
-| ------------------------ | ------ | ------------------------- |
+| Endpoint                  | Method | Purpose                   |
+| ------------------------- | ------ | ------------------------- |
 | `/api/analytics/overview` | GET    | User performance overview |
 
 ### Tasks
@@ -703,8 +702,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint                        | Method | Purpose               |
-| ------------------------------- | ------ | --------------------- |
+| Endpoint                      | Method | Purpose                 |
+| ----------------------------- | ------ | ----------------------- |
 | `/api/analytics/deck/:deckId` | GET    | Deck-specific analytics |
 
 ### Tasks
@@ -738,8 +737,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint              | Method | Purpose         |
-| --------------------- | ------ | --------------- |
+| Endpoint                | Method | Purpose         |
+| ----------------------- | ------ | --------------- |
 | `/api/analytics/topics` | GET    | Topic breakdown |
 
 ### Tasks
@@ -773,8 +772,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint              | Method | Purpose              |
-| --------------------- | ------ | -------------------- |
+| Endpoint                | Method | Purpose               |
+| ----------------------- | ------ | --------------------- |
 | `/api/analytics/trends` | GET    | Performance over time |
 
 ### Tasks
@@ -808,8 +807,8 @@ export const dailyPerformance = pgTable(
 
 ### API Endpoints
 
-| Endpoint               | Method | Purpose                 |
-| ---------------------- | ------ | ----------------------- |
+| Endpoint                 | Method | Purpose                   |
+| ------------------------ | ------ | ------------------------- |
 | `/api/analytics/compare` | GET    | Anonymous comparison data |
 
 ### Tasks
@@ -851,8 +850,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route               | Purpose               |
-| ------------------- | --------------------- |
+| Route               | Purpose                 |
+| ------------------- | ----------------------- |
 | `/learner/practice` | Select deck to practice |
 
 ### Tasks
@@ -884,8 +883,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                            | Purpose           |
-| -------------------------------- | ----------------- |
+| Route                       | Purpose            |
+| --------------------------- | ------------------ |
 | `/learner/practice/:deckId` | Deck practice home |
 
 ### Tasks
@@ -918,8 +917,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                  | Purpose               |
-| -------------------------------------- | --------------------- |
+| Route                              | Purpose               |
+| ---------------------------------- | --------------------- |
 | `/learner/practice/:deckId/config` | Session configuration |
 
 ### Tasks
@@ -1109,8 +1108,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                                     | Purpose        |
-| --------------------------------------------------------- | -------------- |
+| Route                                          | Purpose        |
+| ---------------------------------------------- | -------------- |
 | `/learner/practice/:deckId/session/:sessionId` | Active session |
 
 ### Tasks
@@ -1155,8 +1154,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                                                              | Purpose |
-| ------------------------------------------------------------------ | ------- |
+| Route                                                  | Purpose |
+| ------------------------------------------------------ | ------- |
 | `/learner/practice/:deckId/session/:sessionId/results` | Results |
 
 ### Tasks
@@ -1205,8 +1204,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                | Purpose             |
-| -------------------- | ------------------- |
+| Route                | Purpose               |
+| -------------------- | --------------------- |
 | `/learner/analytics` | Performance dashboard |
 
 ### Tasks
@@ -1315,8 +1314,8 @@ export const dailyPerformance = pgTable(
 
 ### UI Routes
 
-| Route                          | Purpose        |
-| ------------------------------ | -------------- |
+| Route                        | Purpose        |
+| ---------------------------- | -------------- |
 | `/learner/analytics/:deckId` | Deck analytics |
 
 ### Tasks
@@ -1383,4 +1382,3 @@ export const dailyPerformance = pgTable(
 - E2E test: Refresh during session and resume
 
 ---
-

@@ -2,7 +2,6 @@
 
 > **See [00-overview.md](./00-overview.md) for project overview, codebase state, and quality requirements.**
 
-
 **Goal**: Give publishers insights and handle learner feedback.
 
 **Coverage Target**: Maintain 70% minimum.
@@ -16,33 +15,26 @@
 ### Database Schema
 
 ```typescript
-export const questionReports = pgTable("question_reports", {
-  id: uuid().primaryKey().defaultRandom(),
-  questionId: uuid("question_id")
-    .references(() => questions.id)
-    .notNull(),
-  reportedBy: uuid("reported_by")
-    .references(() => userProfiles.id)
-    .notNull(),
-  reason: text({
-    enum: [
-      "incorrect_answer",
-      "unclear_question",
-      "typo",
-      "outdated",
-      "broken_media",
-      "other",
-    ],
-  }).notNull(),
-  details: text(),
-  status: text({ enum: ["pending", "reviewing", "resolved", "dismissed"] })
-    .notNull()
-    .default("pending"),
-  resolution: text(),
-  resolvedBy: uuid("resolved_by").references(() => userProfiles.id),
-  resolvedAt: timestamp("resolved_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const questionReports = pgTable('question_reports', {
+	id: uuid().primaryKey().defaultRandom(),
+	questionId: uuid('question_id')
+		.references(() => questions.id)
+		.notNull(),
+	reportedBy: uuid('reported_by')
+		.references(() => userProfiles.id)
+		.notNull(),
+	reason: text({
+		enum: ['incorrect_answer', 'unclear_question', 'typo', 'outdated', 'broken_media', 'other'],
+	}).notNull(),
+	details: text(),
+	status: text({ enum: ['pending', 'reviewing', 'resolved', 'dismissed'] })
+		.notNull()
+		.default('pending'),
+	resolution: text(),
+	resolvedBy: uuid('resolved_by').references(() => userProfiles.id),
+	resolvedAt: timestamp('resolved_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -79,18 +71,18 @@ export const questionReports = pgTable("question_reports", {
 ### Database Schema
 
 ```typescript
-export const questionPerformance = pgTable("question_performance", {
-  id: uuid().primaryKey().defaultRandom(),
-  questionId: uuid("question_id")
-    .references(() => questions.id, { onDelete: "cascade" })
-    .notNull()
-    .unique(),
-  totalAttempts: integer("total_attempts").notNull().default(0),
-  correctAttempts: integer("correct_attempts").notNull().default(0),
-  avgTimeSeconds: integer("avg_time_seconds"),
-  reportCount: integer("report_count").notNull().default(0),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export const questionPerformance = pgTable('question_performance', {
+	id: uuid().primaryKey().defaultRandom(),
+	questionId: uuid('question_id')
+		.references(() => questions.id, { onDelete: 'cascade' })
+		.notNull()
+		.unique(),
+	totalAttempts: integer('total_attempts').notNull().default(0),
+	correctAttempts: integer('correct_attempts').notNull().default(0),
+	avgTimeSeconds: integer('avg_time_seconds'),
+	reportCount: integer('report_count').notNull().default(0),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -126,27 +118,27 @@ export const questionPerformance = pgTable("question_performance", {
 ### Database Schema
 
 ```typescript
-export const revenueRecords = pgTable("revenue_records", {
-  id: uuid().primaryKey().defaultRandom(),
-  organizationId: uuid("organization_id")
-    .references(() => organizations.id)
-    .notNull(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id)
-    .notNull(),
-  subscriptionId: uuid("subscription_id")
-    .references(() => subscriptions.id)
-    .notNull(),
-  stripeInvoiceId: text("stripe_invoice_id").notNull(),
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
-  grossAmountCents: integer("gross_amount_cents").notNull(),
-  platformFeeCents: integer("platform_fee_cents").notNull(), // 30%
-  netAmountCents: integer("net_amount_cents").notNull(), // 70%
-  periodStart: timestamp("period_start").notNull(),
-  periodEnd: timestamp("period_end").notNull(),
-  paidAt: timestamp("paid_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const revenueRecords = pgTable('revenue_records', {
+	id: uuid().primaryKey().defaultRandom(),
+	organizationId: uuid('organization_id')
+		.references(() => organizations.id)
+		.notNull(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id)
+		.notNull(),
+	subscriptionId: uuid('subscription_id')
+		.references(() => subscriptions.id)
+		.notNull(),
+	stripeInvoiceId: text('stripe_invoice_id').notNull(),
+	stripePaymentIntentId: text('stripe_payment_intent_id'),
+	grossAmountCents: integer('gross_amount_cents').notNull(),
+	platformFeeCents: integer('platform_fee_cents').notNull(), // 30%
+	netAmountCents: integer('net_amount_cents').notNull(), // 70%
+	periodStart: timestamp('period_start').notNull(),
+	periodEnd: timestamp('period_end').notNull(),
+	paidAt: timestamp('paid_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -277,8 +269,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint            | Method | Purpose             |
-| ------------------- | ------ | ------------------- |
+| Endpoint              | Method | Purpose                |
+| --------------------- | ------ | ---------------------- |
 | `/api/reports/submit` | POST   | Submit question report |
 
 ### Tasks
@@ -322,8 +314,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint               | Method | Purpose            |
-| ---------------------- | ------ | ------------------ |
+| Endpoint                 | Method | Purpose               |
+| ------------------------ | ------ | --------------------- |
 | `/api/publisher/reports` | GET    | List question reports |
 
 ### Tasks
@@ -362,8 +354,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                          | Method | Purpose        |
-| --------------------------------- | ------ | -------------- |
+| Endpoint                           | Method | Purpose        |
+| ---------------------------------- | ------ | -------------- |
 | `/api/publisher/reports/:reportId` | GET    | View report    |
 | `/api/publisher/reports/:reportId` | PUT    | Resolve report |
 
@@ -412,8 +404,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                           | Method | Purpose                  |
-| ---------------------------------- | ------ | ------------------------ |
+| Endpoint                            | Method | Purpose                  |
+| ----------------------------------- | ------ | ------------------------ |
 | `/api/publisher/analytics/overview` | GET    | Publisher overview stats |
 
 ### Tasks
@@ -453,8 +445,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                              | Method | Purpose          |
-| ------------------------------------- | ------ | ---------------- |
+| Endpoint                           | Method | Purpose          |
+| ---------------------------------- | ------ | ---------------- |
 | `/api/publisher/analytics/:deckId` | GET    | Deck performance |
 
 ### Tasks
@@ -493,8 +485,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                                        | Method | Purpose            |
-| ----------------------------------------------- | ------ | ------------------ |
+| Endpoint                                     | Method | Purpose              |
+| -------------------------------------------- | ------ | -------------------- |
 | `/api/publisher/analytics/:deckId/questions` | GET    | Question-level stats |
 
 ### Tasks
@@ -531,8 +523,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                                         | Method | Purpose          |
-| ------------------------------------------------ | ------ | ---------------- |
+| Endpoint                                       | Method | Purpose           |
+| ---------------------------------------------- | ------ | ----------------- |
 | `/api/publisher/analytics/:deckId/subscribers` | GET    | Subscriber trends |
 
 ### Tasks
@@ -568,8 +560,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                  | Method | Purpose         |
-| ------------------------- | ------ | --------------- |
+| Endpoint                 | Method | Purpose         |
+| ------------------------ | ------ | --------------- |
 | `/api/publisher/revenue` | GET    | Revenue summary |
 
 ### Tasks
@@ -606,8 +598,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### API Endpoints
 
-| Endpoint                        | Method | Purpose           |
-| ------------------------------- | ------ | ----------------- |
+| Endpoint                        | Method | Purpose            |
+| ------------------------------- | ------ | ------------------ |
 | `/api/publisher/revenue/export` | GET    | Export revenue CSV |
 
 ### Tasks
@@ -683,8 +675,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                    | Purpose             |
-| ------------------------ | ------------------- |
+| Route                  | Purpose             |
+| ---------------------- | ------------------- |
 | `/publisher/analytics` | Publisher dashboard |
 
 ### Tasks
@@ -727,8 +719,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                                  | Purpose        |
-| -------------------------------------- | -------------- |
+| Route                          | Purpose        |
+| ------------------------------ | -------------- |
 | `/publisher/analytics/:deckId` | Deck analytics |
 
 ### Tasks
@@ -769,8 +761,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                                           | Purpose              |
-| ----------------------------------------------- | -------------------- |
+| Route                                    | Purpose              |
+| ---------------------------------------- | -------------------- |
 | `/publisher/analytics/:deckId/questions` | Question performance |
 
 ### Tasks
@@ -812,8 +804,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                                            | Purpose              |
-| ------------------------------------------------ | -------------------- |
+| Route                                      | Purpose              |
+| ------------------------------------------ | -------------------- |
 | `/publisher/analytics/:deckId/subscribers` | Subscriber analytics |
 
 ### Tasks
@@ -845,8 +837,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                  | Purpose      |
-| ---------------------- | ------------ |
+| Route                | Purpose      |
+| -------------------- | ------------ |
 | `/publisher/reports` | Reports list |
 
 ### Tasks
@@ -890,8 +882,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                            | Purpose       |
-| -------------------------------- | ------------- |
+| Route                          | Purpose       |
+| ------------------------------ | ------------- |
 | `/publisher/reports/:reportId` | Report detail |
 
 ### Tasks
@@ -933,8 +925,8 @@ export const revenueRecords = pgTable("revenue_records", {
 
 ### UI Routes
 
-| Route                 | Purpose           |
-| --------------------- | ----------------- |
+| Route                | Purpose           |
+| -------------------- | ----------------- |
 | `/publisher/revenue` | Revenue dashboard |
 
 ### Tasks
@@ -1109,4 +1101,3 @@ export const revenueRecords = pgTable("revenue_records", {
 - Performance test: Analytics pages load quickly
 
 ---
-

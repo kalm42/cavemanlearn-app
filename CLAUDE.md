@@ -34,6 +34,7 @@ pnpm build                # Production build
 This is a TanStack Start application with SSR support, using React 19 and the React Compiler.
 
 ### Key Technologies
+
 - **Router**: TanStack Router with file-based routing in `src/routes/`
 - **Data Fetching**: TanStack Query integrated with router SSR via `react-router-ssr-query`
 - **Database**: Drizzle ORM with PostgreSQL - schema in `src/db/schema.ts`
@@ -42,12 +43,14 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 - **Styling**: Tailwind CSS v4
 
 ### Database Validation
+
 - Use Zod schemas for validating database records going in and coming out of the database
 - Zod schemas are defined in `src/db/validators.ts` - co-located with the database schema for maintainability
 - Always validate database records with Zod schemas instead of using type casting (`as`) or manual type guards
 - This ensures runtime type safety and catches data inconsistencies early
 
 ### Project Structure
+
 - `src/routes/` - File-based routes (TanStack Router). Files prefixed with `demo` are examples.
 - `src/routes/demo/api.*.ts` - API route handlers (server functions)
 - `src/integrations/` - Third-party integrations (Clerk, TanStack Query providers)
@@ -56,22 +59,27 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 - `src/env.ts` - Type-safe environment variables via T3Env
 
 ### Server Entry
+
 `src/server.ts` wraps the TanStack Start server handler with Paraglide middleware for URL localization.
 
 ### Testing Setup
+
 - Unit tests use Vitest with jsdom and React Testing Library
 - MSW (Mock Service Worker) is pre-configured for API mocking - add handlers in `src/test/mocks/handlers.ts`
 - E2E tests use Playwright, configured to run against all major browsers
 
 ### Testing Guidelines
+
 - Follow the AAA pattern: Arrange, Act, Assert
 - Test user behavior, not implementation details
 - Avoid mocking internal code; only mock third-party services and external APIs to prevent hitting external services
 
 ### Path Aliases
+
 `@/*` maps to `./src/*`
 
 ### Environment Variables
+
 - `VITE_CLERK_PUBLISHABLE_KEY` (required) - Clerk public key
 - `DATABASE_URL` - PostgreSQL connection string
 
@@ -102,6 +110,7 @@ All functions must have JSDoc comments following this format:
 ```
 
 Guidelines:
+
 - Start with an `##` heading containing the function name
 - Describe **what** the function does and **why** it exists, not **how** it's implemented
 - Include one or two `@example` blocks showing typical usage
@@ -111,6 +120,7 @@ Guidelines:
 ## Code Quality
 
 The codebase has no existing lint errors, warnings, or failing tests. All new code must maintain this standard:
+
 - Fix all lint errors and warnings
 - Never disable or ignore lint rules
 - Ensure all tests pass

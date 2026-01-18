@@ -2,7 +2,6 @@
 
 > **See [00-overview.md](./00-overview.md) for project overview, codebase state, and quality requirements.**
 
-
 **Goal**: Enable publishers to create and manage question decks with rich content.
 
 **Coverage Target**: 70% minimum by end of phase.
@@ -21,27 +20,27 @@
 // /src/db/schema.ts
 
 export const decks = pgTable(
-  "decks",
-  {
-    id: uuid().primaryKey().defaultRandom(),
-    organizationId: uuid("organization_id")
-      .references(() => organizations.id, { onDelete: "cascade" })
-      .notNull(),
-    title: text().notNull(),
-    slug: text().notNull(),
-    description: text(),
-    coverImageUrl: text("cover_image_url"),
-    status: text({ enum: ["draft", "published", "archived"] })
-      .notNull()
-      .default("draft"),
-    publishedAt: timestamp("published_at"),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow(),
-  },
-  (table) => ({
-    uniqueSlug: unique().on(table.organizationId, table.slug),
-  }),
-);
+	'decks',
+	{
+		id: uuid().primaryKey().defaultRandom(),
+		organizationId: uuid('organization_id')
+			.references(() => organizations.id, { onDelete: 'cascade' })
+			.notNull(),
+		title: text().notNull(),
+		slug: text().notNull(),
+		description: text(),
+		coverImageUrl: text('cover_image_url'),
+		status: text({ enum: ['draft', 'published', 'archived'] })
+			.notNull()
+			.default('draft'),
+		publishedAt: timestamp('published_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		uniqueSlug: unique().on(table.organizationId, table.slug),
+	}),
+)
 ```
 
 ### Tasks
@@ -77,16 +76,16 @@ export const decks = pgTable(
 ### Database Schema
 
 ```typescript
-export const topics = pgTable("topics", {
-  id: uuid().primaryKey().defaultRandom(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id, { onDelete: "cascade" })
-    .notNull(),
-  name: text().notNull(),
-  description: text(),
-  sortOrder: integer("sort_order").notNull().default(0),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const topics = pgTable('topics', {
+	id: uuid().primaryKey().defaultRandom(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id, { onDelete: 'cascade' })
+		.notNull(),
+	name: text().notNull(),
+	description: text(),
+	sortOrder: integer('sort_order').notNull().default(0),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -120,42 +119,42 @@ export const topics = pgTable("topics", {
 ### Database Schema
 
 ```typescript
-export const questions = pgTable("questions", {
-  id: uuid().primaryKey().defaultRandom(),
-  deckId: uuid("deck_id")
-    .references(() => decks.id, { onDelete: "cascade" })
-    .notNull(),
-  topicId: uuid("topic_id").references(() => topics.id, {
-    onDelete: "set null",
-  }),
-  questionType: text("question_type", {
-    enum: ["multiple_choice", "multiple_select", "true_false"],
-  }).notNull(),
-  content: jsonb().notNull(), // TipTap JSON format
-  explanation: jsonb(),
-  status: text({ enum: ["draft", "review", "approved", "archived"] })
-    .notNull()
-    .default("draft"),
-  revisionRequested: boolean("revision_requested").notNull().default(false),
-  currentVersion: integer("current_version").notNull().default(1),
-  createdBy: uuid("created_by")
-    .references(() => userProfiles.id)
-    .notNull(),
-  approvedBy: uuid("approved_by").references(() => userProfiles.id),
-  approvedAt: timestamp("approved_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export const questions = pgTable('questions', {
+	id: uuid().primaryKey().defaultRandom(),
+	deckId: uuid('deck_id')
+		.references(() => decks.id, { onDelete: 'cascade' })
+		.notNull(),
+	topicId: uuid('topic_id').references(() => topics.id, {
+		onDelete: 'set null',
+	}),
+	questionType: text('question_type', {
+		enum: ['multiple_choice', 'multiple_select', 'true_false'],
+	}).notNull(),
+	content: jsonb().notNull(), // TipTap JSON format
+	explanation: jsonb(),
+	status: text({ enum: ['draft', 'review', 'approved', 'archived'] })
+		.notNull()
+		.default('draft'),
+	revisionRequested: boolean('revision_requested').notNull().default(false),
+	currentVersion: integer('current_version').notNull().default(1),
+	createdBy: uuid('created_by')
+		.references(() => userProfiles.id)
+		.notNull(),
+	approvedBy: uuid('approved_by').references(() => userProfiles.id),
+	approvedAt: timestamp('approved_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
 
-export const answerOptions = pgTable("answer_options", {
-  id: uuid().primaryKey().defaultRandom(),
-  questionId: uuid("question_id")
-    .references(() => questions.id, { onDelete: "cascade" })
-    .notNull(),
-  content: jsonb().notNull(),
-  isCorrect: boolean("is_correct").notNull().default(false),
-  sortOrder: integer("sort_order").notNull().default(0),
-});
+export const answerOptions = pgTable('answer_options', {
+	id: uuid().primaryKey().defaultRandom(),
+	questionId: uuid('question_id')
+		.references(() => questions.id, { onDelete: 'cascade' })
+		.notNull(),
+	content: jsonb().notNull(),
+	isCorrect: boolean('is_correct').notNull().default(false),
+	sortOrder: integer('sort_order').notNull().default(0),
+})
 ```
 
 ### Tasks
@@ -197,20 +196,20 @@ export const answerOptions = pgTable("answer_options", {
 ### Database Schema
 
 ```typescript
-export const mediaAssets = pgTable("media_assets", {
-  id: uuid().primaryKey().defaultRandom(),
-  organizationId: uuid("organization_id")
-    .references(() => organizations.id, { onDelete: "cascade" })
-    .notNull(),
-  filename: text().notNull(),
-  url: text().notNull(),
-  mimeType: text("mime_type").notNull(),
-  sizeBytes: integer("size_bytes").notNull(),
-  uploadedBy: uuid("uploaded_by")
-    .references(() => userProfiles.id)
-    .notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const mediaAssets = pgTable('media_assets', {
+	id: uuid().primaryKey().defaultRandom(),
+	organizationId: uuid('organization_id')
+		.references(() => organizations.id, { onDelete: 'cascade' })
+		.notNull(),
+	filename: text().notNull(),
+	url: text().notNull(),
+	mimeType: text('mime_type').notNull(),
+	sizeBytes: integer('size_bytes').notNull(),
+	uploadedBy: uuid('uploaded_by')
+		.references(() => userProfiles.id)
+		.notNull(),
+	createdAt: timestamp('created_at').defaultNow(),
+})
 ```
 
 ### Tasks
@@ -621,8 +620,8 @@ pnpm add katex @types/katex
 
 ### API Endpoints
 
-| Endpoint                   | Method | Purpose      |
-| -------------------------- | ------ | ------------ |
+| Endpoint                     | Method | Purpose      |
+| ---------------------------- | ------ | ------------ |
 | `/api/decks/:deckId/publish` | POST   | Publish deck |
 
 ### Tasks
@@ -699,10 +698,10 @@ scheduledPublishAt: timestamp("scheduled_publish_at"),
 
 ### API Endpoints
 
-| Endpoint                              | Method | Purpose                    |
-| ------------------------------------- | ------ | -------------------------- |
-| `/api/decks/:deckId/schedule`        | POST   | Schedule deck publication  |
-| `/api/decks/:deckId/schedule`        | DELETE | Cancel scheduled publication |
+| Endpoint                      | Method | Purpose                      |
+| ----------------------------- | ------ | ---------------------------- |
+| `/api/decks/:deckId/schedule` | POST   | Schedule deck publication    |
+| `/api/decks/:deckId/schedule` | DELETE | Cancel scheduled publication |
 
 ### Tasks
 
@@ -829,10 +828,10 @@ pnpm add bullmq
 
 ### API Endpoints
 
-| Endpoint                           | Method | Purpose      |
-| ---------------------------------- | ------ | ------------ |
-| `/api/decks/:deckId/topics`        | GET    | List topics  |
-| `/api/decks/:deckId/topics`        | POST   | Create topic |
+| Endpoint                             | Method | Purpose      |
+| ------------------------------------ | ------ | ------------ |
+| `/api/decks/:deckId/topics`          | GET    | List topics  |
+| `/api/decks/:deckId/topics`          | POST   | Create topic |
 | `/api/decks/:deckId/topics/:topicId` | PUT    | Update topic |
 | `/api/decks/:deckId/topics/:topicId` | DELETE | Delete topic |
 
@@ -880,10 +879,10 @@ pnpm add bullmq
 
 ### API Endpoints
 
-| Endpoint                       | Method | Purpose          |
-| ------------------------------ | ------ | ---------------- |
-| `/api/decks/:deckId/questions` | GET    | List questions   |
-| `/api/decks/:deckId/questions` | POST   | Create question  |
+| Endpoint                       | Method | Purpose         |
+| ------------------------------ | ------ | --------------- |
+| `/api/decks/:deckId/questions` | GET    | List questions  |
+| `/api/decks/:deckId/questions` | POST   | Create question |
 
 ### Tasks
 
@@ -935,8 +934,8 @@ pnpm add bullmq
 
 ### API Endpoints
 
-| Endpoint                   | Method | Purpose         |
-| -------------------------- | ------ | --------------- |
+| Endpoint                     | Method | Purpose         |
+| ---------------------------- | ------ | --------------- |
 | `/api/questions/:questionId` | GET    | Get question    |
 | `/api/questions/:questionId` | PUT    | Update question |
 | `/api/questions/:questionId` | DELETE | Delete question |
@@ -1039,10 +1038,10 @@ currentVersion: integer("current_version").notNull().default(1),
 
 ### API Endpoints
 
-| Endpoint                        | Method | Purpose                    |
-| ------------------------------- | ------ | -------------------------- |
-| `/api/questions/:questionId`  | PUT    | Update question (enhanced) |
-| `/api/questions/:questionId/versions` | GET | List question versions |
+| Endpoint                              | Method | Purpose                    |
+| ------------------------------------- | ------ | -------------------------- |
+| `/api/questions/:questionId`          | PUT    | Update question (enhanced) |
+| `/api/questions/:questionId/versions` | GET    | List question versions     |
 
 ### Tasks
 
@@ -1140,8 +1139,8 @@ currentVersion: integer("current_version").notNull().default(1),
 
 ### API Endpoints
 
-| Endpoint                          | Method | Purpose          |
-| --------------------------------- | ------ | ---------------- |
+| Endpoint                             | Method | Purpose          |
+| ------------------------------------ | ------ | ---------------- |
 | `/api/questions/:questionId/approve` | POST   | Approve question |
 | `/api/questions/:questionId/reject`  | POST   | Reject to draft  |
 
@@ -1250,12 +1249,12 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### API Endpoints
 
-| Endpoint                                    | Method | Purpose              |
-| ------------------------------------------- | ------ | ------------------- |
-| `/api/questions/:questionId/comments`     | GET    | List comments        |
-| `/api/questions/:questionId/comments`      | POST   | Add comment          |
-| `/api/questions/:questionId/comments/:commentId` | PUT    | Update comment       |
-| `/api/questions/:questionId/comments/:commentId` | DELETE | Delete comment       |
+| Endpoint                                         | Method | Purpose        |
+| ------------------------------------------------ | ------ | -------------- |
+| `/api/questions/:questionId/comments`            | GET    | List comments  |
+| `/api/questions/:questionId/comments`            | POST   | Add comment    |
+| `/api/questions/:questionId/comments/:commentId` | PUT    | Update comment |
+| `/api/questions/:questionId/comments/:commentId` | DELETE | Delete comment |
 
 ### Tasks
 
@@ -1314,10 +1313,10 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### API Endpoints
 
-| Endpoint                          | Method | Purpose                    |
-| --------------------------------- | ------ | -------------------------- |
-| `/api/questions/:questionId/reject` | POST | Reject with revision request |
-| `/api/questions/:questionId/submit` | POST | Submit for review (enhanced) |
+| Endpoint                            | Method | Purpose                      |
+| ----------------------------------- | ------ | ---------------------------- |
+| `/api/questions/:questionId/reject` | POST   | Reject with revision request |
+| `/api/questions/:questionId/submit` | POST   | Submit for review (enhanced) |
 
 ### Tasks
 
@@ -1453,8 +1452,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                   | Purpose    |
-| ----------------------- | ---------- |
+| Route              | Purpose    |
+| ------------------ | ---------- |
 | `/publisher/decks` | List decks |
 
 ### Tasks
@@ -1496,8 +1495,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                   | Purpose          |
-| ----------------------- | ---------------- |
+| Route                  | Purpose          |
+| ---------------------- | ---------------- |
 | `/publisher/decks/new` | Create deck form |
 
 ### Tasks
@@ -1538,8 +1537,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                        | Purpose            |
-| ---------------------------- | ------------------ |
+| Route                      | Purpose            |
+| -------------------------- | ------------------ |
 | `/publisher/decks/:deckId` | Deck editor layout |
 
 ### Tasks
@@ -1578,8 +1577,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                                 | Purpose       |
-| ------------------------------------- | ------------- |
+| Route                               | Purpose       |
+| ----------------------------------- | ------------- |
 | `/publisher/decks/:deckId/settings` | Deck settings |
 
 ### Tasks
@@ -1614,8 +1613,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                               | Purpose          |
-| ----------------------------------- | ---------------- |
+| Route                             | Purpose          |
+| --------------------------------- | ---------------- |
 | `/publisher/decks/:deckId/topics` | Topic management |
 
 ### Tasks
@@ -1661,8 +1660,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                                       | Purpose       |
-| ------------------------------------------- | ------------- |
+| Route                                | Purpose       |
+| ------------------------------------ | ------------- |
 | `/publisher/decks/:deckId/questions` | Question list |
 
 ### Tasks
@@ -1712,8 +1711,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                                       | Purpose         |
-| ------------------------------------------- | --------------- |
+| Route                                    | Purpose         |
+| ---------------------------------------- | --------------- |
 | `/publisher/decks/:deckId/questions/new` | Create question |
 
 ### Tasks
@@ -1762,8 +1761,8 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 
 ### UI Routes
 
-| Route                                                   | Purpose       |
-| ------------------------------------------------------- | ------------- |
+| Route                                            | Purpose       |
+| ------------------------------------------------ | ------------- |
 | `/publisher/decks/:deckId/questions/:questionId` | Edit question |
 
 ### Tasks
@@ -1861,4 +1860,3 @@ revisionRequested: boolean("revision_requested").notNull().default(false),
 - Verify CI fails if coverage drops below 70%
 
 ---
-

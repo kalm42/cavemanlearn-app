@@ -78,10 +78,7 @@ export async function handleCreateProfile(request: Request): Promise<Response> {
 	})
 
 	try {
-		const [newProfile] = await db
-			.insert(userProfiles)
-			.values(insertData)
-			.returning()
+		const [newProfile] = await db.insert(userProfiles).values(insertData).returning()
 
 		// Validate the returned profile from the database
 		const validatedProfile = userProfileSchema.parse(newProfile)

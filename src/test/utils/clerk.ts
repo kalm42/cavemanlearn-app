@@ -3,7 +3,7 @@ import type { vi } from 'vitest'
 
 /**
  * ## createMockAuthHeader
- * 
+ *
  * Creates a mock Authorization header with a Bearer token for testing purposes.
  * The token value is arbitrary since verifyToken is automatically mocked from __mocks__/@clerk/backend.ts.
  *

@@ -2,10 +2,10 @@ import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
-import type {UserProfile} from '@/db/schema.ts';
+import type { UserProfile } from '@/db/schema.ts'
 import { db } from '@/db/index.ts'
-import {  userProfiles } from '@/db/schema.ts'
-import { env } from '@/env';
+import { userProfiles } from '@/db/schema.ts'
+import { env } from '@/env'
 
 export type ClerkUser = {
 	userId: string

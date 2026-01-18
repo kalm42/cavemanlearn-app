@@ -110,38 +110,30 @@ src/
 Create `/src/lib/permissions.ts`:
 
 ```typescript
-export type OrgRole = "owner" | "admin" | "editor" | "writer" | "viewer";
+export type OrgRole = 'owner' | 'admin' | 'editor' | 'writer' | 'viewer'
 
-export const canEditDeck = (role: OrgRole) =>
-  ["owner", "admin", "editor", "writer"].includes(role);
+export const canEditDeck = (role: OrgRole) => ['owner', 'admin', 'editor', 'writer'].includes(role)
 
-export const canPublishDeck = (role: OrgRole) =>
-  ["owner", "admin", "editor"].includes(role);
+export const canPublishDeck = (role: OrgRole) => ['owner', 'admin', 'editor'].includes(role)
 
-export const canApproveQuestion = (role: OrgRole) =>
-  ["owner", "admin", "editor"].includes(role);
+export const canApproveQuestion = (role: OrgRole) => ['owner', 'admin', 'editor'].includes(role)
 
-export const canManageMembers = (role: OrgRole) =>
-  ["owner", "admin"].includes(role);
+export const canManageMembers = (role: OrgRole) => ['owner', 'admin'].includes(role)
 
-export const canManageBilling = (role: OrgRole) => role === "owner";
+export const canManageBilling = (role: OrgRole) => role === 'owner'
 
-export const canDeleteOrganization = (role: OrgRole) => role === "owner";
+export const canDeleteOrganization = (role: OrgRole) => role === 'owner'
 
-export const canViewDeckContent = async (
-  userId: string,
-  deckId: string,
-  db: Database,
-) => {
-  const subscription = await db.query.subscriptions.findFirst({
-    where: and(
-      eq(subscriptions.userId, userId),
-      eq(subscriptions.deckId, deckId),
-      eq(subscriptions.status, "active"),
-    ),
-  });
-  return !!subscription;
-};
+export const canViewDeckContent = async (userId: string, deckId: string, db: Database) => {
+	const subscription = await db.query.subscriptions.findFirst({
+		where: and(
+			eq(subscriptions.userId, userId),
+			eq(subscriptions.deckId, deckId),
+			eq(subscriptions.status, 'active'),
+		),
+	})
+	return !!subscription
+}
 ```
 
 ---

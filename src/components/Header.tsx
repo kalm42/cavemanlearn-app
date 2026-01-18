@@ -185,7 +185,6 @@ export default function Header() {
 						<span className="font-medium">Clerk</span>
 					</Link>
 
-
 					<Link
 						to="/demo/i18n"
 						onClick={() => {
