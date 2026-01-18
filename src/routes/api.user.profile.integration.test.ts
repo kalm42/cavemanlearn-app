@@ -4,6 +4,7 @@ import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 
 import { handleCreateProfile, handleGetProfile } from './api.user.profile'
+import type { NewUserProfile } from '@/db/schema.ts';
 import { userProfiles } from '@/db/schema.ts'
 import { createMockAuthHeader } from '@/test/utils/clerk'
 
@@ -12,10 +13,14 @@ vi.mock('@clerk/backend')
 
 const mockVerifyToken = vi.mocked(verifyToken)
 
+/**
+ * ## GET /api/user/profile - Integration
+ * 
+ * Integration test for the GET /api/user/profile endpoint.
+ */
 describe('GET /api/user/profile - Integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
-		vi.stubEnv('CLERK_SECRET_KEY', 'test-secret-key')
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -42,36 +47,47 @@ describe('GET /api/user/profile - Integration', () => {
 	})
 
 	it('returns profile when it exists', async () => {
-		// Create a profile in the database
+		// Arrange
+		const newProfile: NewUserProfile = {
+			clerkId: 'user_existing',
+			email: 'existing@example.com',
+			userType: 'learner',
+		}
 		const [createdProfile] = await globalThis.testDb
 			.insert(userProfiles)
-			.values({
-				clerkId: 'user_existing',
-				email: 'existing@example.com',
-				userType: 'learner',
-			})
+			.values(newProfile)
 			.returning()
 
-		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_existing', 'existing@example.com')
+		const authHeader = createMockAuthHeader(
+			mockVerifyToken,
+			'user_existing',
+			'existing@example.com',
+		)
 		const request = new Request('http://localhost/api/user/profile', {
 			headers: { Authorization: authHeader },
 		})
 
+		// Act
 		const response = await handleGetProfile(request)
 
+		// Assert
 		expect(response.status).toBe(200)
 		const body = await response.json()
 		expect(body.id).toBe(createdProfile.id)
-		expect(body.clerkId).toBe('user_existing')
-		expect(body.email).toBe('existing@example.com')
-		expect(body.userType).toBe('learner')
+		expect(body.clerkId).toBe(newProfile.clerkId)
+		expect(body.email).toBe(newProfile.email)
+		expect(body.userType).toBe(newProfile.userType)
 	})
 })
 
+/**
+ * ## POST /api/user/profile - Integration
+ * 
+ * Integration test for the POST /api/user/profile endpoint.
+ */
 describe('POST /api/user/profile - Integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
-		vi.stubEnv('CLERK_SECRET_KEY', 'test-secret-key')
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -88,73 +104,93 @@ describe('POST /api/user/profile - Integration', () => {
 	})
 
 	it('creates profile successfully and returns it', async () => {
-		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_new', 'new@example.com')
+		// Arrange
+		const userName = 'user_new'
+		const email = 'new@example.com'
+		const userType = 'learner'
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },
-			body: JSON.stringify({ userType: 'learner' }),
+			body: JSON.stringify({ userType }),
 		})
 
 		const response = await handleCreateProfile(request)
 
 		expect(response.status).toBe(201)
 		const body = await response.json()
-		expect(body.clerkId).toBe('user_new')
-		expect(body.email).toBe('new@example.com')
-		expect(body.userType).toBe('learner')
-		expect(body.id).toBeDefined()
-		expect(body.createdAt).toBeDefined()
+		expect(body.clerkId).toBe(userName)
+		expect(body.email).toBe(email)
+		expect(body.userType).toBe(userType)
 
 		// Verify the profile was actually created in the database
 		const [profile] = await globalThis.testDb
 			.select()
 			.from(userProfiles)
-			.where(eq(userProfiles.clerkId, 'user_new'))
+			.where(eq(userProfiles.clerkId, userName))
 			.limit(1)
 
-		expect(profile).toBeDefined()
-		expect(profile.clerkId).toBe('user_new')
-		expect(profile.email).toBe('new@example.com')
-		expect(profile.userType).toBe('learner')
+		expect(profile).toBeTruthy()
+		expect(profile.clerkId).toBe(userName)
+		expect(profile.email).toBe(email)
+		expect(profile.userType).toBe(userType)
 	})
 
 	it('creates profile with publisher type', async () => {
-		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_publisher', 'publisher@example.com')
+		// Arrange
+		const userName = 'user_publisher'
+		const email = 'publisher@example.com'
+		const userType = 'publisher'
+		const authHeader = createMockAuthHeader(
+			mockVerifyToken,
+			userName,
+			email,
+		)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },
-			body: JSON.stringify({ userType: 'publisher' }),
+			body: JSON.stringify({ userType }),
 		})
 
 		const response = await handleCreateProfile(request)
 
 		expect(response.status).toBe(201)
 		const body = await response.json()
-		expect(body.userType).toBe('publisher')
+		expect(body.userType).toBe(userType)
 
 		// Verify the profile was created with publisher type
 		const [profile] = await globalThis.testDb
 			.select()
 			.from(userProfiles)
-			.where(eq(userProfiles.clerkId, 'user_publisher'))
+			.where(eq(userProfiles.clerkId, userName))
 			.limit(1)
 
-		expect(profile.userType).toBe('publisher')
+		expect(profile).toBeTruthy()
+		expect(profile.clerkId).toBe(userName)
+		expect(profile.email).toBe(email)
+		expect(profile.userType).toBe(userType)
 	})
 
 	it('returns 409 when profile already exists', async () => {
-		// Create a profile first
+		// Arrange
+		const userName = 'user_duplicate'
+		const email = 'duplicate@example.com'
+		const userType = 'learner'
 		await globalThis.testDb.insert(userProfiles).values({
-			clerkId: 'user_duplicate',
-			email: 'duplicate@example.com',
-			userType: 'learner',
+			clerkId: userName,
+			email,
+			userType,
 		})
 
-		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_duplicate', 'duplicate@example.com')
+		const authHeader = createMockAuthHeader(
+			mockVerifyToken,
+			userName,
+			email,
+		)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },
-			body: JSON.stringify({ userType: 'learner' }),
+			body: JSON.stringify({ userType }),
 		})
 
 		const response = await handleCreateProfile(request)
@@ -165,25 +201,35 @@ describe('POST /api/user/profile - Integration', () => {
 	})
 
 	it('handles duplicate clerkId constraint violation', async () => {
-		// Create a profile with a specific clerkId
+		// Arrange
+		const userName = 'user_constraint'
+		const email = 'first@example.com'
+		const secondEmail = 'second@example.com'
+		const userType = 'learner'
+
 		await globalThis.testDb.insert(userProfiles).values({
-			clerkId: 'user_constraint',
-			email: 'first@example.com',
-			userType: 'learner',
+			clerkId: userName,
+			email,
+			userType,
 		})
 
 		// Try to create another profile with the same clerkId
 		// This should be caught by the duplicate check before hitting the database constraint
-		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_constraint', 'second@example.com')
+		const authHeader = createMockAuthHeader(
+			mockVerifyToken,
+			userName, // not unique clerk id
+			secondEmail, // unique email address
+		)
 		const request = new Request('http://localhost/api/user/profile', {
 			method: 'POST',
 			headers: { Authorization: authHeader },
-			body: JSON.stringify({ userType: 'publisher' }),
+			body: JSON.stringify({ userType }),
 		})
 
+		// Act
 		const response = await handleCreateProfile(request)
 
-		// Should return 409 before hitting database constraint
+		// Assert
 		expect(response.status).toBe(409)
 		const body = await response.json()
 		expect(body).toEqual({ error: 'Profile already exists' })

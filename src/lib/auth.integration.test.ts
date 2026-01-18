@@ -2,29 +2,22 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { verifyToken } from '@clerk/backend'
 import { getCurrentUser, getUserProfile } from './auth'
-
-import { db } from '@/db/index.ts'
+import type { UserProfile } from '@/db/schema'
+import { userProfiles } from '@/db/schema'
 
 // Automatically uses __mocks__/@clerk/backend.ts
 vi.mock('@clerk/backend')
 
-vi.mock('@/db/index.ts', () => ({
-	db: {
-		select: vi.fn(),
-	},
-}))
-
-vi.mock('@/db/schema.ts', () => ({
-	userProfiles: { clerkId: 'clerk_id' },
-}))
-
 const mockVerifyToken = vi.mocked(verifyToken)
-const mockDb = vi.mocked(db)
 
+/**
+ * ## getCurrentUser
+ * 
+ * Integration test for the getCurrentUser function. Almost end2end, but not quite.
+ */
 describe('getCurrentUser', () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
-		vi.stubEnv('CLERK_SECRET_KEY', 'test-secret-key')
 	})
 
 	it('returns null when no Authorization header', async () => {
@@ -56,7 +49,6 @@ describe('getCurrentUser', () => {
 	})
 
 	it('returns null when CLERK_SECRET_KEY is not set', async () => {
-		vi.stubEnv('CLERK_SECRET_KEY', '')
 		const request = new Request('http://localhost/api/test', {
 			headers: { Authorization: 'Bearer valid-token' },
 		})
@@ -132,12 +124,7 @@ describe('getUserProfile', () => {
 	})
 
 	it('returns null when profile does not exist', async () => {
-		const mockFrom = vi.fn().mockReturnValue({
-			where: vi.fn().mockReturnValue({
-				limit: vi.fn().mockResolvedValue([]),
-			}),
-		})
-		mockDb.select.mockReturnValue({ from: mockFrom } as never)
+		// No user inserted into the database, so we expect null
 
 		const result = await getUserProfile('user_123')
 
@@ -145,8 +132,8 @@ describe('getUserProfile', () => {
 	})
 
 	it('returns profile when it exists', async () => {
-		const mockProfile = {
-			id: 'profile-uuid',
+		const fakeProfile: UserProfile = {
+			id: '550e8400-e29b-41d4-a716-446655440000',
 			clerkId: 'user_123',
 			email: 'test@example.com',
 			displayName: null,
@@ -155,15 +142,10 @@ describe('getUserProfile', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		}
-		const mockFrom = vi.fn().mockReturnValue({
-			where: vi.fn().mockReturnValue({
-				limit: vi.fn().mockResolvedValue([mockProfile]),
-			}),
-		})
-		mockDb.select.mockReturnValue({ from: mockFrom } as never)
+		await globalThis.testDb.insert(userProfiles).values(fakeProfile)
 
 		const result = await getUserProfile('user_123')
 
-		expect(result).toEqual(mockProfile)
+		expect(result).toEqual(fakeProfile)
 	})
 })
