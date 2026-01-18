@@ -61,6 +61,7 @@
 		"@types/react-dom": "^19.2.0",
 		"@typescript-eslint/eslint-plugin": "^8.53.0",
 		"@vitejs/plugin-react": "^5.0.4",
+		"@vitest/coverage-v8": "^4.0.17",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"dotenv": "^16.0.0",
 		"eslint": "^9.39.2",
@@ -73,7 +74,7 @@
 		"typescript": "^5.7.2",
 		"typescript-eslint": "^8.53.0",
 		"vite": "^7.1.7",
-		"vitest": "^3.0.5",
+		"vitest": "^4.0.17",
 		"web-vitals": "^5.1.0"
 	},
 	"msw": {

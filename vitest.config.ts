@@ -19,6 +19,12 @@ export default defineConfig({
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
 			exclude: ['node_modules/', 'src/test/', 'src/paraglide/', '**/*.d.ts', '**/*.config.*'],
+			thresholds: {
+				lines: 0, // Set to 50 after Phase 1, then 70 after Phase 2
+				functions: 0,
+				branches: 0,
+				statements: 0,
+			},
 		},
 	},
 })
