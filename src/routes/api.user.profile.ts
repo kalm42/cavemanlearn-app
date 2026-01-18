@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { db } from '@/db/index.ts'
@@ -9,6 +10,7 @@ import {
 	userProfileSchema,
 } from '@/db/validators.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
+import { updateProfileRequestSchema } from '@/lib/validation/user.ts'
 
 /**
  * ## handleGetProfile
@@ -96,11 +98,67 @@ export async function handleCreateProfile(request: Request): Promise<Response> {
 	}
 }
 
+/**
+ * ## handleUpdateProfile
+ *
+ * Handles PUT requests to update the current user's profile. Authenticates the request,
+ * validates the request body for optional displayName and avatarUrl fields, checks that
+ * the profile exists, updates it in the database with a new updatedAt timestamp, validates
+ * the result with Zod, and returns it as JSON. Returns 401 if unauthenticated, 400 if
+ * validation fails, 404 if profile doesn't exist, or 200 with the updated profile.
+ *
+ * @example
+ * const response = await handleUpdateProfile(request)
+ * const profile = await response.json()
+ */
+export async function handleUpdateProfile(request: Request): Promise<Response> {
+	const user = await getCurrentUser(request)
+	if (!user) {
+		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+	}
+
+	// Validate request body with Zod
+	const bodyResult = updateProfileRequestSchema.safeParse(await request.json())
+	if (!bodyResult.success) {
+		const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
+		return Response.json({ error: errorMessage }, { status: 400 })
+	}
+
+	const existingProfile = await getUserProfile(user.userId)
+	if (!existingProfile) {
+		return Response.json({ error: 'Profile not found' }, { status: 404 })
+	}
+
+	// Build update object only with provided fields
+	const updateData: { displayName?: string | null; avatarUrl?: string | null; updatedAt: Date } = {
+		updatedAt: new Date(),
+	}
+
+	if (bodyResult.data.displayName !== undefined) {
+		updateData.displayName = bodyResult.data.displayName
+	}
+	if (bodyResult.data.avatarUrl !== undefined) {
+		updateData.avatarUrl = bodyResult.data.avatarUrl
+	}
+
+	const [updatedProfile] = await db
+		.update(userProfiles)
+		.set(updateData)
+		.where(eq(userProfiles.clerkId, user.userId))
+		.returning()
+
+	// Validate the returned profile from the database
+	const validatedProfile = userProfileSchema.parse(updatedProfile)
+
+	return Response.json(validatedProfile)
+}
+
 export const Route = createFileRoute('/api/user/profile')({
 	server: {
 		handlers: {
 			GET: ({ request }) => handleGetProfile(request),
 			POST: ({ request }) => handleCreateProfile(request),
+			PUT: ({ request }) => handleUpdateProfile(request),
 		},
 	},
 })

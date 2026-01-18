@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 
-import { handleCreateProfile, handleGetProfile } from './api.user.profile'
+import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from './api.user.profile'
 import type { NewUserProfile } from '@/db/schema.ts'
 import { userProfiles } from '@/db/schema.ts'
 import { createMockAuthHeader } from '@/test/utils/clerk'
@@ -225,5 +225,279 @@ describe('POST /api/user/profile - Integration', () => {
 		expect(response.status).toBe(409)
 		const body = await response.json()
 		expect(body).toEqual({ error: 'Profile already exists' })
+	})
+})
+
+/**
+ * ## PUT /api/user/profile - Integration
+ *
+ * Integration test for the PUT /api/user/profile endpoint.
+ */
+describe('PUT /api/user/profile - Integration', () => {
+	beforeEach(() => {
+		vi.clearAllMocks()
+	})
+
+	it('returns 401 when not authenticated', async () => {
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			body: JSON.stringify({ displayName: 'New Name' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(401)
+		const body = await response.json()
+		expect(body).toEqual({ error: 'Unauthorized' })
+	})
+
+	it('returns 404 when profile does not exist', async () => {
+		const authHeader = createMockAuthHeader(mockVerifyToken, 'user_nonexistent', 'test@example.com')
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ displayName: 'New Name' }),
+		})
+
+		const response = await handleUpdateProfile(request)
+
+		expect(response.status).toBe(404)
+		const body = await response.json()
+		expect(body).toEqual({ error: 'Profile not found' })
+	})
+
+	it('updates displayName successfully', async () => {
+		// Arrange
+		const userName = 'user_update_name'
+		const email = 'update-name@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			userType: 'learner',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ displayName: 'Updated Name' }),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBe('Updated Name')
+
+		// Verify the profile was actually updated in the database
+		const [profile] = await globalThis.testDb
+			.select()
+			.from(userProfiles)
+			.where(eq(userProfiles.clerkId, userName))
+			.limit(1)
+
+		expect(profile.displayName).toBe('Updated Name')
+	})
+
+	it('updates avatarUrl successfully', async () => {
+		// Arrange
+		const userName = 'user_update_avatar'
+		const email = 'update-avatar@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			userType: 'learner',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ avatarUrl: 'https://example.com/new-avatar.png' }),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.avatarUrl).toBe('https://example.com/new-avatar.png')
+
+		// Verify the profile was actually updated in the database
+		const [profile] = await globalThis.testDb
+			.select()
+			.from(userProfiles)
+			.where(eq(userProfiles.clerkId, userName))
+			.limit(1)
+
+		expect(profile.avatarUrl).toBe('https://example.com/new-avatar.png')
+	})
+
+	it('updates both displayName and avatarUrl successfully', async () => {
+		// Arrange
+		const userName = 'user_update_both'
+		const email = 'update-both@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			userType: 'publisher',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({
+				displayName: 'Both Updated',
+				avatarUrl: 'https://example.com/both-avatar.png',
+			}),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBe('Both Updated')
+		expect(body.avatarUrl).toBe('https://example.com/both-avatar.png')
+
+		// Verify the profile was actually updated in the database
+		const [profile] = await globalThis.testDb
+			.select()
+			.from(userProfiles)
+			.where(eq(userProfiles.clerkId, userName))
+			.limit(1)
+
+		expect(profile.displayName).toBe('Both Updated')
+		expect(profile.avatarUrl).toBe('https://example.com/both-avatar.png')
+	})
+
+	it('updates updatedAt timestamp', async () => {
+		// Arrange
+		const userName = 'user_update_timestamp'
+		const email = 'update-timestamp@example.com'
+		const [originalProfile] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId: userName,
+				email,
+				userType: 'learner',
+			})
+			.returning()
+
+		// Wait a bit to ensure timestamp difference
+		await new Promise((resolve) => setTimeout(resolve, 10))
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ displayName: 'Timestamp Test' }),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body: { updatedAt: string } = await response.json()
+
+		// Verify updatedAt was changed
+		const updatedTime = new Date(body.updatedAt)
+		const originalTime = originalProfile.updatedAt
+		expect(originalTime).toBeTruthy()
+		if (originalTime) {
+			expect(updatedTime.getTime()).toBeGreaterThan(originalTime.getTime())
+		}
+	})
+
+	it('returns 400 when no fields are provided', async () => {
+		// Arrange
+		const userName = 'user_no_fields'
+		const email = 'no-fields@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			userType: 'learner',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({}),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(400)
+		const body = await response.json()
+		expect(body.error).toBe('At least one field (displayName or avatarUrl) must be provided')
+	})
+
+	it('returns 400 when avatarUrl is invalid', async () => {
+		// Arrange
+		const userName = 'user_invalid_url'
+		const email = 'invalid-url@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			userType: 'learner',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ avatarUrl: 'not-a-valid-url' }),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(400)
+	})
+
+	it('allows setting displayName to null', async () => {
+		// Arrange
+		const userName = 'user_null_name'
+		const email = 'null-name@example.com'
+		await globalThis.testDb.insert(userProfiles).values({
+			clerkId: userName,
+			email,
+			displayName: 'Original Name',
+			userType: 'learner',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, userName, email)
+		const request = new Request('http://localhost/api/user/profile', {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ displayName: null }),
+		})
+
+		// Act
+		const response = await handleUpdateProfile(request)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body = await response.json()
+		expect(body.displayName).toBeNull()
+
+		// Verify in database
+		const [profile] = await globalThis.testDb
+			.select()
+			.from(userProfiles)
+			.where(eq(userProfiles.clerkId, userName))
+			.limit(1)
+
+		expect(profile.displayName).toBeNull()
 	})
 })

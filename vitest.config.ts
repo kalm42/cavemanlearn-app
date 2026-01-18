@@ -31,8 +31,7 @@ export default defineConfig({
 					environment: 'node',
 					setupFiles: ['./src/test/integration/setup.ts'],
 					include: ['src/**/*.integration.test.ts'],
-					fileParallelism: false,
-					testTimeout: 30000,
+					testTimeout: 1_000, // 1 second
 				},
 			},
 		],
@@ -42,10 +41,10 @@ export default defineConfig({
 			include: ['src/**/*.{ts,tsx}'],
 			exclude: ['node_modules/', 'src/test/', 'src/paraglide/', '**/*.d.ts', '**/*.config.*'],
 			thresholds: {
-				lines: 0, // Set to 50 after Phase 1, then 70 after Phase 2
-				functions: 0,
-				branches: 0,
-				statements: 0,
+				lines: 5, // Set to 50 after Phase 1, then 70 after Phase 2
+				functions: 5,
+				branches: 5,
+				statements: 5,
 			},
 		},
 	},
