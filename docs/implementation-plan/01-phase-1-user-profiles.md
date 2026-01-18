@@ -199,19 +199,10 @@ export const userProfiles = pgTable('user_profiles', {
    - Handle `user.updated` event - update email/avatar if changed
    - Handle `user.deleted` event - soft delete or cleanup
 
-3. **Install Svix for webhook verification**
-   - Add `svix` package for signature verification
-
 ### Files to Create/Modify
 
 - `/src/env.ts` (modify)
 - `/src/routes/api.webhooks.clerk.ts` (create)
-
-### Dependencies
-
-```bash
-pnpm add svix
-```
 
 ### Testing
 
