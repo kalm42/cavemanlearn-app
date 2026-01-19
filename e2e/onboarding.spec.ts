@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test'
 
-
-
 test.describe('Onboarding Flow', () => {
 	test('new user completes onboarding as learner', async ({ page }) => {
 		// Track whether profile has been created
