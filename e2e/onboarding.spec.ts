@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 test.describe('Onboarding Flow', () => {
 	test('new user completes onboarding as learner', async ({ page }) => {
@@ -78,7 +78,7 @@ test.describe('Onboarding Flow', () => {
 		// Verify user is no longer on onboarding page
 		await expect(
 			page.getByRole('heading', { name: /welcome to cavemanlearn/i }),
-		).not.toBeVisible()
+		).toBeHidden()
 	})
 
 	test('new user completes onboarding as publisher', async ({ page }) => {
@@ -155,7 +155,7 @@ test.describe('Onboarding Flow', () => {
 		// Verify user is no longer on onboarding page
 		await expect(
 			page.getByRole('heading', { name: /welcome to cavemanlearn/i }),
-		).not.toBeVisible()
+		).toBeHidden()
 	})
 
 	test('onboarding form requires selection before submission', async ({ page }) => {
@@ -212,6 +212,6 @@ test.describe('Onboarding Flow', () => {
 		await expect(page).not.toHaveURL(/\/onboarding/)
 
 		// The onboarding form should not be visible
-		await expect(page.getByRole('heading', { name: /welcome to cavemanlearn/i })).not.toBeVisible()
+		await expect(page.getByRole('heading', { name: /welcome to cavemanlearn/i })).toBeHidden()
 	})
 })
