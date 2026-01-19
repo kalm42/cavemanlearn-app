@@ -36,7 +36,6 @@ const eslintConfig = defineConfig(
 			'.vscode/**/*',
 			'coverage/**/*',
 			'src/paraglide/**/*',
-			'e2e/**/*',
 			'playwright-report/**/*',
 			'public/mockServiceWorker.js',
 		],
