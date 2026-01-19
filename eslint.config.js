@@ -26,9 +26,8 @@ const eslintConfig = defineConfig(
 		},
 	},
 	{
+		...playwright.configs['flat/recommended'],
 		files: ['e2e/**/*.{spec}.{ts,tsx}', 'e2e/**/*.{ts,tsx}', 'src/test/global.setup.ts'],
-		extends: [playwright.configs['flat/recommended']],
-		rules: {}
 	},
 	{
 		ignores: [
