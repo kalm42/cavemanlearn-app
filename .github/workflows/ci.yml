@@ -84,6 +84,11 @@ jobs:
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
 
+      - name: Clean test database
+        run: tsx scripts/clean-test-db.ts
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/testdb
+
       - name: Run tests with coverage
         run: pnpm test:ci
         env:
@@ -134,6 +139,11 @@ jobs:
 
       - name: Push schema to test database
         run: pnpm db:push
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/testdb
+
+      - name: Clean test database
+        run: tsx scripts/clean-test-db.ts
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/testdb
 
