@@ -13,11 +13,11 @@ const clerkUserSchema = z.object({
 	email_addresses: z.array(
 		z.object({
 			id: z.string(),
-			email_address: z.string(),
+			email_address: z.email(),
 		}),
 	),
 	primary_email_address_id: z.string().nullable(),
-	image_url: z.string().nullable().optional(),
+	image_url: z.string().nullable().default(null),
 	first_name: z.string().nullable().optional(),
 	last_name: z.string().nullable().optional(),
 })
@@ -159,7 +159,19 @@ async function handleUserCreated(user: ClerkUser): Promise<void> {
 		userType: 'learner',
 	})
 
-	await db.insert(userProfiles).values(insertData)
+	try {
+		await db.insert(userProfiles).values(insertData)
+	} catch (error) {
+		// Handle unique constraint violation (race condition where two webhooks fire simultaneously)
+		// PostgreSQL error code 23505 = unique_violation
+		const { success, data: postgresError } = z.object({ code: z.string() }).loose().safeParse(error)
+		if (success && postgresError.code === '23505') {
+			// Profile was created by another concurrent request, which is fine
+			return
+		}
+		// Re-throw other errors
+		throw error
+	}
 }
 
 /**
