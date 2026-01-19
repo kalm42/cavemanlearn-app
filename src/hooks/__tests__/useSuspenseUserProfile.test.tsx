@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import * as ClerkReact from '@clerk/clerk-react'
 import { HttpResponse, http } from 'msw'
-import { useSuspenseUserProfile } from './useSuspenseUserProfile'
+import { useSuspenseUserProfile } from '../useSuspenseUserProfile'
 import { server } from '@/test/mocks/server'
 
 vi.mock('@clerk/clerk-react')

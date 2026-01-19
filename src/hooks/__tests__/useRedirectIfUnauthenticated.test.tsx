@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import * as ClerkReact from '@clerk/clerk-react'
 import * as TanStackRouter from '@tanstack/react-router'
-import { useRedirectIfUnauthenticated } from './useRedirectIfUnauthenticated'
+import { useRedirectIfUnauthenticated } from '../useRedirectIfUnauthenticated'
 
 vi.mock('@clerk/clerk-react')
 vi.mock('@tanstack/react-router')

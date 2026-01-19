@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BookOpen } from 'lucide-react'
-import OptionCard from './OptionCard'
+import OptionCard from '../OptionCard'
 import { m } from '@/paraglide/messages'
 
 describe('OptionCard', () => {

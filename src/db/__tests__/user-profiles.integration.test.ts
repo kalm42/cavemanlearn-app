@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 
-import { userProfiles } from './schema'
+import { userProfiles } from '../schema'
 
 /**
  * ## userProfiles

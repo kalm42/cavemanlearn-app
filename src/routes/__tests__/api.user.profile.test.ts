@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from './api.user.profile'
+import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from '../api.user.profile'
 import { db } from '@/db/index.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth'
 

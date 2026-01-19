@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 
-import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from './api.user.profile'
+import { handleCreateProfile, handleGetProfile, handleUpdateProfile } from '../api.user.profile'
 import type { NewUserProfile } from '@/db/schema.ts'
 import { userProfiles } from '@/db/schema.ts'
 import { createMockAuthHeader } from '@/test/utils/clerk'
@@ -409,10 +409,8 @@ describe('PUT /api/user/profile - Integration', () => {
 		// Verify updatedAt was changed
 		const updatedTime = new Date(body.updatedAt)
 		const originalTime = originalProfile.updatedAt
-		expect(originalTime).toBeTruthy()
-		if (originalTime) {
-			expect(updatedTime.getTime()).toBeGreaterThan(originalTime.getTime())
-		}
+		expect(originalTime).toBeInstanceOf(Date)
+		expect(updatedTime.getTime()).toBeGreaterThan((originalTime as Date).getTime())
 	})
 
 	it('returns 400 when no fields are provided', async () => {

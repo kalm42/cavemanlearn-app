@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { ProfileCreationError } from './ProfileCreationError'
+import { ProfileCreationError } from '../ProfileCreationError'
 import { m } from '@/paraglide/messages'
 
 describe('ProfileCreationError', () => {

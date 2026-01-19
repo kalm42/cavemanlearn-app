@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import * as ClerkReact from '@clerk/clerk-react'
 import { HttpResponse, http } from 'msw'
-import { useCreateUserProfile } from './useCreateUserProfile'
+import { useCreateUserProfile } from '../useCreateUserProfile'
 import { server } from '@/test/mocks/server'
 
 vi.mock('@clerk/clerk-react')

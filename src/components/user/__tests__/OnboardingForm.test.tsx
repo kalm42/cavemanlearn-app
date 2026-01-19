@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import OnboardingForm from './OnboardingForm'
+import OnboardingForm from '../OnboardingForm'
 import { m } from '@/paraglide/messages'
 
 describe('OnboardingForm', () => {

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Suspense } from 'react'
-import { OnboardingContent } from './OnboardingContent'
+import { OnboardingContent } from '../OnboardingContent'
 import { useSuspenseUserProfile } from '@/hooks/useSuspenseUserProfile'
 
 vi.mock('@clerk/clerk-react')

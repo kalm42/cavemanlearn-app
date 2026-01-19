@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getProfileCreationErrorMessage } from './errors'
+import { getProfileCreationErrorMessage } from '../errors'
 import { m } from '@/paraglide/messages'
 
 describe('getProfileCreationErrorMessage', () => {
