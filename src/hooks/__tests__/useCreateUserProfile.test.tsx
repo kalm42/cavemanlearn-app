@@ -27,10 +27,13 @@ describe('useCreateUserProfile', () => {
 		server.resetHandlers()
 	})
 
-	const wrapper = ({ children }: { children: React.ReactNode }) => (
-		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-	)
+	const wrapper = (props: { children: React.ReactNode }) => {
+		const { children } = props
 
+		return (
+			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+		)
+	}
 	it('creates profile successfully', async () => {
 		// Arrange
 		const mockProfile = {
