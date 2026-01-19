@@ -16,6 +16,7 @@ import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
+import { Route as ApiWebhooksClerkRouteImport } from './routes/api.webhooks.clerk'
 import { Route as ApiUserProfileRouteImport } from './routes/api.user.profile'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
@@ -57,6 +58,11 @@ const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
 	path: '/demo/api/names',
 	getParentRoute: () => rootRouteImport,
 } as any)
+const ApiWebhooksClerkRoute = ApiWebhooksClerkRouteImport.update({
+	id: '/api/webhooks/clerk',
+	path: '/api/webhooks/clerk',
+	getParentRoute: () => rootRouteImport,
+} as any)
 const ApiUserProfileRoute = ApiUserProfileRouteImport.update({
 	id: '/api/user/profile',
 	path: '/api/user/profile',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
 	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
 	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
 	'/demo/i18n': typeof DemoI18nRoute
 	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
 	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
 	'/demo/api/names': typeof DemoApiNamesRoute
 	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
 	'/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
 		| '/api/user/profile'
+		| '/api/webhooks/clerk'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
 		| '/api/user/profile'
+		| '/api/webhooks/clerk'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
 		| '/demo/i18n'
 		| '/demo/tanstack-query'
 		| '/api/user/profile'
+		| '/api/webhooks/clerk'
 		| '/demo/api/names'
 		| '/demo/api/tq-todos'
 		| '/demo/start/api-request'
@@ -177,6 +189,7 @@ export interface RootRouteChildren {
 	DemoI18nRoute: typeof DemoI18nRoute
 	DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 	ApiUserProfileRoute: typeof ApiUserProfileRoute
+	ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
 	DemoApiNamesRoute: typeof DemoApiNamesRoute
 	DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
 	DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof DemoApiNamesRouteImport
 			parentRoute: typeof rootRouteImport
 		}
+		'/api/webhooks/clerk': {
+			id: '/api/webhooks/clerk'
+			path: '/api/webhooks/clerk'
+			fullPath: '/api/webhooks/clerk'
+			preLoaderRoute: typeof ApiWebhooksClerkRouteImport
+			parentRoute: typeof rootRouteImport
+		}
 		'/api/user/profile': {
 			id: '/api/user/profile'
 			path: '/api/user/profile'
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
 	DemoI18nRoute: DemoI18nRoute,
 	DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 	ApiUserProfileRoute: ApiUserProfileRoute,
+	ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,
 	DemoApiNamesRoute: DemoApiNamesRoute,
 	DemoApiTqTodosRoute: DemoApiTqTodosRoute,
 	DemoStartApiRequestRoute: DemoStartApiRequestRoute,

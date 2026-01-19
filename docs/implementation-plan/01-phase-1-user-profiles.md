@@ -177,9 +177,11 @@ export const userProfiles = pgTable('user_profiles', {
 
 ---
 
-## Phase 1.5: Clerk Webhook Integration
+## Phase 1.5: Clerk Webhook Integration ✅
 
 **Goal**: Automatically sync user data when Clerk events occur.
+
+**Status**: Complete
 
 ### API Endpoints
 
@@ -194,7 +196,7 @@ export const userProfiles = pgTable('user_profiles', {
 
 2. **Create webhook handler**
    - Create `/src/routes/api.webhooks.clerk.ts`
-   - Verify webhook signature using Svix
+   - Verify webhook signature
    - Handle `user.created` event - create profile if not exists
    - Handle `user.updated` event - update email/avatar if changed
    - Handle `user.deleted` event - soft delete or cleanup
