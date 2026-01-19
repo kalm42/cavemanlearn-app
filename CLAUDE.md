@@ -25,6 +25,9 @@ pnpm db:generate          # Generate migrations from schema changes
 pnpm db:push              # Push schema to database (dev)
 pnpm db:studio            # Open Drizzle Studio GUI
 
+# i18n (Paraglide)
+pnpm i18n:generate        # Generate Paraglide message files from messages JSON
+
 # Build
 pnpm build                # Production build
 ```
@@ -74,6 +77,33 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 - Test user behavior, not implementation details
 - Avoid mocking internal code; only mock third-party services and external APIs to prevent hitting external services
 
+#### Query Priority Order
+
+When selecting elements in tests, prioritize queries that reflect how users interact with your code. Use this order of priority:
+
+**Queries Accessible to Everyone** (preferred):
+
+1. `getByRole` - Use for most elements. Query by accessibility role with optional name filter: `getByRole('button', { name: /submit/i })`
+2. `getByLabelText` - Preferred for form fields, matches how users find form elements
+3. `getByPlaceholderText` - Use only if label is unavailable (placeholder is not a substitute for label)
+4. `getByText` - Use for non-interactive elements (divs, spans, paragraphs) and finding text content outside forms
+5. `getByDisplayValue` - Use for form elements with filled-in values
+
+**Semantic Queries** (use when accessible queries don't work):
+
+- `getByAltText` - For elements supporting alt text (img, area, input)
+- `getByTitle` - Not consistently accessible, avoid when possible
+
+**Test IDs** (last resort):
+
+- `getByTestId` - Only use when you can't match by role or text, or when text is dynamic
+
+**Important Notes:**
+
+- `getBy*` queries throw if elements are not found - no need for null checks
+- Use regex matchers when accessible names include multiple text nodes: `getByRole('button', { name: /title text/i })`
+- Prefer semantic queries over implementation details
+
 ### Path Aliases
 
 `@/*` maps to `./src/*`
@@ -87,6 +117,7 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 
 - Prefer pure functional programming
 - One function or concern per file
+- Do not destructure arguments in function signatures; destructure inside the function body instead
 
 ### JSDoc Documentation
 

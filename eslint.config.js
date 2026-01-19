@@ -21,6 +21,10 @@ const eslintConfig = defineConfig(
 	},
 	{
 		ignores: [
+			'.output/**/*',
+			'.tanstack/**/*',
+			'.vscode/**/*',
+			'coverage/**/*',
 			'src/paraglide/**/*',
 			'e2e/**/*',
 			'playwright-report/**/*',
