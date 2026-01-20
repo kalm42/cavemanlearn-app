@@ -5,5 +5,20 @@
 	"example_message": "Willkommen in deiner i18n-App.",
 	"language_label": "Sprache",
 	"current_locale": "Aktuelle Sprache: {locale}",
-	"learn_router": "Paraglide JS lernen"
+	"learn_router": "Paraglide JS lernen",
+	"onboarding_welcome_title": "Willkommen bei CavemanLearn!",
+	"onboarding_subtitle": "Wählen Sie Ihren Weg zum Einstieg",
+	"onboarding_option_learner_title": "Ich möchte lernen",
+	"onboarding_option_learner_description": "Durchsuchen und kaufen Sie Lernkartensets von Verlagen. Bauen Sie Ihre Wissensbibliothek auf und verfolgen Sie Ihren Fortschritt.",
+	"onboarding_option_publisher_title": "Ich möchte veröffentlichen",
+	"onboarding_option_publisher_description": "Erstellen und verkaufen Sie Lernkartensets. Verwalten Sie Ihre Inhalte, legen Sie Preise fest und erreichen Sie Lernende auf der ganzen Welt.",
+	"onboarding_selected_indicator": "✓ Ausgewählt",
+	"onboarding_submit_creating": "Profil wird erstellt...",
+	"onboarding_submit_continue": "Weiter",
+	"onboarding_error_not_authenticated": "Sie müssen angemeldet sein, um ein Profil zu erstellen.",
+	"onboarding_error_profile_exists": "Für dieses Konto existiert bereits ein Profil.",
+	"onboarding_error_invalid_usertype": "Ungültiger Benutzertyp. Bitte wählen Sie entweder Lernender oder Herausgeber.",
+	"onboarding_error_server": "Profil konnte nicht erstellt werden. Bitte versuchen Sie es später erneut.",
+	"onboarding_error_unknown": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+	"loading": "Lädt..."
 }

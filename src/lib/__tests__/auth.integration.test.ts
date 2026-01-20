@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { verifyToken } from '@clerk/backend'
-import { getCurrentUser, getUserProfile } from './auth'
+import { getCurrentUser, getUserProfile } from '../auth'
 import type { UserProfile } from '@/db/schema'
 import { userProfiles } from '@/db/schema'
 

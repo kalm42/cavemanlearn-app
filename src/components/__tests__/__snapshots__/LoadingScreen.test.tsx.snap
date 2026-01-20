@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LoadingScreen > renders loading text 1`] = `
+<div>
+  <div
+    class="min-h-screen bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center"
+  >
+    <div
+      class="text-white text-xl"
+    >
+      Loading...
+    </div>
+  </div>
+</div>
+`;

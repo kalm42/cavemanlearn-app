@@ -4,10 +4,10 @@ import LocaleSwitcher from '../components/LocaleSwitcher'
 import { m } from '@/paraglide/messages'
 
 export const Route = createFileRoute('/demo/i18n')({
-	component: App,
+	component: I18nDemoScreen,
 })
 
-function App() {
+function I18nDemoScreen() {
 	return (
 		<div className="text-center">
 			<header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)] gap-4">

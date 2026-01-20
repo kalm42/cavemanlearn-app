@@ -5,5 +5,20 @@
 	"example_message": "Welcome to your i18n app.",
 	"language_label": "Language",
 	"current_locale": "Current locale: {locale}",
-	"learn_router": "Learn Paraglide JS"
+	"learn_router": "Learn Paraglide JS",
+	"onboarding_welcome_title": "Welcome to CavemanLearn!",
+	"onboarding_subtitle": "Choose your path to get started",
+	"onboarding_option_learner_title": "I want to learn",
+	"onboarding_option_learner_description": "Browse and purchase learning decks from publishers. Build your knowledge library and track your progress.",
+	"onboarding_option_publisher_title": "I want to publish",
+	"onboarding_option_publisher_description": "Create and sell learning decks. Manage your content, set pricing, and reach learners around the world.",
+	"onboarding_selected_indicator": "✓ Selected",
+	"onboarding_submit_creating": "Creating profile...",
+	"onboarding_submit_continue": "Continue",
+	"onboarding_error_not_authenticated": "You must be signed in to create a profile.",
+	"onboarding_error_profile_exists": "A profile already exists for this account.",
+	"onboarding_error_invalid_usertype": "Invalid user type. Please select either learner or publisher.",
+	"onboarding_error_server": "Failed to create profile. Please try again later.",
+	"onboarding_error_unknown": "An unexpected error occurred. Please try again.",
+	"loading": "Loading..."
 }

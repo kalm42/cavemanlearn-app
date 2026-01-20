@@ -2,12 +2,20 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { eq } from 'drizzle-orm'
 
-import { mockVerify } from '../../__mocks__/svix'
-import { handleClerkWebhook } from './api.webhooks.clerk'
+import { handleClerkWebhook } from '../api.webhooks.clerk'
 import { userProfiles } from '@/db/schema.ts'
 
-// Automatically uses __mocks__/svix.ts
-vi.mock('svix')
+// Create mock for svix Webhook.verify method using vi.hoisted to ensure
+// it's available during vi.mock hoisting
+const mockVerify = vi.hoisted(() => vi.fn())
+
+vi.mock('svix', () => {
+	return {
+		Webhook: vi.fn().mockImplementation(function () {
+			return { verify: mockVerify }
+		}),
+	}
+})
 
 vi.mock('@/env', () => ({
 	env: {

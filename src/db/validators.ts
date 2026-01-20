@@ -12,8 +12,8 @@ export const userProfileSchema = z.object({
 	displayName: z.string().nullable(),
 	avatarUrl: z.string().nullable(),
 	userType: userTypeSchema,
-	createdAt: z.date(),
-	updatedAt: z.date(),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
 }) satisfies z.ZodType<UserProfile>
 
 export const insertUserProfileSchema = z.object({
