@@ -5,14 +5,15 @@ import { eq } from 'drizzle-orm'
 import { handleClerkWebhook } from '../api.webhooks.clerk'
 import { userProfiles } from '@/db/schema.ts'
 
-// Create mock for svix Webhook.verify method
-const mockVerify = vi.fn()
+// Create mock for svix Webhook.verify method using vi.hoisted to ensure
+// it's available during vi.mock hoisting
+const mockVerify = vi.hoisted(() => vi.fn())
 
 vi.mock('svix', () => {
 	return {
-		Webhook: vi.fn().mockImplementation(() => ({
-			verify: mockVerify,
-		})),
+		Webhook: vi.fn().mockImplementation(function () {
+			return { verify: mockVerify }
+		}),
 	}
 })
 
