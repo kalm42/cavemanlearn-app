@@ -70,7 +70,7 @@ function SettingsLayout() {
 								<li>
 									<Link
 										to="/settings/profile"
-										className={navLinkVariants({ active: false })}
+										className={navLinkVariants()}
 										activeProps={{
 											className: navLinkVariants({ active: true }),
 										}}

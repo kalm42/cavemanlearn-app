@@ -116,7 +116,7 @@ describe('useUpdateUserProfile', () => {
 		const { result } = renderHook(() => useUpdateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync({ displayName: undefined })).rejects.toThrow(
+		await expect(result.current.mutateAsync({})).rejects.toThrow(
 			'At least one field (displayName or avatarUrl) must be provided',
 		)
 	})

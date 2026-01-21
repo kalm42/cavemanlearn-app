@@ -70,22 +70,14 @@ function ProfileSettingsContent() {
 		await updateProfileMutation.mutateAsync({ displayName })
 	}
 
-	if (!profile) {
-		return (
-			<div className="bg-slate-800 rounded-xl p-8">
-				<p className="text-gray-400">{m.settings_no_profile()}</p>
-			</div>
-		)
-	}
-
 	return (
 		<div className="bg-slate-800 rounded-xl p-8">
 			<h1 className="text-2xl font-bold text-white mb-6">{m.settings_profile_section()}</h1>
 
 			<ProfileForm
-				initialDisplayName={profile.displayName ?? ''}
-				email={profile.email}
-				avatarUrl={profile.avatarUrl}
+				initialDisplayName={profile?.displayName ?? ''}
+				email={profile?.email ?? ''}
+				avatarUrl={profile?.avatarUrl ?? null}
 				onSubmit={handleSubmit}
 				isSubmitting={updateProfileMutation.isPending}
 			/>
@@ -98,7 +90,7 @@ function ProfileSettingsContent() {
 
 			{updateProfileMutation.error && (
 				<div className="mt-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-					<p className="text-red-400">{updateProfileMutation.error.message}</p>
+					<p className="text-red-400">{m.settings_save_error()}</p>
 				</div>
 			)}
 		</div>

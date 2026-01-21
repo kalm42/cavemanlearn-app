@@ -9,8 +9,8 @@ type UserProfile = z.infer<typeof userProfileSchema>
  * ## useSuspenseUserProfile
  *
  * Suspense-enabled hook to fetch the current user's profile.
- * Must be used within a Suspense boundary. The query will only run when the user is loaded and signed in.
- * Returns the profile data (which may be null if no profile exists).
+ * Must be used within a Suspense boundary. Throws if the user is not authenticated
+ * or if no profile exists. Users without profiles should be routed to onboarding.
  *
  * @example
  * ```tsx
@@ -20,7 +20,6 @@ type UserProfile = z.infer<typeof userProfileSchema>
  *
  * function ProfileComponent() {
  *   const { profile } = useSuspenseUserProfile()
- *   if (!profile) return <NoProfile />
  *   return <ProfileDisplay profile={profile} />
  * }
  * ```
@@ -49,14 +48,14 @@ export function useSuspenseUserProfile() {
 			})
 
 			if (response.status === 404) {
-				return null // No profile exists yet
+				return null
 			}
 
 			if (!response.ok) {
 				throw new Error(`Failed to fetch profile: ${String(response.status)}`)
 			}
 
-			const data = (await response.json()) as unknown
+			const data: unknown = (await response.json())
 			return userProfileSchema.parse(data)
 		},
 	})

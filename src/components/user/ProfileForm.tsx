@@ -70,17 +70,20 @@ export default function ProfileForm(props: ProfileFormProps) {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!displayName.trim()) {
+		const trimmedDisplayName = displayName.trim()
+
+		if (!trimmedDisplayName) {
 			setValidationError(m.settings_display_name_required())
 			return
 		}
 
-		if (displayName.length > 100) {
+		if (trimmedDisplayName.length > 100) {
 			setValidationError(m.settings_display_name_too_long())
 			return
 		}
 
-		void onSubmit(displayName.trim())
+		setDisplayName(trimmedDisplayName)
+		void onSubmit(trimmedDisplayName)
 	}
 
 	return (

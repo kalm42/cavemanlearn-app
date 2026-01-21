@@ -51,9 +51,9 @@ export function useUpdateUserProfile(options?: { onSuccess?: (profile: UserProfi
 			})
 
 			if (!response.ok) {
-				const errorResponseRaw = (await response
+				const errorResponseRaw: unknown = (await response
 					.json()
-					.catch(() => ({ error: 'Unknown error' } as const))) as unknown
+					.catch(() => ({ error: 'Unknown error' })))
 				const errorResult = errorResponseSchema.safeParse(errorResponseRaw)
 				const errorMessage = errorResult.success
 					? errorResult.data.error
