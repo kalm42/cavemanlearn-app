@@ -41,10 +41,10 @@ export default defineConfig({
 			include: ['src/**/*.{ts,tsx}'],
 			exclude: ['node_modules/', 'src/test/', 'src/paraglide/', '**/*.d.ts', '**/*.config.*'],
 			thresholds: {
-				lines: 25, // Set to 50 after Phase 1, then 70 after Phase 2
+				lines: 45, // Set to 50 after Phase 1, then 70 after Phase 2
 				functions: 25,
-				branches: 25,
-				statements: 25,
+				branches: 50,
+				statements: 45,
 			},
 		},
 	},
