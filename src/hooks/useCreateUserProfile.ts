@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import type { UserType } from '../components/user/OnboardingForm'
 import { userProfileSchema } from '@/db/validators'
+import { captureException } from '@/integrations/posthog'
 
 type UserProfile = z.infer<typeof userProfileSchema>
 
@@ -72,6 +73,12 @@ export function useCreateUserProfile(options?: { onSuccess?: (profile: UserProfi
 			void queryClient.invalidateQueries({ queryKey: ['user-profile'] })
 			// Call the optional onSuccess callback
 			options?.onSuccess?.(data)
+		},
+		onError: (error) => {
+			captureException(error, {
+				context: 'useCreateUserProfile',
+				action: 'create_profile',
+			})
 		},
 	})
 
