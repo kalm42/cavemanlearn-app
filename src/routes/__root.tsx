@@ -16,6 +16,7 @@ import ClerkProvider from '../integrations/clerk/provider'
 import PostHogProvider from '../integrations/posthog/provider'
 import PostHogPageviewTracker from '../integrations/posthog/pageview-tracker'
 import PostHogUserIdentifier from '../integrations/posthog/user-identifier'
+import { ToastProvider } from '../integrations/toast'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -72,24 +73,26 @@ function RootDocument(props: RootDocumentProps) {
 			<body>
 				<PostHogProvider>
 					<ClerkProvider>
-						<PostHogUserIdentifier />
-						<PostHogPageviewTracker />
-						<OnboardingCheck>
-							<Header />
-							{children}
-							<TanStackDevtools
-								config={{
-									position: 'bottom-right',
-								}}
-								plugins={[
-									{
-										name: 'Tanstack Router',
-										render: <TanStackRouterDevtoolsPanel />,
-									},
-									TanStackQueryDevtools,
-								]}
-							/>
-						</OnboardingCheck>
+						<ToastProvider>
+							<PostHogUserIdentifier />
+							<PostHogPageviewTracker />
+							<OnboardingCheck>
+								<Header />
+								{children}
+								<TanStackDevtools
+									config={{
+										position: 'bottom-right',
+									}}
+									plugins={[
+										{
+											name: 'Tanstack Router',
+											render: <TanStackRouterDevtoolsPanel />,
+										},
+										TanStackQueryDevtools,
+									]}
+								/>
+							</OnboardingCheck>
+						</ToastProvider>
 					</ClerkProvider>
 				</PostHogProvider>
 				<Scripts />
