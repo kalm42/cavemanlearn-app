@@ -13,6 +13,9 @@ import { useEffect } from 'react'
 import Header from '../components/Header'
 
 import ClerkProvider from '../integrations/clerk/provider'
+import PostHogProvider from '../integrations/posthog/provider'
+import PostHogPageviewTracker from '../integrations/posthog/pageview-tracker'
+import PostHogUserIdentifier from '../integrations/posthog/user-identifier'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -67,24 +70,28 @@ function RootDocument(props: RootDocumentProps) {
 				<HeadContent />
 			</head>
 			<body>
-				<ClerkProvider>
-					<OnboardingCheck>
-						<Header />
-						{children}
-						<TanStackDevtools
-							config={{
-								position: 'bottom-right',
-							}}
-							plugins={[
-								{
-									name: 'Tanstack Router',
-									render: <TanStackRouterDevtoolsPanel />,
-								},
-								TanStackQueryDevtools,
-							]}
-						/>
-					</OnboardingCheck>
-				</ClerkProvider>
+				<PostHogProvider>
+					<ClerkProvider>
+						<PostHogUserIdentifier />
+						<PostHogPageviewTracker />
+						<OnboardingCheck>
+							<Header />
+							{children}
+							<TanStackDevtools
+								config={{
+									position: 'bottom-right',
+								}}
+								plugins={[
+									{
+										name: 'Tanstack Router',
+										render: <TanStackRouterDevtoolsPanel />,
+									},
+									TanStackQueryDevtools,
+								]}
+							/>
+						</OnboardingCheck>
+					</ClerkProvider>
+				</PostHogProvider>
 				<Scripts />
 			</body>
 		</html>

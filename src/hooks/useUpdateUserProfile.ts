@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import type { updateProfileRequestSchema } from '@/lib/validation/user'
 import { userProfileSchema } from '@/db/validators'
+import { captureException } from '@/integrations/posthog'
 
 type UserProfile = z.infer<typeof userProfileSchema>
 type UpdateProfileData = z.infer<typeof updateProfileRequestSchema>
@@ -67,6 +68,12 @@ export function useUpdateUserProfile(options?: { onSuccess?: (profile: UserProfi
 		onSuccess: (data) => {
 			void queryClient.invalidateQueries({ queryKey: ['user-profile'] })
 			options?.onSuccess?.(data)
+		},
+		onError: (error) => {
+			captureException(error, {
+				context: 'useUpdateUserProfile',
+				action: 'update_profile',
+			})
 		},
 	})
 

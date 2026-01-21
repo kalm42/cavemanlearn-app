@@ -44,6 +44,32 @@ This is a TanStack Start application with SSR support, using React 19 and the Re
 - **Auth**: Clerk - provider wrapped at root level
 - **i18n**: ParaglideJS with URL-based locale strategy - messages in `project.inlang/messages/`
 - **Styling**: Tailwind CSS v4
+- **Analytics**: PostHog - analytics, error reporting, feature flags in `src/integrations/posthog/`
+
+### Error Handling
+
+Error handling follows two principles:
+
+1. **User-facing messages**: Always use i18n messages from `messages/en.json` for user-facing error text. Never show raw error messages to users.
+2. **Error reporting**: Report detailed error information to PostHog for debugging and monitoring.
+
+```typescript
+import { captureException } from '@/integrations/posthog'
+import { m } from '@/paraglide/messages'
+
+// In hooks/mutations - report to PostHog with full details
+onError: (error) => {
+  captureException(error, {
+    context: 'useCreateUserProfile',
+    action: 'create_profile',
+  })
+}
+
+// In components - show localized user-friendly message
+<p className="text-red-400">{m.settings_save_error()}</p>
+```
+
+For mapping technical errors to user messages, see `src/lib/errors.ts` which converts error types to appropriate i18n keys. Add new error messages to `messages/en.json` with descriptive keys (e.g., `feature_error_description`).
 
 ### Database Validation
 
@@ -111,6 +137,8 @@ When selecting elements in tests, prioritize queries that reflect how users inte
 ### Environment Variables
 
 - `VITE_CLERK_PUBLISHABLE_KEY` (required) - Clerk public key
+- `VITE_PUBLIC_POSTHOG_KEY` (required) - PostHog API key
+- `VITE_PUBLIC_POSTHOG_HOST` (required) - PostHog host URL
 - `DATABASE_URL` - PostgreSQL connection string
 
 ## Code Style
