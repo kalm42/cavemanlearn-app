@@ -15,9 +15,13 @@ vi.mock('@/db/index.ts', () => ({
 	},
 }))
 
-vi.mock('@/db/schema.ts', () => ({
-	userProfiles: { clerkId: 'clerk_id' },
-}))
+vi.mock('@/db/schema.ts', async (importOriginal) => {
+	const actual = await importOriginal()
+	return {
+		...(actual as object),
+		userProfiles: { clerkId: 'clerk_id' },
+	}
+})
 
 const mockDb = vi.mocked(db)
 const mockGetCurrentUser = vi.mocked(getCurrentUser)
