@@ -71,7 +71,7 @@ describe('POST /api/webhooks/clerk - Integration', () => {
 
 	it('returns 401 when signature verification fails', async () => {
 		// Silence console.error we expect it
-		vi.spyOn(console, 'error').mockImplementation(() => { })
+		vi.spyOn(console, 'error').mockImplementation(() => {})
 		// Arrange
 		mockVerify.mockImplementation(() => {
 			throw new Error('Invalid signature')
@@ -97,7 +97,7 @@ describe('POST /api/webhooks/clerk - Integration', () => {
 	})
 
 	it('returns 401 when Svix headers are missing', async () => {
-		vi.spyOn(console, 'error').mockImplementation(() => { })
+		vi.spyOn(console, 'error').mockImplementation(() => {})
 
 		const request = new Request('http://localhost/api/webhooks/clerk', {
 			method: 'POST',
@@ -129,7 +129,7 @@ describe('POST /api/webhooks/clerk - Integration', () => {
 	})
 
 	it('returns 401 when payload schema is invalid', async () => {
-		vi.spyOn(console, 'error').mockImplementation(() => { })
+		vi.spyOn(console, 'error').mockImplementation(() => {})
 
 		// Arrange - Create a payload that will pass signature verification
 		// but fail schema validation
@@ -296,7 +296,7 @@ describe('user.created event - Integration', () => {
 	})
 
 	it('does not create profile when email_addresses is empty', async () => {
-		vi.spyOn(console, 'error').mockImplementation(() => { })
+		vi.spyOn(console, 'error').mockImplementation(() => {})
 
 		// Arrange
 		const userId = 'user_no_emails'

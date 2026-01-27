@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import OnboardingForm from './OnboardingForm'
 import { ProfileCreationError } from './ProfileCreationError'
-import type { UserType } from './OnboardingForm';
+import type { UserType } from './OnboardingForm'
 import type { useNavigate } from '@tanstack/react-router'
 import type { useCreateUserProfile } from '@/hooks/useCreateUserProfile'
 import { useSuspenseUserProfile } from '@/hooks/useSuspenseUserProfile'
@@ -49,10 +49,7 @@ export function OnboardingContent(props: OnboardingContentProps) {
 	return (
 		<div className="min-h-screen bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
 			<div className="container mx-auto">
-				<OnboardingForm
-					onSubmit={handleSubmit}
-					isSubmitting={createProfileMutation.isPending}
-				/>
+				<OnboardingForm onSubmit={handleSubmit} isSubmitting={createProfileMutation.isPending} />
 				<ProfileCreationError error={createProfileMutation.error} />
 			</div>
 		</div>

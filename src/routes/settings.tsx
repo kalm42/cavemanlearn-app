@@ -6,20 +6,17 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 import { useRedirectIfUnauthenticated } from '@/hooks/useRedirectIfUnauthenticated'
 import { m } from '@/paraglide/messages'
 
-const navLinkVariants = cva(
-	'flex items-center gap-3 p-3 rounded-lg transition-colors',
-	{
-		variants: {
-			active: {
-				true: 'bg-cyan-600 text-white hover:bg-cyan-700',
-				false: 'text-gray-300 hover:bg-slate-700 hover:text-white',
-			},
-		},
-		defaultVariants: {
-			active: false,
+const navLinkVariants = cva('flex items-center gap-3 p-3 rounded-lg transition-colors', {
+	variants: {
+		active: {
+			true: 'bg-cyan-600 text-white hover:bg-cyan-700',
+			false: 'text-gray-300 hover:bg-slate-700 hover:text-white',
 		},
 	},
-)
+	defaultVariants: {
+		active: false,
+	},
+})
 
 export const Route = createFileRoute('/settings')({
 	component: SettingsLayout,

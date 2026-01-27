@@ -31,7 +31,7 @@ const config = defineConfig({
 		tanstackStart({
 			router: {
 				routeFileIgnorePattern: '__tests__',
-			}
+			},
 		}),
 		viteReact({
 			babel: {

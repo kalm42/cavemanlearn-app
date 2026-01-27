@@ -16,6 +16,7 @@ import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
+import { Route as ApiOrganizationsRouteImport } from './routes/api.organizations'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
@@ -27,371 +28,389 @@ import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
 const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
+	id: '/settings',
+	path: '/settings',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
+	id: '/onboarding',
+	path: '/onboarding',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
+	id: '/',
+	path: '/',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => SettingsRoute,
+	id: '/profile',
+	path: '/profile',
+	getParentRoute: () => SettingsRoute,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/tanstack-query',
+	path: '/demo/tanstack-query',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoI18nRoute = DemoI18nRouteImport.update({
-  id: '/demo/i18n',
-  path: '/demo/i18n',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/i18n',
+	path: '/demo/i18n',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoClerkRoute = DemoClerkRouteImport.update({
-  id: '/demo/clerk',
-  path: '/demo/clerk',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/clerk',
+	path: '/demo/clerk',
+	getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOrganizationsRoute = ApiOrganizationsRouteImport.update({
+	id: '/api/organizations',
+	path: '/api/organizations',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/start/api-request',
+	path: '/demo/start/api-request',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoApiTqTodosRoute = DemoApiTqTodosRouteImport.update({
-  id: '/demo/api/tq-todos',
-  path: '/demo/api/tq-todos',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/api/tq-todos',
+	path: '/demo/api/tq-todos',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
-  id: '/demo/api/names',
-  path: '/demo/api/names',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/api/names',
+	path: '/demo/api/names',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const ApiWebhooksClerkRoute = ApiWebhooksClerkRouteImport.update({
-  id: '/api/webhooks/clerk',
-  path: '/api/webhooks/clerk',
-  getParentRoute: () => rootRouteImport,
+	id: '/api/webhooks/clerk',
+	path: '/api/webhooks/clerk',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUserProfileRoute = ApiUserProfileRouteImport.update({
-  id: '/api/user/profile',
-  path: '/api/user/profile',
-  getParentRoute: () => rootRouteImport,
+	id: '/api/user/profile',
+	path: '/api/user/profile',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
-  id: '/demo/start/ssr/',
-  path: '/demo/start/ssr/',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/start/ssr/',
+	path: '/demo/start/ssr/',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
-  id: '/demo/start/ssr/spa-mode',
-  path: '/demo/start/ssr/spa-mode',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/start/ssr/spa-mode',
+	path: '/demo/start/ssr/spa-mode',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrFullSsrRoute = DemoStartSsrFullSsrRouteImport.update({
-  id: '/demo/start/ssr/full-ssr',
-  path: '/demo/start/ssr/full-ssr',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/start/ssr/full-ssr',
+	path: '/demo/start/ssr/full-ssr',
+	getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
-  id: '/demo/start/ssr/data-only',
-  path: '/demo/start/ssr/data-only',
-  getParentRoute: () => rootRouteImport,
+	id: '/demo/start/ssr/data-only',
+	path: '/demo/start/ssr/data-only',
+	getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/onboarding': typeof OnboardingRoute
-  '/settings': typeof SettingsRouteWithChildren
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/i18n': typeof DemoI18nRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/settings/profile': typeof SettingsProfileRoute
-  '/api/user/profile': typeof ApiUserProfileRoute
-  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+	'/': typeof IndexRoute
+	'/onboarding': typeof OnboardingRoute
+	'/settings': typeof SettingsRouteWithChildren
+	'/api/organizations': typeof ApiOrganizationsRoute
+	'/demo/clerk': typeof DemoClerkRoute
+	'/demo/i18n': typeof DemoI18nRoute
+	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/settings/profile': typeof SettingsProfileRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+	'/demo/api/names': typeof DemoApiNamesRoute
+	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+	'/demo/start/api-request': typeof DemoStartApiRequestRoute
+	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+	'/demo/start/ssr/': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/onboarding': typeof OnboardingRoute
-  '/settings': typeof SettingsRouteWithChildren
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/i18n': typeof DemoI18nRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/settings/profile': typeof SettingsProfileRoute
-  '/api/user/profile': typeof ApiUserProfileRoute
-  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
+	'/': typeof IndexRoute
+	'/onboarding': typeof OnboardingRoute
+	'/settings': typeof SettingsRouteWithChildren
+	'/api/organizations': typeof ApiOrganizationsRoute
+	'/demo/clerk': typeof DemoClerkRoute
+	'/demo/i18n': typeof DemoI18nRoute
+	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/settings/profile': typeof SettingsProfileRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+	'/demo/api/names': typeof DemoApiNamesRoute
+	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+	'/demo/start/api-request': typeof DemoStartApiRequestRoute
+	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+	'/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/onboarding': typeof OnboardingRoute
-  '/settings': typeof SettingsRouteWithChildren
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/i18n': typeof DemoI18nRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/settings/profile': typeof SettingsProfileRoute
-  '/api/user/profile': typeof ApiUserProfileRoute
-  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+	__root__: typeof rootRouteImport
+	'/': typeof IndexRoute
+	'/onboarding': typeof OnboardingRoute
+	'/settings': typeof SettingsRouteWithChildren
+	'/api/organizations': typeof ApiOrganizationsRoute
+	'/demo/clerk': typeof DemoClerkRoute
+	'/demo/i18n': typeof DemoI18nRoute
+	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
+	'/settings/profile': typeof SettingsProfileRoute
+	'/api/user/profile': typeof ApiUserProfileRoute
+	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+	'/demo/api/names': typeof DemoApiNamesRoute
+	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+	'/demo/start/api-request': typeof DemoStartApiRequestRoute
+	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+	'/demo/start/ssr/': typeof DemoStartSsrIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/onboarding'
-    | '/settings'
-    | '/demo/clerk'
-    | '/demo/i18n'
-    | '/demo/tanstack-query'
-    | '/settings/profile'
-    | '/api/user/profile'
-    | '/api/webhooks/clerk'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/onboarding'
-    | '/settings'
-    | '/demo/clerk'
-    | '/demo/i18n'
-    | '/demo/tanstack-query'
-    | '/settings/profile'
-    | '/api/user/profile'
-    | '/api/webhooks/clerk'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr'
-  id:
-    | '__root__'
-    | '/'
-    | '/onboarding'
-    | '/settings'
-    | '/demo/clerk'
-    | '/demo/i18n'
-    | '/demo/tanstack-query'
-    | '/settings/profile'
-    | '/api/user/profile'
-    | '/api/webhooks/clerk'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath
+	fullPaths:
+		| '/'
+		| '/onboarding'
+		| '/settings'
+		| '/api/organizations'
+		| '/demo/clerk'
+		| '/demo/i18n'
+		| '/demo/tanstack-query'
+		| '/settings/profile'
+		| '/api/user/profile'
+		| '/api/webhooks/clerk'
+		| '/demo/api/names'
+		| '/demo/api/tq-todos'
+		| '/demo/start/api-request'
+		| '/demo/start/ssr/data-only'
+		| '/demo/start/ssr/full-ssr'
+		| '/demo/start/ssr/spa-mode'
+		| '/demo/start/ssr/'
+	fileRoutesByTo: FileRoutesByTo
+	to:
+		| '/'
+		| '/onboarding'
+		| '/settings'
+		| '/api/organizations'
+		| '/demo/clerk'
+		| '/demo/i18n'
+		| '/demo/tanstack-query'
+		| '/settings/profile'
+		| '/api/user/profile'
+		| '/api/webhooks/clerk'
+		| '/demo/api/names'
+		| '/demo/api/tq-todos'
+		| '/demo/start/api-request'
+		| '/demo/start/ssr/data-only'
+		| '/demo/start/ssr/full-ssr'
+		| '/demo/start/ssr/spa-mode'
+		| '/demo/start/ssr'
+	id:
+		| '__root__'
+		| '/'
+		| '/onboarding'
+		| '/settings'
+		| '/api/organizations'
+		| '/demo/clerk'
+		| '/demo/i18n'
+		| '/demo/tanstack-query'
+		| '/settings/profile'
+		| '/api/user/profile'
+		| '/api/webhooks/clerk'
+		| '/demo/api/names'
+		| '/demo/api/tq-todos'
+		| '/demo/start/api-request'
+		| '/demo/start/ssr/data-only'
+		| '/demo/start/ssr/full-ssr'
+		| '/demo/start/ssr/spa-mode'
+		| '/demo/start/ssr/'
+	fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  OnboardingRoute: typeof OnboardingRoute
-  SettingsRoute: typeof SettingsRouteWithChildren
-  DemoClerkRoute: typeof DemoClerkRoute
-  DemoI18nRoute: typeof DemoI18nRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  ApiUserProfileRoute: typeof ApiUserProfileRoute
-  ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
-  DemoApiNamesRoute: typeof DemoApiNamesRoute
-  DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
-  DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
-  DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
+	IndexRoute: typeof IndexRoute
+	OnboardingRoute: typeof OnboardingRoute
+	SettingsRoute: typeof SettingsRouteWithChildren
+	ApiOrganizationsRoute: typeof ApiOrganizationsRoute
+	DemoClerkRoute: typeof DemoClerkRoute
+	DemoI18nRoute: typeof DemoI18nRoute
+	DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+	ApiUserProfileRoute: typeof ApiUserProfileRoute
+	ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
+	DemoApiNamesRoute: typeof DemoApiNamesRoute
+	DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
+	DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
+	DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
+	DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
+	DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
+	DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
 }
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings/profile': {
-      id: '/settings/profile'
-      path: '/profile'
-      fullPath: '/settings/profile'
-      preLoaderRoute: typeof SettingsProfileRouteImport
-      parentRoute: typeof SettingsRoute
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/i18n': {
-      id: '/demo/i18n'
-      path: '/demo/i18n'
-      fullPath: '/demo/i18n'
-      preLoaderRoute: typeof DemoI18nRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/clerk': {
-      id: '/demo/clerk'
-      path: '/demo/clerk'
-      fullPath: '/demo/clerk'
-      preLoaderRoute: typeof DemoClerkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/tq-todos': {
-      id: '/demo/api/tq-todos'
-      path: '/demo/api/tq-todos'
-      fullPath: '/demo/api/tq-todos'
-      preLoaderRoute: typeof DemoApiTqTodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/names': {
-      id: '/demo/api/names'
-      path: '/demo/api/names'
-      fullPath: '/demo/api/names'
-      preLoaderRoute: typeof DemoApiNamesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/webhooks/clerk': {
-      id: '/api/webhooks/clerk'
-      path: '/api/webhooks/clerk'
-      fullPath: '/api/webhooks/clerk'
-      preLoaderRoute: typeof ApiWebhooksClerkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/user/profile': {
-      id: '/api/user/profile'
-      path: '/api/user/profile'
-      fullPath: '/api/user/profile'
-      preLoaderRoute: typeof ApiUserProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/': {
-      id: '/demo/start/ssr/'
-      path: '/demo/start/ssr'
-      fullPath: '/demo/start/ssr/'
-      preLoaderRoute: typeof DemoStartSsrIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/spa-mode': {
-      id: '/demo/start/ssr/spa-mode'
-      path: '/demo/start/ssr/spa-mode'
-      fullPath: '/demo/start/ssr/spa-mode'
-      preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/full-ssr': {
-      id: '/demo/start/ssr/full-ssr'
-      path: '/demo/start/ssr/full-ssr'
-      fullPath: '/demo/start/ssr/full-ssr'
-      preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/data-only': {
-      id: '/demo/start/ssr/data-only'
-      path: '/demo/start/ssr/data-only'
-      fullPath: '/demo/start/ssr/data-only'
-      preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
+	interface FileRoutesByPath {
+		'/settings': {
+			id: '/settings'
+			path: '/settings'
+			fullPath: '/settings'
+			preLoaderRoute: typeof SettingsRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/onboarding': {
+			id: '/onboarding'
+			path: '/onboarding'
+			fullPath: '/onboarding'
+			preLoaderRoute: typeof OnboardingRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/': {
+			id: '/'
+			path: '/'
+			fullPath: '/'
+			preLoaderRoute: typeof IndexRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/settings/profile': {
+			id: '/settings/profile'
+			path: '/profile'
+			fullPath: '/settings/profile'
+			preLoaderRoute: typeof SettingsProfileRouteImport
+			parentRoute: typeof SettingsRoute
+		}
+		'/demo/tanstack-query': {
+			id: '/demo/tanstack-query'
+			path: '/demo/tanstack-query'
+			fullPath: '/demo/tanstack-query'
+			preLoaderRoute: typeof DemoTanstackQueryRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/i18n': {
+			id: '/demo/i18n'
+			path: '/demo/i18n'
+			fullPath: '/demo/i18n'
+			preLoaderRoute: typeof DemoI18nRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/clerk': {
+			id: '/demo/clerk'
+			path: '/demo/clerk'
+			fullPath: '/demo/clerk'
+			preLoaderRoute: typeof DemoClerkRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/api/organizations': {
+			id: '/api/organizations'
+			path: '/api/organizations'
+			fullPath: '/api/organizations'
+			preLoaderRoute: typeof ApiOrganizationsRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/start/api-request': {
+			id: '/demo/start/api-request'
+			path: '/demo/start/api-request'
+			fullPath: '/demo/start/api-request'
+			preLoaderRoute: typeof DemoStartApiRequestRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/api/tq-todos': {
+			id: '/demo/api/tq-todos'
+			path: '/demo/api/tq-todos'
+			fullPath: '/demo/api/tq-todos'
+			preLoaderRoute: typeof DemoApiTqTodosRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/api/names': {
+			id: '/demo/api/names'
+			path: '/demo/api/names'
+			fullPath: '/demo/api/names'
+			preLoaderRoute: typeof DemoApiNamesRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/api/webhooks/clerk': {
+			id: '/api/webhooks/clerk'
+			path: '/api/webhooks/clerk'
+			fullPath: '/api/webhooks/clerk'
+			preLoaderRoute: typeof ApiWebhooksClerkRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/api/user/profile': {
+			id: '/api/user/profile'
+			path: '/api/user/profile'
+			fullPath: '/api/user/profile'
+			preLoaderRoute: typeof ApiUserProfileRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/start/ssr/': {
+			id: '/demo/start/ssr/'
+			path: '/demo/start/ssr'
+			fullPath: '/demo/start/ssr/'
+			preLoaderRoute: typeof DemoStartSsrIndexRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/start/ssr/spa-mode': {
+			id: '/demo/start/ssr/spa-mode'
+			path: '/demo/start/ssr/spa-mode'
+			fullPath: '/demo/start/ssr/spa-mode'
+			preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/start/ssr/full-ssr': {
+			id: '/demo/start/ssr/full-ssr'
+			path: '/demo/start/ssr/full-ssr'
+			fullPath: '/demo/start/ssr/full-ssr'
+			preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+		'/demo/start/ssr/data-only': {
+			id: '/demo/start/ssr/data-only'
+			path: '/demo/start/ssr/data-only'
+			fullPath: '/demo/start/ssr/data-only'
+			preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
+			parentRoute: typeof rootRouteImport
+		}
+	}
 }
 
 interface SettingsRouteChildren {
-  SettingsProfileRoute: typeof SettingsProfileRoute
+	SettingsProfileRoute: typeof SettingsProfileRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
-  SettingsProfileRoute: SettingsProfileRoute,
+	SettingsProfileRoute: SettingsProfileRoute,
 }
 
-const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
-  SettingsRouteChildren,
-)
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(SettingsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  OnboardingRoute: OnboardingRoute,
-  SettingsRoute: SettingsRouteWithChildren,
-  DemoClerkRoute: DemoClerkRoute,
-  DemoI18nRoute: DemoI18nRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  ApiUserProfileRoute: ApiUserProfileRoute,
-  ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,
-  DemoApiNamesRoute: DemoApiNamesRoute,
-  DemoApiTqTodosRoute: DemoApiTqTodosRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
-  DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
-  DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
+	IndexRoute: IndexRoute,
+	OnboardingRoute: OnboardingRoute,
+	SettingsRoute: SettingsRouteWithChildren,
+	ApiOrganizationsRoute: ApiOrganizationsRoute,
+	DemoClerkRoute: DemoClerkRoute,
+	DemoI18nRoute: DemoI18nRoute,
+	DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+	ApiUserProfileRoute: ApiUserProfileRoute,
+	ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,
+	DemoApiNamesRoute: DemoApiNamesRoute,
+	DemoApiTqTodosRoute: DemoApiTqTodosRoute,
+	DemoStartApiRequestRoute: DemoStartApiRequestRoute,
+	DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
+	DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
+	DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
+	DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
 }
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
+	interface Register {
+		ssr: true
+		router: Awaited<ReturnType<typeof getRouter>>
+	}
 }

@@ -1,10 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import {
-	showErrorToast,
-	showInfoToast,
-	showSuccessToast,
-	showWarningToast,
-} from '../utils'
+import { showErrorToast, showInfoToast, showSuccessToast, showWarningToast } from '../utils'
 
 const { mockSuccess, mockError, mockInfo, mockWarning } = vi.hoisted(() => ({
 	mockSuccess: vi.fn(),
