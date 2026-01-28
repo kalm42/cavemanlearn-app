@@ -23,7 +23,9 @@ describe('useRedirectIfUnauthenticated', () => {
 		} as never)
 
 		// Act
-		renderHook(() => { useRedirectIfUnauthenticated(); })
+		renderHook(() => {
+			useRedirectIfUnauthenticated()
+		})
 
 		// Assert
 		expect(mockNavigate).not.toHaveBeenCalled()
@@ -37,7 +39,9 @@ describe('useRedirectIfUnauthenticated', () => {
 		} as never)
 
 		// Act
-		renderHook(() => { useRedirectIfUnauthenticated(); })
+		renderHook(() => {
+			useRedirectIfUnauthenticated()
+		})
 
 		// Assert
 		expect(mockNavigate).toHaveBeenCalledWith({ to: '/' })

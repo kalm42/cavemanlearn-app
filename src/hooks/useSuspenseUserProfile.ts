@@ -55,7 +55,7 @@ export function useSuspenseUserProfile() {
 				throw new Error(`Failed to fetch profile: ${String(response.status)}`)
 			}
 
-			const data: unknown = (await response.json())
+			const data: unknown = await response.json()
 			return userProfileSchema.parse(data)
 		},
 	})

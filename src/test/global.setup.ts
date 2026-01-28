@@ -28,9 +28,7 @@ setup('authenticate and save state to storage', async ({ page }) => {
 	const password = process.env.E2E_CLERK_USER_PASSWORD
 
 	if (!username || !password) {
-		throw new Error(
-			'E2E_CLERK_USER_USERNAME and E2E_CLERK_USER_PASSWORD must be set in .env.local',
-		)
+		throw new Error('E2E_CLERK_USER_USERNAME and E2E_CLERK_USER_PASSWORD must be set in .env.local')
 	}
 
 	// Navigate to app and wait for Clerk to load (Sign in button visible)

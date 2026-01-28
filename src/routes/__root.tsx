@@ -41,12 +41,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 	head: () => ({
 		meta: [
-			{charSet: 'utf-8',},
+			{ charSet: 'utf-8' },
 			{
 				name: 'viewport',
 				content: 'width=device-width, initial-scale=1',
 			},
-			{title: 'Caveman Learn',},
+			{ title: 'Caveman Learn' },
 		],
 		links: [
 			{
@@ -116,7 +116,11 @@ function OnboardingCheck({ children }: { children: React.ReactNode }) {
 
 	// Check if user has a profile
 	// Treat errors as "no profile" for lenient redirect behavior
-	const { profile, isLoading: profileLoading, error: profileError } = useUserProfile({
+	const {
+		profile,
+		isLoading: profileLoading,
+		error: profileError,
+	} = useUserProfile({
 		enabled: userLoaded && isSignedIn && !isOnboardingPage,
 	})
 

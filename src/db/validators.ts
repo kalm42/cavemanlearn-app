@@ -1,11 +1,7 @@
 import { z } from 'zod'
 
 import { ORG_ROLES } from './schema.ts'
-import type {
-	Organization,
-	OrganizationMember,
-	UserProfile,
-} from './schema.ts'
+import type { Organization, OrganizationMember, UserProfile } from './schema.ts'
 
 // Zod schemas for database record validation
 export const userTypeSchema = z.enum(['learner', 'publisher'])

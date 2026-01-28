@@ -30,9 +30,7 @@ describe('useCreateUserProfile', () => {
 	const wrapper = (props: { children: React.ReactNode }) => {
 		const { children } = props
 
-		return (
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-		)
+		return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 	}
 	it('creates profile successfully', async () => {
 		// Arrange
