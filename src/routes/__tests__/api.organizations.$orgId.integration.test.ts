@@ -530,6 +530,266 @@ describe('PUT /api/organizations/:orgId - Integration', () => {
 		const body = await response.json()
 		expect(body.error).toBe('Name must be 100 characters or less')
 	})
+
+	it('returns 400 for empty update request', async () => {
+		// Arrange
+		const clerkId = 'user_update_empty'
+		const email = 'update-empty@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Empty Update Org',
+				slug: 'empty-update-org',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({}),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(400)
+		const body = await response.json()
+		expect(body.error).toBe('At least one field must be provided for update')
+	})
+
+	it('returns 400 for whitespace-only name', async () => {
+		// Arrange
+		const clerkId = 'user_update_whitespace'
+		const email = 'update-whitespace@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Whitespace Update Org',
+				slug: 'whitespace-update-org',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ name: '   ' }),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(400)
+		const body = await response.json()
+		expect(body.error).toBe('Name is required')
+	})
+
+	it('trims whitespace from name before saving', async () => {
+		// Arrange
+		const clerkId = 'user_update_trim'
+		const email = 'update-trim@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Trim Update Org',
+				slug: 'trim-update-org',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ name: '  Trimmed Name  ' }),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body: { organization: { name: string; slug: string } } = await response.json()
+		expect(body.organization.name).toBe('Trimmed Name')
+		expect(body.organization.slug).toBe('trimmed-name')
+	})
+
+	it('updates logoUrl with a valid URL', async () => {
+		// Arrange
+		const clerkId = 'user_update_logo'
+		const email = 'update-logo@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Logo Update Org',
+				slug: 'logo-update-org',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ logoUrl: 'https://example.com/logo.png' }),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body: { organization: { logoUrl: string } } = await response.json()
+		expect(body.organization.logoUrl).toBe('https://example.com/logo.png')
+	})
+
+	it('returns 400 for invalid logoUrl', async () => {
+		// Arrange
+		const clerkId = 'user_update_invalid_logo'
+		const email = 'update-invalid-logo@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Invalid Logo Org',
+				slug: 'invalid-logo-org',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ logoUrl: 'not-a-valid-url' }),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(400)
+		const body = await response.json()
+		expect(body.error).toBe('Logo URL must be a valid URL')
+	})
+
+	it('sets logoUrl to null to clear it', async () => {
+		// Arrange
+		const clerkId = 'user_update_null_logo'
+		const email = 'update-null-logo@example.com'
+		const [user] = await globalThis.testDb
+			.insert(userProfiles)
+			.values({
+				clerkId,
+				email,
+				userType: 'publisher',
+			})
+			.returning()
+
+		const [org] = await globalThis.testDb
+			.insert(organizations)
+			.values({
+				name: 'Null Logo Org',
+				slug: 'null-logo-org',
+				logoUrl: 'https://example.com/old-logo.png',
+			})
+			.returning()
+
+		await globalThis.testDb.insert(organizationMembers).values({
+			organizationId: org.id,
+			userId: user.id,
+			role: 'admin',
+		})
+
+		const authHeader = createMockAuthHeader(mockVerifyToken, clerkId, email)
+		const request = new Request(`http://localhost/api/organizations/${org.id}`, {
+			method: 'PUT',
+			headers: { Authorization: authHeader },
+			body: JSON.stringify({ logoUrl: null }),
+		})
+
+		// Act
+		const response = await handleUpdateOrganization(request, org.id)
+
+		// Assert
+		expect(response.status).toBe(200)
+		const body: { organization: { logoUrl: string | null } } = await response.json()
+		expect(body.organization.logoUrl).toBeNull()
+	})
 })
 
 /**

@@ -21,8 +21,16 @@ import { z } from 'zod'
  * })
  */
 export const createOrganizationRequestSchema = z.object({
-	name: z.string().min(1, 'Name is required').max(100, 'Name must be 100 characters or less'),
-	description: z.string().max(500, 'Description must be 500 characters or less').nullish(),
+	name: z
+		.string()
+		.trim()
+		.min(1, 'Name is required')
+		.max(100, 'Name must be 100 characters or less'),
+	description: z
+		.string()
+		.max(500, 'Description must be 500 characters or less')
+		.transform((val) => (val === '' ? null : val))
+		.nullish(),
 })
 
 export type CreateOrganizationRequest = z.infer<typeof createOrganizationRequestSchema>
@@ -48,14 +56,25 @@ export type CreateOrganizationRequest = z.infer<typeof createOrganizationRequest
  *   logoUrl: 'https://example.com/logo.png'
  * })
  */
-export const updateOrganizationRequestSchema = z.object({
-	name: z
-		.string()
-		.min(1, 'Name is required')
-		.max(100, 'Name must be 100 characters or less')
-		.optional(),
-	description: z.string().max(500, 'Description must be 500 characters or less').nullish(),
-	logoUrl: z.url('Logo URL must be a valid URL').nullish(),
-})
+export const updateOrganizationRequestSchema = z
+	.object({
+		name: z
+			.string()
+			.trim()
+			.min(1, 'Name is required')
+			.max(100, 'Name must be 100 characters or less')
+			.optional(),
+		description: z
+			.string()
+			.max(500, 'Description must be 500 characters or less')
+			.transform((val) => (val === '' ? null : val))
+			.nullish(),
+		logoUrl: z.url('Logo URL must be a valid URL').nullish(),
+	})
+	.refine(
+		(data) =>
+			data.name !== undefined || data.description !== undefined || data.logoUrl !== undefined,
+		{ message: 'At least one field must be provided for update' }
+	)
 
 export type UpdateOrganizationRequest = z.infer<typeof updateOrganizationRequestSchema>

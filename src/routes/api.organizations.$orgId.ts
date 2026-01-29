@@ -52,8 +52,9 @@ function validateOrgId(orgId: string): Response | null {
  * Handles GET requests to retrieve a single organization by ID. Verifies that
  * the current user is a member of the organization before returning the details.
  * Returns 400 if orgId is invalid, 401 if unauthenticated, 404 if user profile
- * or organization not found, 403 if user is not a member, or 200 with the
- * organization details including member count.
+ * not found, 403 if user is not a member or organization does not exist (to avoid
+ * leaking organization existence), or 200 with the organization details including
+ * member count.
  *
  * @example
  * const response = await handleGetOrganization(request, 'org-uuid')
@@ -73,7 +74,7 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
 		return Response.json({ error: 'Profile not found' }, { status: 404 })
 	}
 
-	// Verify user is a member of the organization
+	// Verify user is a member (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role) {
 		return Response.json({ error: 'Forbidden' }, { status: 403 })
@@ -114,8 +115,9 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
  * Handles PUT requests to update an organization. Verifies that the current user
  * has admin or higher role in the organization. If the name is changed, a new unique
  * slug is generated. Returns 400 if orgId is invalid or body validation fails, 401 if
- * unauthenticated, 404 if user profile or organization not found, 403 if user lacks
- * permission, or 200 with the updated organization.
+ * unauthenticated, 404 if user profile not found, 403 if user lacks permission or
+ * organization does not exist (to avoid leaking organization existence), or 200 with
+ * the updated organization.
  *
  * @example
  * const response = await handleUpdateOrganization(request, 'org-uuid')
@@ -135,7 +137,7 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
 		return Response.json({ error: 'Profile not found' }, { status: 404 })
 	}
 
-	// Verify user has admin+ role
+	// Verify user has admin+ role (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role || !hasMinimumRole(role, 'admin')) {
 		return Response.json({ error: 'Forbidden' }, { status: 403 })
@@ -214,8 +216,8 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
  * Handles DELETE requests to delete an organization. Only the owner can delete
  * an organization. The deletion cascades to remove all organization members.
  * Returns 400 if orgId is invalid, 401 if unauthenticated, 404 if user profile
- * or organization not found, 403 if user is not the owner, or 204 with no content
- * on success.
+ * not found, 403 if user is not the owner or organization does not exist (to avoid
+ * leaking organization existence), or 204 with no content on success.
  *
  * @example
  * const response = await handleDeleteOrganization(request, 'org-uuid')
@@ -235,7 +237,7 @@ export async function handleDeleteOrganization(request: Request, orgId: string):
 		return Response.json({ error: 'Profile not found' }, { status: 404 })
 	}
 
-	// Verify user is the owner
+	// Verify user is the owner (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role || !canDeleteOrganization(role)) {
 		return Response.json({ error: 'Forbidden' }, { status: 403 })
