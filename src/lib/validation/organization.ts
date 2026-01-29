@@ -26,3 +26,36 @@ export const createOrganizationRequestSchema = z.object({
 })
 
 export type CreateOrganizationRequest = z.infer<typeof createOrganizationRequestSchema>
+
+/**
+ * ## updateOrganizationRequestSchema
+ *
+ * Zod schema for validating organization update requests. All fields are optional,
+ * but at least one field should be provided. Name must be between 1-100 characters,
+ * description up to 500 characters, and logoUrl must be a valid URL.
+ *
+ * @example
+ * const result = updateOrganizationRequestSchema.safeParse({ name: 'New Name' })
+ * if (result.success) {
+ *   console.log(result.data.name)
+ * }
+ *
+ * @example
+ * // Update multiple fields
+ * updateOrganizationRequestSchema.parse({
+ *   name: 'Updated Org',
+ *   description: 'New description',
+ *   logoUrl: 'https://example.com/logo.png'
+ * })
+ */
+export const updateOrganizationRequestSchema = z.object({
+	name: z
+		.string()
+		.min(1, 'Name is required')
+		.max(100, 'Name must be 100 characters or less')
+		.optional(),
+	description: z.string().max(500, 'Description must be 500 characters or less').nullish(),
+	logoUrl: z.url('Logo URL must be a valid URL').nullish(),
+})
+
+export type UpdateOrganizationRequest = z.infer<typeof updateOrganizationRequestSchema>
