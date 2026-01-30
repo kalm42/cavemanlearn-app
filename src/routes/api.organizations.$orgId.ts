@@ -8,6 +8,7 @@ import { organizationSchema } from '@/db/validators.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
 import { canDeleteOrganization, getUserOrgRole, hasMinimumRole } from '@/lib/permissions.ts'
 import { generateUniqueSlug } from '@/lib/slug.ts'
+import { validateUuid } from '@/lib/validation/common.ts'
 import { updateOrganizationRequestSchema } from '@/lib/validation/organization.ts'
 
 /**
@@ -19,32 +20,6 @@ import { updateOrganizationRequestSchema } from '@/lib/validation/organization.t
 const organizationWithMemberCountSchema = organizationSchema.extend({
 	memberCount: z.number(),
 })
-
-/**
- * ## orgIdSchema
- *
- * Zod schema for validating organization ID parameter.
- * Ensures the orgId is a valid UUID format.
- */
-const orgIdSchema = z.uuid()
-
-/**
- * ## validateOrgId
- *
- * Validates that the orgId parameter is a valid UUID format.
- * Returns a 400 response if invalid, or null if valid.
- *
- * @example
- * const errorResponse = validateOrgId(orgId)
- * if (errorResponse) return errorResponse
- */
-function validateOrgId(orgId: string): Response | null {
-	const result = orgIdSchema.safeParse(orgId)
-	if (!result.success) {
-		return Response.json({ error: 'Invalid organization ID format' }, { status: 400 })
-	}
-	return null
-}
 
 /**
  * ## handleGetOrganization
@@ -61,7 +36,7 @@ function validateOrgId(orgId: string): Response | null {
  * const { organization } = await response.json()
  */
 export async function handleGetOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateOrgId(orgId)
+	const validationError = validateUuid(orgId, 'organization ID')
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)
@@ -124,7 +99,7 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
  * const { organization } = await response.json()
  */
 export async function handleUpdateOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateOrgId(orgId)
+	const validationError = validateUuid(orgId, 'organization ID')
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)
@@ -224,7 +199,7 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
  * // response.status === 204
  */
 export async function handleDeleteOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateOrgId(orgId)
+	const validationError = validateUuid(orgId, 'organization ID')
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)

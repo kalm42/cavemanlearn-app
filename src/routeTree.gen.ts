@@ -27,6 +27,8 @@ import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.i
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as ApiOrganizationsOrgIdMembersRouteImport } from './routes/api.organizations.$orgId.members'
+import { Route as ApiOrganizationsOrgIdMembersMemberIdRouteImport } from './routes/api.organizations.$orgId.members.$memberId'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -118,6 +120,18 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
   path: '/demo/start/ssr/data-only',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOrganizationsOrgIdMembersRoute =
+  ApiOrganizationsOrgIdMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => ApiOrganizationsOrgIdRoute,
+  } as any)
+const ApiOrganizationsOrgIdMembersMemberIdRoute =
+  ApiOrganizationsOrgIdMembersMemberIdRouteImport.update({
+    id: '/$memberId',
+    path: '/$memberId',
+    getParentRoute: () => ApiOrganizationsOrgIdMembersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -128,16 +142,18 @@ export interface FileRoutesByFullPath {
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -148,16 +164,18 @@ export interface FileRoutesByTo {
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -169,16 +187,18 @@ export interface FileRoutesById {
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,10 +217,12 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr/'
+    | '/api/organizations/$orgId/members/$memberId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -217,10 +239,12 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr'
+    | '/api/organizations/$orgId/members/$memberId'
   id:
     | '__root__'
     | '/'
@@ -237,10 +261,12 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr/'
+    | '/api/organizations/$orgId/members/$memberId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -390,6 +416,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/organizations/$orgId/members': {
+      id: '/api/organizations/$orgId/members'
+      path: '/members'
+      fullPath: '/api/organizations/$orgId/members'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdMembersRouteImport
+      parentRoute: typeof ApiOrganizationsOrgIdRoute
+    }
+    '/api/organizations/$orgId/members/$memberId': {
+      id: '/api/organizations/$orgId/members/$memberId'
+      path: '/$memberId'
+      fullPath: '/api/organizations/$orgId/members/$memberId'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRouteImport
+      parentRoute: typeof ApiOrganizationsOrgIdMembersRoute
+    }
   }
 }
 
@@ -405,12 +445,41 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
   SettingsRouteChildren,
 )
 
+interface ApiOrganizationsOrgIdMembersRouteChildren {
+  ApiOrganizationsOrgIdMembersMemberIdRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRoute
+}
+
+const ApiOrganizationsOrgIdMembersRouteChildren: ApiOrganizationsOrgIdMembersRouteChildren =
+  {
+    ApiOrganizationsOrgIdMembersMemberIdRoute:
+      ApiOrganizationsOrgIdMembersMemberIdRoute,
+  }
+
+const ApiOrganizationsOrgIdMembersRouteWithChildren =
+  ApiOrganizationsOrgIdMembersRoute._addFileChildren(
+    ApiOrganizationsOrgIdMembersRouteChildren,
+  )
+
+interface ApiOrganizationsOrgIdRouteChildren {
+  ApiOrganizationsOrgIdMembersRoute: typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+}
+
+const ApiOrganizationsOrgIdRouteChildren: ApiOrganizationsOrgIdRouteChildren = {
+  ApiOrganizationsOrgIdMembersRoute:
+    ApiOrganizationsOrgIdMembersRouteWithChildren,
+}
+
+const ApiOrganizationsOrgIdRouteWithChildren =
+  ApiOrganizationsOrgIdRoute._addFileChildren(
+    ApiOrganizationsOrgIdRouteChildren,
+  )
+
 interface ApiOrganizationsRouteChildren {
-  ApiOrganizationsOrgIdRoute: typeof ApiOrganizationsOrgIdRoute
+  ApiOrganizationsOrgIdRoute: typeof ApiOrganizationsOrgIdRouteWithChildren
 }
 
 const ApiOrganizationsRouteChildren: ApiOrganizationsRouteChildren = {
-  ApiOrganizationsOrgIdRoute: ApiOrganizationsOrgIdRoute,
+  ApiOrganizationsOrgIdRoute: ApiOrganizationsOrgIdRouteWithChildren,
 }
 
 const ApiOrganizationsRouteWithChildren =
