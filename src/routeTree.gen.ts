@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PublisherRouteImport } from './routes/publisher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
@@ -17,6 +18,9 @@ import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-qu
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
 import { Route as ApiOrganizationsRouteImport } from './routes/api.organizations'
+import { Route as PublisherOrganizationsIndexRouteImport } from './routes/publisher/organizations/index'
+import { Route as PublisherOrganizationsNewRouteImport } from './routes/publisher/organizations/new'
+import { Route as PublisherOrganizationsOrgIdRouteImport } from './routes/publisher/organizations/$orgId'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
@@ -33,6 +37,11 @@ import { Route as ApiOrganizationsOrgIdMembersMemberIdRouteImport } from './rout
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublisherRoute = PublisherRouteImport.update({
+  id: '/publisher',
+  path: '/publisher',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -70,6 +79,24 @@ const ApiOrganizationsRoute = ApiOrganizationsRouteImport.update({
   path: '/api/organizations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublisherOrganizationsIndexRoute =
+  PublisherOrganizationsIndexRouteImport.update({
+    id: '/organizations/',
+    path: '/organizations/',
+    getParentRoute: () => PublisherRoute,
+  } as any)
+const PublisherOrganizationsNewRoute =
+  PublisherOrganizationsNewRouteImport.update({
+    id: '/organizations/new',
+    path: '/organizations/new',
+    getParentRoute: () => PublisherRoute,
+  } as any)
+const PublisherOrganizationsOrgIdRoute =
+  PublisherOrganizationsOrgIdRouteImport.update({
+    id: '/organizations/$orgId',
+    path: '/organizations/$orgId',
+    getParentRoute: () => PublisherRoute,
+  } as any)
 const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
   id: '/demo/start/api-request',
   path: '/demo/start/api-request',
@@ -136,6 +163,7 @@ const ApiOrganizationsOrgIdMembersMemberIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
@@ -148,6 +176,9 @@ export interface FileRoutesByFullPath {
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRoute
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
@@ -158,6 +189,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
@@ -170,6 +202,9 @@ export interface FileRoutesByTo {
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRoute
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations': typeof PublisherOrganizationsIndexRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
@@ -181,6 +216,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
@@ -193,6 +229,9 @@ export interface FileRoutesById {
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRoute
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
@@ -205,6 +244,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/onboarding'
+    | '/publisher'
     | '/settings'
     | '/api/organizations'
     | '/demo/clerk'
@@ -217,6 +257,9 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/publisher/organizations/$orgId'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations/'
     | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
@@ -227,6 +270,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/onboarding'
+    | '/publisher'
     | '/settings'
     | '/api/organizations'
     | '/demo/clerk'
@@ -239,6 +283,9 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/publisher/organizations/$orgId'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations'
     | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
@@ -249,6 +296,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/onboarding'
+    | '/publisher'
     | '/settings'
     | '/api/organizations'
     | '/demo/clerk'
@@ -261,6 +309,9 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
+    | '/publisher/organizations/$orgId'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations/'
     | '/api/organizations/$orgId/members'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
@@ -272,6 +323,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OnboardingRoute: typeof OnboardingRoute
+  PublisherRoute: typeof PublisherRouteWithChildren
   SettingsRoute: typeof SettingsRouteWithChildren
   ApiOrganizationsRoute: typeof ApiOrganizationsRouteWithChildren
   DemoClerkRoute: typeof DemoClerkRoute
@@ -295,6 +347,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publisher': {
+      id: '/publisher'
+      path: '/publisher'
+      fullPath: '/publisher'
+      preLoaderRoute: typeof PublisherRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -345,6 +404,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/organizations'
       preLoaderRoute: typeof ApiOrganizationsRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/publisher/organizations/': {
+      id: '/publisher/organizations/'
+      path: '/organizations'
+      fullPath: '/publisher/organizations/'
+      preLoaderRoute: typeof PublisherOrganizationsIndexRouteImport
+      parentRoute: typeof PublisherRoute
+    }
+    '/publisher/organizations/new': {
+      id: '/publisher/organizations/new'
+      path: '/organizations/new'
+      fullPath: '/publisher/organizations/new'
+      preLoaderRoute: typeof PublisherOrganizationsNewRouteImport
+      parentRoute: typeof PublisherRoute
+    }
+    '/publisher/organizations/$orgId': {
+      id: '/publisher/organizations/$orgId'
+      path: '/organizations/$orgId'
+      fullPath: '/publisher/organizations/$orgId'
+      preLoaderRoute: typeof PublisherOrganizationsOrgIdRouteImport
+      parentRoute: typeof PublisherRoute
     }
     '/demo/start/api-request': {
       id: '/demo/start/api-request'
@@ -433,6 +513,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface PublisherRouteChildren {
+  PublisherOrganizationsOrgIdRoute: typeof PublisherOrganizationsOrgIdRoute
+  PublisherOrganizationsNewRoute: typeof PublisherOrganizationsNewRoute
+  PublisherOrganizationsIndexRoute: typeof PublisherOrganizationsIndexRoute
+}
+
+const PublisherRouteChildren: PublisherRouteChildren = {
+  PublisherOrganizationsOrgIdRoute: PublisherOrganizationsOrgIdRoute,
+  PublisherOrganizationsNewRoute: PublisherOrganizationsNewRoute,
+  PublisherOrganizationsIndexRoute: PublisherOrganizationsIndexRoute,
+}
+
+const PublisherRouteWithChildren = PublisherRoute._addFileChildren(
+  PublisherRouteChildren,
+)
+
 interface SettingsRouteChildren {
   SettingsProfileRoute: typeof SettingsProfileRoute
 }
@@ -488,6 +584,7 @@ const ApiOrganizationsRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OnboardingRoute: OnboardingRoute,
+  PublisherRoute: PublisherRouteWithChildren,
   SettingsRoute: SettingsRouteWithChildren,
   ApiOrganizationsRoute: ApiOrganizationsRouteWithChildren,
   DemoClerkRoute: DemoClerkRoute,
