@@ -55,5 +55,21 @@
 	"organization_role_admin": "Admin",
 	"organization_role_editor": "Editor",
 	"organization_role_writer": "Writer",
-	"organization_role_viewer": "Viewer"
+	"organization_role_viewer": "Viewer",
+	"organization_create_title": "Create Organization",
+	"organization_create_subtitle": "Create a new organization to start publishing content",
+	"organization_create_name_label": "Organization Name",
+	"organization_create_name_placeholder": "e.g., Acme Learning",
+	"organization_create_name_required": "Organization name is required",
+	"organization_create_name_max_length": "Name must be 100 characters or less",
+	"organization_create_description_label": "Description (optional)",
+	"organization_create_description_placeholder": "What does your organization do?",
+	"organization_create_description_max_length": "Description must be 500 characters or less",
+	"organization_create_slug_label": "URL Slug",
+	"organization_create_slug_preview": "Your organization's unique identifier will be: {slug}",
+	"organization_create_submit": "Create Organization",
+	"organization_create_submitting": "Creating...",
+	"organization_create_success": "Organization created successfully",
+	"organization_create_error": "Failed to create organization",
+	"organization_create_error_duplicate": "An organization with this name already exists. Please try a different name."
 }
