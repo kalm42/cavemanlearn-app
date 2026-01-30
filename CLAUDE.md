@@ -53,6 +53,8 @@ Error handling follows two principles:
 1. **User-facing messages**: Always use i18n messages from `messages/en.json` for user-facing error text. Never show raw error messages to users.
 2. **Error reporting**: Report detailed error information to PostHog for debugging and monitoring.
 
+**Client-side (hooks/components):**
+
 ```typescript
 import { captureException } from '@/integrations/posthog'
 import { m } from '@/paraglide/messages'
@@ -68,6 +70,26 @@ onError: (error) => {
 // In components - show localized user-friendly message
 <p className="text-red-400">{m.settings_save_error()}</p>
 ```
+
+**Server-side (API route handlers):**
+
+```typescript
+import { captureServerException } from '@/integrations/posthog'
+
+export async function handleApiRoute(request: Request): Promise<Response> {
+	try {
+		// ... handler logic
+	} catch (error) {
+		captureServerException(error, {
+			context: 'handleApiRoute',
+			orgId: 'abc123',
+		})
+		return Response.json({ error: 'Internal server error' }, { status: 500 })
+	}
+}
+```
+
+Server-side error tracking uses the PostHog HTTP API directly (fire-and-forget) since there's no browser context. The utilities are in `src/integrations/posthog/server.ts`.
 
 For mapping technical errors to user messages, see `src/lib/errors.ts` which converts error types to appropriate i18n keys. Add new error messages to `messages/en.json` with descriptive keys (e.g., `feature_error_description`).
 

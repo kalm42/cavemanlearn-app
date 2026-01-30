@@ -74,7 +74,7 @@ export const updateOrganizationRequestSchema = z
 	.refine(
 		(data) =>
 			data.name !== undefined || data.description !== undefined || data.logoUrl !== undefined,
-		{ message: 'At least one field must be provided for update' }
+		{ message: 'At least one field must be provided for update' },
 	)
 
 export type UpdateOrganizationRequest = z.infer<typeof updateOrganizationRequestSchema>
