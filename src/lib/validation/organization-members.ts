@@ -26,8 +26,25 @@ const NON_OWNER_ROLES = ORG_ROLES.filter(
  * nonOwnerRoleSchema.parse('admin') // 'admin'
  * nonOwnerRoleSchema.parse('owner') // throws ZodError
  */
+/**
+ * ## formatRoleList
+ *
+ * Formats a list of roles with proper grammar (e.g., "admin, editor, writer, or viewer").
+ *
+ * @example
+ * formatRoleList(['admin', 'editor', 'viewer']) // "admin, editor, or viewer"
+ */
+function formatRoleList(roles: ReadonlyArray<string>): string {
+	if (roles.length === 0) return ''
+	if (roles.length === 1) return roles[0]
+	if (roles.length === 2) return `${roles[0]} or ${roles[1]}`
+	const allButLast = roles.slice(0, -1).join(', ')
+	const last = roles[roles.length - 1]
+	return `${allButLast}, or ${last}`
+}
+
 export const nonOwnerRoleSchema = z.enum(NON_OWNER_ROLES, {
-	error: `Role must be ${NON_OWNER_ROLES.join(', ')}`,
+	error: `Role must be ${formatRoleList(NON_OWNER_ROLES)}`,
 })
 
 export type NonOwnerRole = z.infer<typeof nonOwnerRoleSchema>
