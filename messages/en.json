@@ -38,5 +38,22 @@
 	"settings_save_changes": "Save Changes",
 	"settings_saving": "Saving...",
 	"settings_save_success": "Profile updated successfully",
-	"settings_save_error": "Failed to update profile"
+	"settings_save_error": "Failed to update profile",
+	"publisher_page_title": "Publisher Dashboard",
+	"publisher_back_to_home": "Back to Home",
+	"publisher_nav_organizations": "Organizations",
+	"publisher_organizations_title": "My Organizations",
+	"publisher_organizations_description": "Manage your organizations and their content",
+	"publisher_organizations_empty_title": "No organizations yet",
+	"publisher_organizations_empty_description": "Create your first organization to start publishing content.",
+	"publisher_organizations_create_button": "Create Organization",
+	"publisher_organizations_error": "Failed to load organizations",
+	"publisher_access_denied_title": "Access Denied",
+	"publisher_access_denied_description": "This area is only available to publisher accounts.",
+	"organization_card_members": "{count} members",
+	"organization_role_owner": "Owner",
+	"organization_role_admin": "Admin",
+	"organization_role_editor": "Editor",
+	"organization_role_writer": "Writer",
+	"organization_role_viewer": "Viewer"
 }

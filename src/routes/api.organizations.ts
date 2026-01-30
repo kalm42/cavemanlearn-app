@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { eq } from 'drizzle-orm'
+import { count, eq, inArray } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { db } from '@/db/index.ts'
@@ -7,23 +7,13 @@ import { organizationMembers, organizations } from '@/db/schema.ts'
 import {
 	insertOrganizationMemberSchema,
 	insertOrganizationSchema,
-	orgRoleSchema,
 	organizationMemberSchema,
 	organizationSchema,
+	organizationWithRoleSchema,
 } from '@/db/validators.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
 import { generateUniqueSlug } from '@/lib/slug.ts'
 import { createOrganizationRequestSchema } from '@/lib/validation/organization.ts'
-
-/**
- * ## organizationWithRoleSchema
- *
- * Zod schema for validating organization data with the user's role included.
- * Extends the base organization schema with a role field.
- */
-const organizationWithRoleSchema = organizationSchema.extend({
-	role: orgRoleSchema,
-})
 
 /**
  * ## handleGetOrganizations
@@ -64,8 +54,32 @@ export async function handleGetOrganizations(request: Request): Promise<Response
 		.where(eq(organizationMembers.userId, profile.id))
 		.orderBy(organizations.name)
 
-	// Validate each organization with role
-	const validatedOrganizations = results.map((org) => organizationWithRoleSchema.parse(org))
+	// Get member counts for each organization
+	const orgIds = results.map((org) => org.id)
+	const countMap = new Map<string, number>()
+
+	if (orgIds.length > 0) {
+		const memberCounts = await db
+			.select({
+				organizationId: organizationMembers.organizationId,
+				count: count(),
+			})
+			.from(organizationMembers)
+			.where(inArray(organizationMembers.organizationId, orgIds))
+			.groupBy(organizationMembers.organizationId)
+
+		for (const mc of memberCounts) {
+			countMap.set(mc.organizationId, mc.count)
+		}
+	}
+
+	// Validate each organization with role and member count
+	const validatedOrganizations = results.map((org) =>
+		organizationWithRoleSchema.parse({
+			...org,
+			memberCount: countMap.get(org.id) ?? 0,
+		}),
+	)
 
 	return Response.json({ organizations: validatedOrganizations })
 }
