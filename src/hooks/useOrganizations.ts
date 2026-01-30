@@ -2,19 +2,15 @@ import { useAuth, useUser } from '@clerk/clerk-react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { z } from 'zod'
-import { orgRoleSchema, organizationSchema } from '@/db/validators'
+import type { OrganizationWithRole } from '@/db/validators'
+import { organizationWithRoleSchema } from '@/db/validators'
 import { captureException } from '@/integrations/posthog'
 
-const organizationWithRoleSchema = organizationSchema.extend({
-	role: orgRoleSchema,
-	memberCount: z.number(),
-})
+export type { OrganizationWithRole } from '@/db/validators'
 
 const organizationsResponseSchema = z.object({
 	organizations: z.array(organizationWithRoleSchema),
 })
-
-export type OrganizationWithRole = z.infer<typeof organizationWithRoleSchema>
 
 /**
  * ## useOrganizations

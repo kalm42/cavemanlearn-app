@@ -63,3 +63,21 @@ export const insertOrganizationMemberSchema = z.object({
 	userId: z.uuid(),
 	role: orgRoleSchema,
 })
+
+/**
+ * ## organizationWithRoleSchema
+ *
+ * Zod schema for validating organization data with the user's role and member count included.
+ * Extends the base organization schema with role and memberCount fields. Used by both the
+ * API route and client hooks to ensure consistent validation.
+ *
+ * @example
+ * const validated = organizationWithRoleSchema.parse(orgData)
+ * console.log(validated.role, validated.memberCount)
+ */
+export const organizationWithRoleSchema = organizationSchema.extend({
+	role: orgRoleSchema,
+	memberCount: z.number(),
+})
+
+export type OrganizationWithRole = z.infer<typeof organizationWithRoleSchema>

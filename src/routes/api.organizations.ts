@@ -7,24 +7,13 @@ import { organizationMembers, organizations } from '@/db/schema.ts'
 import {
 	insertOrganizationMemberSchema,
 	insertOrganizationSchema,
-	orgRoleSchema,
 	organizationMemberSchema,
 	organizationSchema,
+	organizationWithRoleSchema,
 } from '@/db/validators.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
 import { generateUniqueSlug } from '@/lib/slug.ts'
 import { createOrganizationRequestSchema } from '@/lib/validation/organization.ts'
-
-/**
- * ## organizationWithRoleSchema
- *
- * Zod schema for validating organization data with the user's role and member count included.
- * Extends the base organization schema with role and memberCount fields.
- */
-const organizationWithRoleSchema = organizationSchema.extend({
-	role: orgRoleSchema,
-	memberCount: z.number(),
-})
 
 /**
  * ## handleGetOrganizations
