@@ -2,6 +2,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { captureServerEvent, captureServerException } from '../server'
 
+interface PostHogCaptureBody {
+	api_key: string
+	event: string
+	distinct_id: string
+	properties: Record<string, unknown>
+}
+
+function parseRequestBody(mockFetch: ReturnType<typeof vi.fn>): PostHogCaptureBody {
+	const call = mockFetch.mock.calls[0] as [string, { body: string }]
+	return JSON.parse(call[1].body) as PostHogCaptureBody
+}
+
 const mockFetch = vi.fn()
 
 vi.mock('@/env.ts', () => ({
@@ -40,7 +52,7 @@ describe('PostHog Server Utils', () => {
 				}),
 			)
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.api_key).toBe('test-api-key')
 			expect(body.event).toBe('$exception')
 			expect(body.properties.$exception_message).toBe('Test error message')
@@ -60,7 +72,7 @@ describe('PostHog Server Utils', () => {
 			// Assert
 			expect(mockFetch).toHaveBeenCalledTimes(1)
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.properties.$exception_message).toBe('String error')
 			expect(body.properties.$exception_type).toBe('Error')
 			expect(body.properties.$exception_stack_trace_raw).toBeUndefined()
@@ -74,7 +86,7 @@ describe('PostHog Server Utils', () => {
 			captureServerException(error, { clerkId: 'clerk-456' })
 
 			// Assert
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.distinct_id).toBe('clerk-456')
 		})
 
@@ -86,7 +98,7 @@ describe('PostHog Server Utils', () => {
 			captureServerException(error)
 
 			// Assert
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.distinct_id).toBe('server')
 		})
 
@@ -103,7 +115,7 @@ describe('PostHog Server Utils', () => {
 			captureServerException(error, context)
 
 			// Assert
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.properties.context).toBe('handleAddMember')
 			expect(body.properties.orgId).toBe('org-123')
 			expect(body.properties.customField).toBe('custom-value')
@@ -115,7 +127,9 @@ describe('PostHog Server Utils', () => {
 			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
 			// Act & Assert
-			expect(() => captureServerException(new Error('Test'))).not.toThrow()
+			expect(() => {
+				captureServerException(new Error('Test'))
+			}).not.toThrow()
 
 			consoleSpy.mockRestore()
 		})
@@ -140,7 +154,7 @@ describe('PostHog Server Utils', () => {
 				}),
 			)
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.api_key).toBe('test-api-key')
 			expect(body.event).toBe('member_added')
 			expect(body.properties.orgId).toBe('org-123')
@@ -157,7 +171,7 @@ describe('PostHog Server Utils', () => {
 			captureServerEvent(eventName, properties)
 
 			// Assert
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.distinct_id).toBe('user-from-props')
 		})
 
@@ -169,7 +183,7 @@ describe('PostHog Server Utils', () => {
 			captureServerEvent(eventName)
 
 			// Assert
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+			const body = parseRequestBody(mockFetch)
 			expect(body.distinct_id).toBe('server')
 		})
 
@@ -179,7 +193,9 @@ describe('PostHog Server Utils', () => {
 			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
 			// Act & Assert
-			expect(() => captureServerEvent('test_event')).not.toThrow()
+			expect(() => {
+				captureServerEvent('test_event')
+			}).not.toThrow()
 
 			consoleSpy.mockRestore()
 		})
