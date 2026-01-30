@@ -77,15 +77,15 @@ onError: (error) => {
 import { captureServerException } from '@/integrations/posthog'
 
 export async function handleApiRoute(request: Request): Promise<Response> {
-  try {
-    // ... handler logic
-  } catch (error) {
-    captureServerException(error, {
-      context: 'handleApiRoute',
-      orgId: 'abc123',
-    })
-    return Response.json({ error: 'Internal server error' }, { status: 500 })
-  }
+	try {
+		// ... handler logic
+	} catch (error) {
+		captureServerException(error, {
+			context: 'handleApiRoute',
+			orgId: 'abc123',
+		})
+		return Response.json({ error: 'Internal server error' }, { status: 500 })
+	}
 }
 ```
 

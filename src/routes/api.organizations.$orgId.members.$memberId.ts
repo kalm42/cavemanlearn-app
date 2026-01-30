@@ -200,8 +200,7 @@ export async function handleRemoveMember(
 export const Route = createFileRoute('/api/organizations/$orgId/members/$memberId')({
 	server: {
 		handlers: {
-			PUT: ({ request, params }) =>
-				handleUpdateMemberRole(request, params.orgId, params.memberId),
+			PUT: ({ request, params }) => handleUpdateMemberRole(request, params.orgId, params.memberId),
 			DELETE: ({ request, params }) => handleRemoveMember(request, params.orgId, params.memberId),
 		},
 	},
