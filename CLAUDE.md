@@ -123,7 +123,15 @@ For mapping technical errors to user messages, see `src/lib/errors.ts` which con
 
 - Follow the AAA pattern: Arrange, Act, Assert
 - Test user behavior, not implementation details
-- Avoid mocking internal code; only mock third-party services and external APIs to prevent hitting external services
+
+**Unit tests:**
+
+- Avoid mocking internal code; only mock third-party services and external APIs
+
+**E2E tests:**
+
+- Never mock internal API calls - e2e tests should exercise the full stack including your own API routes
+- Only mock external services (Clerk, Stripe, PostHog, etc.) to prevent hitting third-party APIs during tests
 
 #### Query Priority Order
 

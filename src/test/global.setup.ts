@@ -2,8 +2,11 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import 'dotenv/config'
+import { createClerkClient } from '@clerk/backend'
 import { clerk, clerkSetup } from '@clerk/testing/playwright'
 import { expect, test as setup } from '@playwright/test'
+
+import { cleanupTestOrganizations, createE2ePool, seedPublisherUser } from './e2e-seed'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -51,6 +54,43 @@ setup('authenticate and save state to storage', async ({ page }) => {
 
 	// Save the authenticated state
 	await page.context().storageState({ path: authFile })
+})
+
+/**
+ * Third setup: Seed database with test user as publisher and clean up previous test data
+ */
+setup('seed database for e2e tests', async () => {
+	const email = process.env.E2E_CLERK_USER_USERNAME
+	const secretKey = process.env.CLERK_SECRET_KEY
+
+	if (!email) {
+		throw new Error('E2E_CLERK_USER_USERNAME must be set in .env.local')
+	}
+
+	if (!secretKey) {
+		throw new Error('CLERK_SECRET_KEY must be set in .env.local')
+	}
+
+	// Look up the Clerk user ID from the email
+	const clerkClient = createClerkClient({ secretKey })
+	const users = await clerkClient.users.getUserList({ emailAddress: [email] })
+
+	if (users.data.length === 0) {
+		throw new Error(`No Clerk user found with email: ${email}`)
+	}
+
+	const clerkId = users.data[0].id
+
+	const pool = createE2ePool()
+	try {
+		// Clean up test organizations from previous runs
+		await cleanupTestOrganizations(pool)
+
+		// Ensure the test user exists as a publisher
+		await seedPublisherUser(pool, { clerkId, email })
+	} finally {
+		await pool.end()
+	}
 })
 
 export { authFile }
