@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { cva } from 'class-variance-authority'
 import SubmitButton from '../user/SubmitButton'
 import { slugify } from '@/lib/slugify'
@@ -103,10 +103,14 @@ export default function OrganizationForm(props: OrganizationFormProps) {
 	}
 
 	// Check if form is valid for enabling submit button
-	const validationResult = createOrganizationRequestSchema.safeParse({
-		name,
-		description: description || undefined,
-	})
+	const validationResult = useMemo(
+		() =>
+			createOrganizationRequestSchema.safeParse({
+				name,
+				description: description || undefined,
+			}),
+		[name, description],
+	)
 	const canSubmit = validationResult.success && !isSubmitting
 
 	function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -139,7 +143,6 @@ export default function OrganizationForm(props: OrganizationFormProps) {
 			return
 		}
 
-		setName(data.name)
 		void onSubmit({
 			name: data.name,
 			description: data.description ?? null,
