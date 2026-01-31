@@ -36,23 +36,23 @@ const organizationWithMemberCountSchema = organizationSchema.extend({
  * const { organization } = await response.json()
  */
 export async function handleGetOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateUuid(orgId, 'organization ID')
+	const validationError = validateUuid(orgId)
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Verify user is a member (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role) {
-		return Response.json({ error: 'Forbidden' }, { status: 403 })
+		return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 	}
 
 	// Get the organization
@@ -64,7 +64,7 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
 
 	const organization = organizationResults.at(0)
 	if (!organization) {
-		return Response.json({ error: 'Organization not found' }, { status: 404 })
+		return Response.json({ error: { code: 'NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Get member count
@@ -99,23 +99,23 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
  * const { organization } = await response.json()
  */
 export async function handleUpdateOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateUuid(orgId, 'organization ID')
+	const validationError = validateUuid(orgId)
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Verify user has admin+ role (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role || !hasMinimumRole(role, 'admin')) {
-		return Response.json({ error: 'Forbidden' }, { status: 403 })
+		return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 	}
 
 	// Parse request body
@@ -123,14 +123,13 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
 	try {
 		body = await request.json()
 	} catch {
-		return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
+		return Response.json({ error: { code: 'INVALID_JSON' } }, { status: 400 })
 	}
 
 	// Validate request body
 	const bodyResult = updateOrganizationRequestSchema.safeParse(body)
 	if (!bodyResult.success) {
-		const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
-		return Response.json({ error: errorMessage }, { status: 400 })
+		return Response.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 	}
 
 	// Get the existing organization
@@ -142,7 +141,7 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
 
 	const existingOrg = existingOrgResults.at(0)
 	if (!existingOrg) {
-		return Response.json({ error: 'Organization not found' }, { status: 404 })
+		return Response.json({ error: { code: 'NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Prepare update data
@@ -199,23 +198,23 @@ export async function handleUpdateOrganization(request: Request, orgId: string):
  * // response.status === 204
  */
 export async function handleDeleteOrganization(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateUuid(orgId, 'organization ID')
+	const validationError = validateUuid(orgId)
 	if (validationError) return validationError
 
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Verify user is the owner (also returns 403 for non-existent orgs to avoid leaking existence)
 	const role = await getUserOrgRole(profile.id, orgId)
 	if (!role || !canDeleteOrganization(role)) {
-		return Response.json({ error: 'Forbidden' }, { status: 403 })
+		return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 	}
 
 	// Verify organization exists
@@ -227,7 +226,7 @@ export async function handleDeleteOrganization(request: Request, orgId: string):
 
 	const existingOrg = existingOrgResults.at(0)
 	if (!existingOrg) {
-		return Response.json({ error: 'Organization not found' }, { status: 404 })
+		return Response.json({ error: { code: 'NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Delete the organization (cascades to members due to foreign key)

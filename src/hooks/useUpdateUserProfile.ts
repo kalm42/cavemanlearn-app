@@ -1,16 +1,13 @@
 import { useAuth } from '@clerk/clerk-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { z } from 'zod'
+import type { z } from 'zod'
 import type { updateProfileRequestSchema } from '@/lib/validation/user'
 import { userProfileSchema } from '@/db/validators'
 import { captureException } from '@/integrations/posthog'
+import { ApiError, errorResponseSchema } from '@/lib/errors'
 
 type UserProfile = z.infer<typeof userProfileSchema>
 type UpdateProfileData = z.infer<typeof updateProfileRequestSchema>
-
-const errorResponseSchema = z.object({
-	error: z.string(),
-})
 
 /**
  * ## useUpdateUserProfile
@@ -35,11 +32,11 @@ export function useUpdateUserProfile(options?: { onSuccess?: (profile: UserProfi
 	const { getToken } = useAuth()
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation<UserProfile, Error, UpdateProfileData>({
-		mutationFn: async (data: UpdateProfileData) => {
+	const mutation = useMutation<UserProfile, ApiError, UpdateProfileData>({
+		mutationFn: async (data) => {
 			const token = await getToken()
 			if (!token) {
-				throw new Error('Not authenticated')
+				throw new ApiError('NOT_AUTHENTICATED')
 			}
 
 			const response = await fetch('/api/user/profile', {
@@ -52,14 +49,14 @@ export function useUpdateUserProfile(options?: { onSuccess?: (profile: UserProfi
 			})
 
 			if (!response.ok) {
-				const errorResponseRaw: unknown = await response
+				const errorResponseRaw = (await response
 					.json()
-					.catch(() => ({ error: 'Unknown error' }))
+					.catch(() => ({ error: { code: 'UNKNOWN_ERROR' } }) as const)) as unknown
 				const errorResult = errorResponseSchema.safeParse(errorResponseRaw)
-				const errorMessage = errorResult.success
-					? errorResult.data.error
-					: `Failed to update profile: ${String(response.status)}`
-				throw new Error(errorMessage)
+				if (errorResult.success) {
+					throw new ApiError(errorResult.data.error.code)
+				}
+				throw new ApiError('UNKNOWN_ERROR')
 			}
 
 			const responseData = (await response.json()) as unknown

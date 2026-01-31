@@ -30,7 +30,7 @@ describe('GET /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(401)
 		const body: { error: string } = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when profile does not exist', async () => {
@@ -43,7 +43,7 @@ describe('GET /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('returns profile when it exists', async () => {
@@ -100,7 +100,7 @@ describe('POST /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('creates profile successfully and returns it', async () => {
@@ -189,7 +189,7 @@ describe('POST /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(409)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile already exists' })
+		expect(body).toEqual({ error: { code: 'PROFILE_EXISTS' } })
 	})
 
 	it('handles duplicate clerkId constraint violation', async () => {
@@ -224,7 +224,7 @@ describe('POST /api/user/profile - Integration', () => {
 		// Assert
 		expect(response.status).toBe(409)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile already exists' })
+		expect(body).toEqual({ error: { code: 'PROFILE_EXISTS' } })
 	})
 })
 
@@ -248,7 +248,7 @@ describe('PUT /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when profile does not exist', async () => {
@@ -263,7 +263,7 @@ describe('PUT /api/user/profile - Integration', () => {
 
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('updates displayName successfully', async () => {
@@ -436,7 +436,7 @@ describe('PUT /api/user/profile - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body.error).toBe('At least one field (displayName or avatarUrl) must be provided')
+		expect(body).toEqual({ error: { code: 'VALIDATION_ERROR' } })
 	})
 
 	it('returns 400 when avatarUrl is invalid', async () => {

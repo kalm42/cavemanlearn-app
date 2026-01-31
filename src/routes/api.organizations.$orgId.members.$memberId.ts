@@ -28,27 +28,24 @@ export async function handleUpdateMemberRole(
 	orgId: string,
 	memberId: string,
 ): Promise<Response> {
-	const validationError = validateUuids([
-		[orgId, 'organization ID'],
-		[memberId, 'member ID'],
-	])
+	const validationError = validateUuids([orgId, memberId])
 	if (validationError) return validationError
 
 	try {
 		const user = await getCurrentUser(request)
 		if (!user) {
-			return Response.json({ error: 'Unauthorized' }, { status: 401 })
+			return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 		}
 
 		const profile = await getUserProfile(user.userId)
 		if (!profile) {
-			return Response.json({ error: 'Profile not found' }, { status: 404 })
+			return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Verify user has admin+ role
 		const role = await getUserOrgRole(profile.id, orgId)
 		if (!role || !canManageMembers(role)) {
-			return Response.json({ error: 'Forbidden' }, { status: 403 })
+			return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 		}
 
 		// Parse request body
@@ -56,14 +53,13 @@ export async function handleUpdateMemberRole(
 		try {
 			body = await request.json()
 		} catch {
-			return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
+			return Response.json({ error: { code: 'INVALID_JSON' } }, { status: 400 })
 		}
 
 		// Validate request body
 		const bodyResult = updateMemberRoleRequestSchema.safeParse(body)
 		if (!bodyResult.success) {
-			const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
-			return Response.json({ error: errorMessage }, { status: 400 })
+			return Response.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 		}
 
 		// Get the target member with their profile in a single query
@@ -90,12 +86,12 @@ export async function handleUpdateMemberRole(
 
 		const targetMember = memberResults.at(0)
 		if (!targetMember) {
-			return Response.json({ error: 'Member not found' }, { status: 404 })
+			return Response.json({ error: { code: 'MEMBER_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Cannot change the owner's role
 		if (targetMember.role === 'owner') {
-			return Response.json({ error: 'Cannot change owner role' }, { status: 403 })
+			return Response.json({ error: { code: 'CANNOT_MODIFY_OWNER' } }, { status: 403 })
 		}
 
 		// Update the member's role
@@ -118,7 +114,7 @@ export async function handleUpdateMemberRole(
 			orgId,
 			memberId,
 		})
-		return Response.json({ error: 'Internal server error' }, { status: 500 })
+		return Response.json({ error: { code: 'INTERNAL_ERROR' } }, { status: 500 })
 	}
 }
 
@@ -138,27 +134,24 @@ export async function handleRemoveMember(
 	orgId: string,
 	memberId: string,
 ): Promise<Response> {
-	const validationError = validateUuids([
-		[orgId, 'organization ID'],
-		[memberId, 'member ID'],
-	])
+	const validationError = validateUuids([orgId, memberId])
 	if (validationError) return validationError
 
 	try {
 		const user = await getCurrentUser(request)
 		if (!user) {
-			return Response.json({ error: 'Unauthorized' }, { status: 401 })
+			return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 		}
 
 		const profile = await getUserProfile(user.userId)
 		if (!profile) {
-			return Response.json({ error: 'Profile not found' }, { status: 404 })
+			return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Verify user has admin+ role
 		const role = await getUserOrgRole(profile.id, orgId)
 		if (!role || !canManageMembers(role)) {
-			return Response.json({ error: 'Forbidden' }, { status: 403 })
+			return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 		}
 
 		// Get the target member
@@ -175,12 +168,12 @@ export async function handleRemoveMember(
 
 		const targetMember = memberResults.at(0)
 		if (!targetMember) {
-			return Response.json({ error: 'Member not found' }, { status: 404 })
+			return Response.json({ error: { code: 'MEMBER_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Cannot remove the owner
 		if (targetMember.role === 'owner') {
-			return Response.json({ error: 'Cannot remove owner' }, { status: 403 })
+			return Response.json({ error: { code: 'CANNOT_MODIFY_OWNER' } }, { status: 403 })
 		}
 
 		// Remove the member
@@ -193,7 +186,7 @@ export async function handleRemoveMember(
 			orgId,
 			memberId,
 		})
-		return Response.json({ error: 'Internal server error' }, { status: 500 })
+		return Response.json({ error: { code: 'INTERNAL_ERROR' } }, { status: 500 })
 	}
 }
 

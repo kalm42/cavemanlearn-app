@@ -5,6 +5,7 @@ import * as ClerkReact from '@clerk/clerk-react'
 import { HttpResponse, http } from 'msw'
 import { useCreateUserProfile } from '../useCreateUserProfile'
 import { server } from '@/test/mocks/server'
+import { ApiError } from '@/lib/errors'
 
 vi.mock('@clerk/clerk-react')
 
@@ -73,14 +74,17 @@ describe('useCreateUserProfile', () => {
 		const { result } = renderHook(() => useCreateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync('learner')).rejects.toThrow('Not authenticated')
+		await expect(result.current.mutateAsync('learner')).rejects.toThrow(ApiError)
+		await expect(result.current.mutateAsync('learner')).rejects.toMatchObject({
+			code: 'NOT_AUTHENTICATED',
+		})
 	})
 
 	it('handles API error response', async () => {
 		// Arrange
 		server.use(
 			http.post('/api/user/profile', () => {
-				return HttpResponse.json({ error: 'Profile already exists' }, { status: 409 })
+				return HttpResponse.json({ error: { code: 'PROFILE_EXISTS' } }, { status: 409 })
 			}),
 		)
 
@@ -88,6 +92,9 @@ describe('useCreateUserProfile', () => {
 		const { result } = renderHook(() => useCreateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync('learner')).rejects.toThrow('Profile already exists')
+		await expect(result.current.mutateAsync('learner')).rejects.toThrow(ApiError)
+		await expect(result.current.mutateAsync('learner')).rejects.toMatchObject({
+			code: 'PROFILE_EXISTS',
+		})
 	})
 })

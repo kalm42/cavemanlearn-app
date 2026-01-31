@@ -18,16 +18,16 @@ export const uuidSchema = z.uuid()
  * ## validateUuid
  *
  * Validates that a string is a valid UUID format. Returns a 400 Response
- * with an error message if invalid, or null if valid.
+ * with a structured error code if invalid, or null if valid.
  *
  * @example
- * const error = validateUuid(orgId, 'organization ID')
+ * const error = validateUuid(orgId)
  * if (error) return error
  */
-export function validateUuid(value: string, fieldName: string): Response | null {
+export function validateUuid(value: string): Response | null {
 	const result = uuidSchema.safeParse(value)
 	if (!result.success) {
-		return Response.json({ error: `Invalid ${fieldName} format` }, { status: 400 })
+		return Response.json({ error: { code: 'INVALID_UUID' } }, { status: 400 })
 	}
 	return null
 }
@@ -35,19 +35,16 @@ export function validateUuid(value: string, fieldName: string): Response | null 
 /**
  * ## validateUuids
  *
- * Validates multiple UUIDs at once. Returns a 400 Response with an error
- * message for the first invalid UUID, or null if all are valid.
+ * Validates multiple UUIDs at once. Returns a 400 Response with a
+ * structured error code for the first invalid UUID, or null if all are valid.
  *
  * @example
- * const error = validateUuids([
- *   [orgId, 'organization ID'],
- *   [memberId, 'member ID'],
- * ])
+ * const error = validateUuids([orgId, memberId])
  * if (error) return error
  */
-export function validateUuids(values: Array<[string, string]>): Response | null {
-	for (const [value, fieldName] of values) {
-		const error = validateUuid(value, fieldName)
+export function validateUuids(values: Array<string>): Response | null {
+	for (const value of values) {
+		const error = validateUuid(value)
 		if (error) return error
 	}
 	return null

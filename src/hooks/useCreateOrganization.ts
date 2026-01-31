@@ -4,6 +4,7 @@ import { z } from 'zod'
 import type { CreateOrganizationRequest } from '@/lib/validation/organization'
 import { organizationMemberSchema, organizationSchema } from '@/db/validators'
 import { captureException } from '@/integrations/posthog'
+import { ApiError, errorResponseSchema } from '@/lib/errors'
 
 const createOrganizationResponseSchema = z.object({
 	organization: organizationSchema,
@@ -11,33 +12,6 @@ const createOrganizationResponseSchema = z.object({
 })
 
 type CreateOrganizationResponse = z.infer<typeof createOrganizationResponseSchema>
-
-const errorResponseSchema = z.object({
-	error: z.object({
-		code: z.string(),
-	}),
-})
-
-/**
- * ## ApiError
- *
- * Custom error class that carries a structured error code from the API.
- * Allows consumers to check error.code instead of parsing error messages.
- *
- * @example
- * if (error instanceof ApiError && error.code === 'DUPLICATE_SLUG') {
- *   showDuplicateError()
- * }
- */
-export class ApiError extends Error {
-	code: string
-
-	constructor(code: string) {
-		super(`API Error: ${code}`)
-		this.name = 'ApiError'
-		this.code = code
-	}
-}
 
 /**
  * ## useCreateOrganization

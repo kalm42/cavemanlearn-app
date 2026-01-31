@@ -26,12 +26,12 @@ import { updateProfileRequestSchema } from '@/lib/validation/user.ts'
 export async function handleGetProfile(request: Request): Promise<Response> {
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Validate the profile from the database
@@ -55,21 +55,18 @@ export async function handleGetProfile(request: Request): Promise<Response> {
 export async function handleCreateProfile(request: Request): Promise<Response> {
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	// Validate request body with Zod
 	const bodyResult = createProfileRequestSchema.safeParse(await request.json())
 	if (!bodyResult.success) {
-		return Response.json(
-			{ error: 'Invalid userType. Must be "learner" or "publisher"' },
-			{ status: 400 },
-		)
+		return Response.json({ error: { code: 'INVALID_USER_TYPE' } }, { status: 400 })
 	}
 
 	const existingProfile = await getUserProfile(user.userId)
 	if (existingProfile) {
-		return Response.json({ error: 'Profile already exists' }, { status: 409 })
+		return Response.json({ error: { code: 'PROFILE_EXISTS' } }, { status: 409 })
 	}
 
 	// Validate insert data with Zod
@@ -91,7 +88,7 @@ export async function handleCreateProfile(request: Request): Promise<Response> {
 		// Handle unique constraint violation (race condition or direct DB insert)
 		// PostgreSQL error code 23505 = unique_violation
 		if (success && postgresError.code === '23505') {
-			return Response.json({ error: 'Profile already exists' }, { status: 409 })
+			return Response.json({ error: { code: 'PROFILE_EXISTS' } }, { status: 409 })
 		}
 		// Re-throw other errors
 		throw error
@@ -114,19 +111,18 @@ export async function handleCreateProfile(request: Request): Promise<Response> {
 export async function handleUpdateProfile(request: Request): Promise<Response> {
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	// Validate request body with Zod
 	const bodyResult = updateProfileRequestSchema.safeParse(await request.json())
 	if (!bodyResult.success) {
-		const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
-		return Response.json({ error: errorMessage }, { status: 400 })
+		return Response.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 	}
 
 	const existingProfile = await getUserProfile(user.userId)
 	if (!existingProfile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Build update object only with provided fields

@@ -33,7 +33,7 @@ describe('GET /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid organization ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -46,7 +46,7 @@ describe('GET /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when user profile does not exist', async () => {
@@ -66,7 +66,7 @@ describe('GET /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('returns 403 when user is not a member of the organization', async () => {
@@ -98,7 +98,7 @@ describe('GET /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns all members with profiles for organization members', async () => {
@@ -229,7 +229,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid organization ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -245,7 +245,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 403 when user is not a member', async () => {
@@ -279,7 +279,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 403 when user has insufficient role (editor)', async () => {
@@ -322,7 +322,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 400 for invalid JSON body', async () => {
@@ -365,7 +365,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid JSON body' })
+		expect(body).toEqual({ error: { code: 'INVALID_JSON' } })
 	})
 
 	it('returns 400 for invalid email', async () => {
@@ -408,7 +408,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body.error).toBe('Invalid email address')
+		expect(body).toEqual({ error: { code: 'VALIDATION_ERROR' } })
 	})
 
 	it('returns 400 when trying to add owner role', async () => {
@@ -458,7 +458,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body.error).toBe('Role must be admin, editor, writer, or viewer')
+		expect(body).toEqual({ error: { code: 'VALIDATION_ERROR' } })
 	})
 
 	it('returns 404 when user to add does not exist', async () => {
@@ -501,7 +501,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'User not found' })
+		expect(body).toEqual({ error: { code: 'USER_NOT_FOUND' } })
 	})
 
 	it('returns 409 when user is already a member', async () => {
@@ -552,7 +552,7 @@ describe('POST /api/organizations/:orgId/members - Integration', () => {
 		// Assert
 		expect(response.status).toBe(409)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'User is already a member' })
+		expect(body).toEqual({ error: { code: 'ALREADY_MEMBER' } })
 	})
 
 	it('adds member successfully as admin', async () => {

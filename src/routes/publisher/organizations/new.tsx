@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { OrganizationFormData } from '@/components/organization/OrganizationForm'
 import OrganizationForm from '@/components/organization/OrganizationForm'
-import { ApiError, useCreateOrganization } from '@/hooks/useCreateOrganization'
+import { useCreateOrganization } from '@/hooks/useCreateOrganization'
+import { ApiError } from '@/lib/errors'
 import { m } from '@/paraglide/messages'
 
 export const Route = createFileRoute('/publisher/organizations/new')({
