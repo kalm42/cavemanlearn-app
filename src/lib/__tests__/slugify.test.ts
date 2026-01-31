@@ -66,7 +66,7 @@ describe('slugify', () => {
 
 	it('removes punctuation', () => {
 		// Arrange
-		const input = "hello@world#test!$%^&*()"
+		const input = 'hello@world#test!$%^&*()'
 
 		// Act
 		const result = slugify(input)

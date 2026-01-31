@@ -64,7 +64,10 @@ test.describe('Publisher Organizations', () => {
 		})
 
 		// Click the "Create Organization" button
-		await page.getByRole('link', { name: /create organization/i }).first().click()
+		await page
+			.getByRole('link', { name: /create organization/i })
+			.first()
+			.click()
 
 		// Should navigate to the create page
 		await expect(page).toHaveURL('/publisher/organizations/new')

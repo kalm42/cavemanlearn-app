@@ -72,7 +72,7 @@ const userId = payload.sub
 const email = z.email().optional().parse(payload.email)
 
 if (!userId || !email) {
-  return null  // This was failing!
+	return null // This was failing!
 }
 ```
 
@@ -104,21 +104,21 @@ Updated `src/test/global.setup.ts` to:
 
 ```typescript
 setup('seed database for e2e tests', async () => {
-  const email = process.env.E2E_CLERK_USER_USERNAME
-  const secretKey = process.env.CLERK_SECRET_KEY
+	const email = process.env.E2E_CLERK_USER_USERNAME
+	const secretKey = process.env.CLERK_SECRET_KEY
 
-  // Look up the Clerk user ID from the email
-  const clerkClient = createClerkClient({ secretKey })
-  const users = await clerkClient.users.getUserList({ emailAddress: [email] })
-  const clerkId = users.data[0].id
+	// Look up the Clerk user ID from the email
+	const clerkClient = createClerkClient({ secretKey })
+	const users = await clerkClient.users.getUserList({ emailAddress: [email] })
+	const clerkId = users.data[0].id
 
-  const pool = createE2ePool()
-  try {
-    await cleanupTestOrganizations(pool)
-    await seedPublisherUser(pool, { clerkId, email })
-  } finally {
-    await pool.end()
-  }
+	const pool = createE2ePool()
+	try {
+		await cleanupTestOrganizations(pool)
+		await seedPublisherUser(pool, { clerkId, email })
+	} finally {
+		await pool.end()
+	}
 })
 ```
 
@@ -135,7 +135,7 @@ const email = z.email().optional().parse(payload.email) ?? ''
 
 // Only require userId
 if (!userId) {
-  return null
+	return null
 }
 
 return { userId, email }
@@ -253,19 +253,19 @@ The test user must:
 ```typescript
 // playwright.config.ts
 projects: [
-  {
-    name: 'setup',
-    testMatch: /global\.setup\.ts/,
-    testDir: './src/test',
-  },
-  {
-    name: 'chromium',
-    use: {
-      storageState: 'playwright/.clerk/user.json',  // Load saved session
-    },
-    dependencies: ['setup'],  // Run setup first
-  },
-  // ... other browsers
+	{
+		name: 'setup',
+		testMatch: /global\.setup\.ts/,
+		testDir: './src/test',
+	},
+	{
+		name: 'chromium',
+		use: {
+			storageState: 'playwright/.clerk/user.json', // Load saved session
+		},
+		dependencies: ['setup'], // Run setup first
+	},
+	// ... other browsers
 ]
 ```
 
@@ -301,7 +301,7 @@ This clears Clerk's session and Testing Token, breaking authentication.
 ```typescript
 // DON'T DO THIS for full-stack e2e tests
 await page.route('**/api/user/profile', async (route) => {
-  await route.fulfill({ status: 200, body: mockProfile })
+	await route.fulfill({ status: 200, body: mockProfile })
 })
 ```
 
@@ -312,7 +312,7 @@ This defeats the purpose of e2e testing. Only mock external services (Stripe, Po
 ```typescript
 // DON'T DO THIS
 if (!userId || !email) {
-  return null
+	return null
 }
 ```
 
@@ -334,8 +334,12 @@ const secretKey = process.env.CLERK_SECRET_KEY
 // DON'T DO THIS
 test.describe.configure({ mode: 'serial' })
 
-test('create org', async ({ page }) => { /* creates org */ })
-test('view org', async ({ page }) => { /* expects org from previous test */ })
+test('create org', async ({ page }) => {
+	/* creates org */
+})
+test('view org', async ({ page }) => {
+	/* expects org from previous test */
+})
 ```
 
 Each test should be independent. Seed required data in setup.
