@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { OrganizationFormData } from '@/components/organization/OrganizationForm'
 import OrganizationForm from '@/components/organization/OrganizationForm'
-import { useCreateOrganization } from '@/hooks/useCreateOrganization'
+import { ApiError, useCreateOrganization } from '@/hooks/useCreateOrganization'
 import { m } from '@/paraglide/messages'
 
 export const Route = createFileRoute('/publisher/organizations/new')({
@@ -38,9 +38,7 @@ function CreateOrganizationPage() {
 		try {
 			await createOrg.mutateAsync(data)
 		} catch (err) {
-			// Check for duplicate slug error
-			const message = err instanceof Error ? err.message : String(err)
-			if (message.toLowerCase().includes('slug') || message.toLowerCase().includes('duplicate')) {
+			if (err instanceof ApiError && err.code === 'DUPLICATE_SLUG') {
 				setError(m.organization_create_error_duplicate())
 			} else {
 				setError(m.organization_create_error())

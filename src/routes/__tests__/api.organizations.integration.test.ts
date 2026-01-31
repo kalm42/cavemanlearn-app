@@ -32,7 +32,7 @@ describe('GET /api/organizations - Integration', () => {
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when user profile does not exist', async () => {
@@ -52,7 +52,7 @@ describe('GET /api/organizations - Integration', () => {
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('returns empty array when user has no organizations', async () => {
@@ -225,7 +225,7 @@ describe('POST /api/organizations - Integration', () => {
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when user profile does not exist', async () => {
@@ -247,7 +247,7 @@ describe('POST /api/organizations - Integration', () => {
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('returns 400 when name is missing', async () => {
@@ -296,8 +296,8 @@ describe('POST /api/organizations - Integration', () => {
 
 		// Assert
 		expect(response.status).toBe(400)
-		const body = await response.json()
-		expect(body.error).toBe('Name is required')
+		const body: { error: { code: string } } = await response.json()
+		expect(body.error.code).toBe('VALIDATION_ERROR')
 	})
 
 	it('creates organization successfully and returns it', async () => {
@@ -458,7 +458,7 @@ describe('POST /api/organizations - Integration', () => {
 
 		// Assert
 		expect(response.status).toBe(400)
-		const body = await response.json()
-		expect(body.error).toBe('Name must be 100 characters or less')
+		const body: { error: { code: string } } = await response.json()
+		expect(body.error.code).toBe('VALIDATION_ERROR')
 	})
 })

@@ -29,12 +29,12 @@ import { createOrganizationRequestSchema } from '@/lib/validation/organization.t
 export async function handleGetOrganizations(request: Request): Promise<Response> {
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Get all organizations where the user is a member, with their role
@@ -99,12 +99,12 @@ export async function handleGetOrganizations(request: Request): Promise<Response
 export async function handleCreateOrganization(request: Request): Promise<Response> {
 	const user = await getCurrentUser(request)
 	if (!user) {
-		return Response.json({ error: 'Unauthorized' }, { status: 401 })
+		return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 	}
 
 	const profile = await getUserProfile(user.userId)
 	if (!profile) {
-		return Response.json({ error: 'Profile not found' }, { status: 404 })
+		return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 	}
 
 	// Parse request body
@@ -112,14 +112,13 @@ export async function handleCreateOrganization(request: Request): Promise<Respon
 	try {
 		body = await request.json()
 	} catch {
-		return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
+		return Response.json({ error: { code: 'INVALID_JSON' } }, { status: 400 })
 	}
 
 	// Validate request body
 	const bodyResult = createOrganizationRequestSchema.safeParse(body)
 	if (!bodyResult.success) {
-		const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
-		return Response.json({ error: errorMessage }, { status: 400 })
+		return Response.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 	}
 
 	// Generate unique slug
@@ -168,7 +167,7 @@ export async function handleCreateOrganization(request: Request): Promise<Respon
 		// Handle unique constraint violation (race condition)
 		// PostgreSQL error code 23505 = unique_violation
 		if (success && postgresError.code === '23505') {
-			return Response.json({ error: 'Organization with this name already exists' }, { status: 409 })
+			return Response.json({ error: { code: 'DUPLICATE_SLUG' } }, { status: 409 })
 		}
 		// Re-throw other errors
 		throw error

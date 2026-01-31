@@ -13,8 +13,31 @@ const createOrganizationResponseSchema = z.object({
 type CreateOrganizationResponse = z.infer<typeof createOrganizationResponseSchema>
 
 const errorResponseSchema = z.object({
-	error: z.string(),
+	error: z.object({
+		code: z.string(),
+	}),
 })
+
+/**
+ * ## ApiError
+ *
+ * Custom error class that carries a structured error code from the API.
+ * Allows consumers to check error.code instead of parsing error messages.
+ *
+ * @example
+ * if (error instanceof ApiError && error.code === 'DUPLICATE_SLUG') {
+ *   showDuplicateError()
+ * }
+ */
+export class ApiError extends Error {
+	code: string
+
+	constructor(code: string) {
+		super(`API Error: ${code}`)
+		this.name = 'ApiError'
+		this.code = code
+	}
+}
 
 /**
  * ## useCreateOrganization
@@ -41,11 +64,11 @@ export function useCreateOrganization(options?: {
 	const { getToken } = useAuth()
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation<CreateOrganizationResponse, Error, CreateOrganizationRequest>({
+	const mutation = useMutation<CreateOrganizationResponse, ApiError, CreateOrganizationRequest>({
 		mutationFn: async (data) => {
 			const token = await getToken()
 			if (!token) {
-				throw new Error('Not authenticated')
+				throw new ApiError('NOT_AUTHENTICATED')
 			}
 
 			const response = await fetch('/api/organizations', {
@@ -60,12 +83,12 @@ export function useCreateOrganization(options?: {
 			if (!response.ok) {
 				const errorResponseRaw = (await response
 					.json()
-					.catch(() => ({ error: 'Unknown error' }) as const)) as unknown
+					.catch(() => ({ error: { code: 'UNKNOWN_ERROR' } }) as const)) as unknown
 				const errorResult = errorResponseSchema.safeParse(errorResponseRaw)
-				const errorMessage = errorResult.success
-					? errorResult.data.error
-					: `Failed to create organization: ${String(response.status)}`
-				throw new Error(errorMessage)
+				if (errorResult.success) {
+					throw new ApiError(errorResult.data.error.code)
+				}
+				throw new ApiError('UNKNOWN_ERROR')
 			}
 
 			const responseData = (await response.json()) as unknown

@@ -91,63 +91,60 @@ describe('useCreateOrganization', () => {
 		expect(callArg.membership.role).toBe(mockMembership.role)
 	})
 
-	it('throws error when not authenticated', async () => {
+	it('throws ApiError with NOT_AUTHENTICATED code when not authenticated', async () => {
 		// Arrange
 		mockGetToken.mockResolvedValue(null)
-
-		// Act
 		const { result } = renderHook(() => useCreateOrganization(), { wrapper })
 
-		// Assert
+		// Act & Assert
 		await expect(
 			result.current.mutateAsync({
 				name: 'Test Org',
 				description: null,
 			}),
-		).rejects.toThrow('Not authenticated')
+		).rejects.toMatchObject({
+			code: 'NOT_AUTHENTICATED',
+		})
 	})
 
-	it('handles API error response', async () => {
+	it('throws ApiError with DUPLICATE_SLUG code for duplicate organization', async () => {
 		// Arrange
 		server.use(
 			http.post('/api/organizations', () => {
-				return HttpResponse.json(
-					{ error: 'Organization with this slug already exists' },
-					{ status: 409 },
-				)
+				return HttpResponse.json({ error: { code: 'DUPLICATE_SLUG' } }, { status: 409 })
 			}),
 		)
-
-		// Act
 		const { result } = renderHook(() => useCreateOrganization(), { wrapper })
 
-		// Assert
+		// Act & Assert
 		await expect(
 			result.current.mutateAsync({
 				name: 'Test Org',
 				description: null,
 			}),
-		).rejects.toThrow('Organization with this slug already exists')
+		).rejects.toMatchObject({
+			code: 'DUPLICATE_SLUG',
+		})
 	})
 
-	it('handles non-JSON error response', async () => {
+	it('throws ApiError with UNKNOWN_ERROR code for non-JSON response', async () => {
 		// Arrange
 		server.use(
 			http.post('/api/organizations', () => {
 				return new HttpResponse('Internal Server Error', { status: 500 })
 			}),
 		)
-
-		// Act
 		const { result } = renderHook(() => useCreateOrganization(), { wrapper })
 
-		// Assert - when JSON parsing fails, the fallback error message is "Unknown error"
+		// Act & Assert
 		await expect(
 			result.current.mutateAsync({
 				name: 'Test Org',
 				description: null,
 			}),
-		).rejects.toThrow('Unknown error')
+		).rejects.toMatchObject({
+			code: 'UNKNOWN_ERROR',
+		})
 	})
 
 	it('invalidates organizations query on success', async () => {
