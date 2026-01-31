@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import { RouterProvider, createMemoryHistory, createRootRoute, createRouter } from '@tanstack/react-router'
+import {
+	RouterProvider,
+	createMemoryHistory,
+	createRootRoute,
+	createRouter,
+} from '@tanstack/react-router'
 import { OrganizationCard } from '../OrganizationCard'
 import type { OrganizationWithRole } from '@/hooks/useOrganizations'
 import { m } from '@/paraglide/messages'

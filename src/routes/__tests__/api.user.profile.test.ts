@@ -50,8 +50,8 @@ describe('GET /api/user/profile', () => {
 		const response = await handleGetProfile(request)
 
 		expect(response.status).toBe(401)
-		const body: { error: string } = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		const body = await response.json()
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 404 when profile does not exist', async () => {
@@ -65,7 +65,7 @@ describe('GET /api/user/profile', () => {
 
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('returns profile when it exists', async () => {
@@ -103,7 +103,7 @@ describe('POST /api/user/profile', () => {
 
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 400 when userType is missing', async () => {
@@ -119,7 +119,7 @@ describe('POST /api/user/profile', () => {
 
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid userType. Must be "learner" or "publisher"' })
+		expect(body).toEqual({ error: { code: 'INVALID_USER_TYPE' } })
 	})
 
 	it('returns 400 when userType is invalid', async () => {
@@ -135,7 +135,7 @@ describe('POST /api/user/profile', () => {
 
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid userType. Must be "learner" or "publisher"' })
+		expect(body).toEqual({ error: { code: 'INVALID_USER_TYPE' } })
 	})
 
 	it('returns 409 when profile already exists', async () => {
@@ -152,7 +152,7 @@ describe('POST /api/user/profile', () => {
 
 		expect(response.status).toBe(409)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile already exists' })
+		expect(body).toEqual({ error: { code: 'PROFILE_EXISTS' } })
 	})
 
 	it('creates profile successfully with learner type', async () => {
@@ -219,7 +219,7 @@ describe('PUT /api/user/profile', () => {
 
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 400 when no fields are provided', async () => {
@@ -235,7 +235,7 @@ describe('PUT /api/user/profile', () => {
 
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body.error).toBe('At least one field (displayName or avatarUrl) must be provided')
+		expect(body).toEqual({ error: { code: 'VALIDATION_ERROR' } })
 	})
 
 	it('returns 400 when displayName is empty string', async () => {
@@ -280,7 +280,7 @@ describe('PUT /api/user/profile', () => {
 
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Profile not found' })
+		expect(body).toEqual({ error: { code: 'PROFILE_NOT_FOUND' } })
 	})
 
 	it('updates displayName successfully', async () => {

@@ -2,28 +2,10 @@ import { eq, like } from 'drizzle-orm'
 
 import { db } from '@/db/index.ts'
 import { organizations } from '@/db/schema.ts'
+import { slugify } from '@/lib/slugify.ts'
 
-/**
- * ## slugify
- *
- * Converts a string to a URL-safe slug. Transforms the input to lowercase,
- * replaces spaces and special characters with hyphens, removes consecutive hyphens,
- * and trims hyphens from the start and end.
- *
- * @example
- * slugify('Hello World!') // 'hello-world'
- *
- * @example
- * slugify('Test & Example') // 'test-example'
- */
-export function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.trim()
-		.replace(/[^\w\s-]/g, '') // Remove special characters
-		.replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
-		.replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-}
+// Re-export slugify for backwards compatibility with existing imports
+export { slugify } from '@/lib/slugify.ts'
 
 /**
  * ## generateUniqueSlug

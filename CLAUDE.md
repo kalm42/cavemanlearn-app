@@ -73,6 +73,8 @@ onError: (error) => {
 
 **Server-side (API route handlers):**
 
+API endpoints must return structured error codes instead of human-readable messages. This allows clients to map error codes to localized i18n messages. Never return raw error text in API responses.
+
 ```typescript
 import { captureServerException } from '@/integrations/posthog'
 
@@ -84,8 +86,31 @@ export async function handleApiRoute(request: Request): Promise<Response> {
 			context: 'handleApiRoute',
 			orgId: 'abc123',
 		})
-		return Response.json({ error: 'Internal server error' }, { status: 500 })
+		// Return error code, not message - client handles i18n
+		return Response.json({ error: { code: 'INTERNAL_ERROR' } }, { status: 500 })
 	}
+}
+
+// Example error codes and their usage:
+// { code: 'NOT_FOUND' }           -> 404
+// { code: 'UNAUTHORIZED' }        -> 401
+// { code: 'FORBIDDEN' }           -> 403
+// { code: 'VALIDATION_ERROR', fields: {...} } -> 400
+// { code: 'INTERNAL_ERROR' }      -> 500
+```
+
+The client then maps error codes to i18n messages:
+
+```typescript
+import { m } from '@/paraglide/messages'
+
+// Map API error codes to localized messages
+const errorMessages: Record<string, () => string> = {
+	NOT_FOUND: m.error_not_found,
+	UNAUTHORIZED: m.error_unauthorized,
+	FORBIDDEN: m.error_forbidden,
+	VALIDATION_ERROR: m.error_validation,
+	INTERNAL_ERROR: m.error_internal,
 }
 ```
 
@@ -123,7 +148,15 @@ For mapping technical errors to user messages, see `src/lib/errors.ts` which con
 
 - Follow the AAA pattern: Arrange, Act, Assert
 - Test user behavior, not implementation details
-- Avoid mocking internal code; only mock third-party services and external APIs to prevent hitting external services
+
+**Unit tests:**
+
+- Avoid mocking internal code; only mock third-party services and external APIs
+
+**E2E tests:**
+
+- Never mock internal API calls - e2e tests should exercise the full stack including your own API routes
+- Only mock external services (Clerk, Stripe, PostHog, etc.) to prevent hitting third-party APIs during tests
 
 #### Query Priority Order
 

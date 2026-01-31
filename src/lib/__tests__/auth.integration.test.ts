@@ -83,7 +83,7 @@ describe('getCurrentUser', () => {
 		expect(result).toBeNull()
 	})
 
-	it('returns null when payload has no email', async () => {
+	it('returns user with empty email when payload has no email', async () => {
 		mockVerifyToken.mockResolvedValueOnce({
 			sub: 'user_123',
 			email: undefined,
@@ -94,7 +94,11 @@ describe('getCurrentUser', () => {
 
 		const result = await getCurrentUser(request)
 
-		expect(result).toBeNull()
+		// Email is optional in token - empty string is used as fallback
+		expect(result).toEqual({
+			userId: 'user_123',
+			email: '',
+		})
 	})
 
 	it('returns user when token is valid', async () => {

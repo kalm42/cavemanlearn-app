@@ -24,24 +24,24 @@ import {
  * const { members } = await response.json()
  */
 export async function handleGetMembers(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateUuid(orgId, 'organization ID')
+	const validationError = validateUuid(orgId)
 	if (validationError) return validationError
 
 	try {
 		const user = await getCurrentUser(request)
 		if (!user) {
-			return Response.json({ error: 'Unauthorized' }, { status: 401 })
+			return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 		}
 
 		const profile = await getUserProfile(user.userId)
 		if (!profile) {
-			return Response.json({ error: 'Profile not found' }, { status: 404 })
+			return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Verify user is a member (also returns 403 for non-existent orgs to avoid leaking existence)
 		const role = await getUserOrgRole(profile.id, orgId)
 		if (!role) {
-			return Response.json({ error: 'Forbidden' }, { status: 403 })
+			return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 		}
 
 		// Get all members with their profiles
@@ -74,7 +74,7 @@ export async function handleGetMembers(request: Request, orgId: string): Promise
 			context: 'handleGetMembers',
 			orgId,
 		})
-		return Response.json({ error: 'Internal server error' }, { status: 500 })
+		return Response.json({ error: { code: 'INTERNAL_ERROR' } }, { status: 500 })
 	}
 }
 
@@ -91,24 +91,24 @@ export async function handleGetMembers(request: Request, orgId: string): Promise
  * const { member } = await response.json()
  */
 export async function handleAddMember(request: Request, orgId: string): Promise<Response> {
-	const validationError = validateUuid(orgId, 'organization ID')
+	const validationError = validateUuid(orgId)
 	if (validationError) return validationError
 
 	try {
 		const user = await getCurrentUser(request)
 		if (!user) {
-			return Response.json({ error: 'Unauthorized' }, { status: 401 })
+			return Response.json({ error: { code: 'UNAUTHORIZED' } }, { status: 401 })
 		}
 
 		const profile = await getUserProfile(user.userId)
 		if (!profile) {
-			return Response.json({ error: 'Profile not found' }, { status: 404 })
+			return Response.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Verify user has admin+ role
 		const role = await getUserOrgRole(profile.id, orgId)
 		if (!role || !canManageMembers(role)) {
-			return Response.json({ error: 'Forbidden' }, { status: 403 })
+			return Response.json({ error: { code: 'FORBIDDEN' } }, { status: 403 })
 		}
 
 		// Parse request body
@@ -116,14 +116,13 @@ export async function handleAddMember(request: Request, orgId: string): Promise<
 		try {
 			body = await request.json()
 		} catch {
-			return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
+			return Response.json({ error: { code: 'INVALID_JSON' } }, { status: 400 })
 		}
 
 		// Validate request body
 		const bodyResult = addMemberRequestSchema.safeParse(body)
 		if (!bodyResult.success) {
-			const errorMessage = bodyResult.error.issues[0]?.message ?? 'Invalid request body'
-			return Response.json({ error: errorMessage }, { status: 400 })
+			return Response.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 		}
 
 		// Find user by email
@@ -135,7 +134,7 @@ export async function handleAddMember(request: Request, orgId: string): Promise<
 
 		const targetUser = targetUserResults.at(0)
 		if (!targetUser) {
-			return Response.json({ error: 'User not found' }, { status: 404 })
+			return Response.json({ error: { code: 'USER_NOT_FOUND' } }, { status: 404 })
 		}
 
 		// Check if user is already a member
@@ -151,7 +150,7 @@ export async function handleAddMember(request: Request, orgId: string): Promise<
 			.limit(1)
 
 		if (existingMemberResults.length > 0) {
-			return Response.json({ error: 'User is already a member' }, { status: 409 })
+			return Response.json({ error: { code: 'ALREADY_MEMBER' } }, { status: 409 })
 		}
 
 		// Add member
@@ -181,7 +180,7 @@ export async function handleAddMember(request: Request, orgId: string): Promise<
 			context: 'handleAddMember',
 			orgId,
 		})
-		return Response.json({ error: 'Internal server error' }, { status: 500 })
+		return Response.json({ error: { code: 'INTERNAL_ERROR' } }, { status: 500 })
 	}
 }
 

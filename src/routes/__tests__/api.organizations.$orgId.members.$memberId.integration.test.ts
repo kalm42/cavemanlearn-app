@@ -43,7 +43,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid organization ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 400 for invalid memberId format', async () => {
@@ -62,7 +62,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid member ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -81,7 +81,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 403 when user is not a member', async () => {
@@ -118,7 +118,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 403 when user has insufficient role (editor)', async () => {
@@ -164,7 +164,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 400 for invalid JSON body', async () => {
@@ -210,7 +210,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid JSON body' })
+		expect(body).toEqual({ error: { code: 'INVALID_JSON' } })
 	})
 
 	it('returns 400 when trying to set owner role', async () => {
@@ -267,7 +267,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body.error).toBe('Role must be admin, editor, writer, or viewer')
+		expect(body).toEqual({ error: { code: 'VALIDATION_ERROR' } })
 	})
 
 	it('returns 404 when member does not exist', async () => {
@@ -314,7 +314,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Member not found' })
+		expect(body).toEqual({ error: { code: 'MEMBER_NOT_FOUND' } })
 	})
 
 	it('returns 403 when trying to change owner role', async () => {
@@ -378,7 +378,7 @@ describe('PUT /api/organizations/:orgId/members/:memberId - Integration', () => 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Cannot change owner role' })
+		expect(body).toEqual({ error: { code: 'CANNOT_MODIFY_OWNER' } })
 	})
 
 	it('updates member role successfully as admin', async () => {
@@ -552,7 +552,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid organization ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 400 for invalid memberId format', async () => {
@@ -570,7 +570,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(400)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Invalid member ID format' })
+		expect(body).toEqual({ error: { code: 'INVALID_UUID' } })
 	})
 
 	it('returns 401 when not authenticated', async () => {
@@ -588,7 +588,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(401)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Unauthorized' })
+		expect(body).toEqual({ error: { code: 'UNAUTHORIZED' } })
 	})
 
 	it('returns 403 when user is not a member', async () => {
@@ -624,7 +624,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 403 when user has insufficient role (editor)', async () => {
@@ -669,7 +669,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Forbidden' })
+		expect(body).toEqual({ error: { code: 'FORBIDDEN' } })
 	})
 
 	it('returns 404 when member does not exist', async () => {
@@ -715,7 +715,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(404)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Member not found' })
+		expect(body).toEqual({ error: { code: 'MEMBER_NOT_FOUND' } })
 	})
 
 	it('returns 403 when trying to remove owner', async () => {
@@ -778,7 +778,7 @@ describe('DELETE /api/organizations/:orgId/members/:memberId - Integration', () 
 		// Assert
 		expect(response.status).toBe(403)
 		const body = await response.json()
-		expect(body).toEqual({ error: 'Cannot remove owner' })
+		expect(body).toEqual({ error: { code: 'CANNOT_MODIFY_OWNER' } })
 	})
 
 	it('removes member successfully as admin', async () => {

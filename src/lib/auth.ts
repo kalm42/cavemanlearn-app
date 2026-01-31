@@ -5,7 +5,6 @@ import { z } from 'zod'
 import type { UserProfile } from '@/db/schema.ts'
 import { db } from '@/db/index.ts'
 import { userProfiles } from '@/db/schema.ts'
-import { env } from '@/env'
 
 export type ClerkUser = {
 	userId: string
@@ -36,7 +35,7 @@ export async function getCurrentUser(request: Request): Promise<ClerkUser | null
 		return null
 	}
 
-	const secretKey = env.CLERK_SECRET_KEY
+	const secretKey = process.env.CLERK_SECRET_KEY
 	if (!secretKey) {
 		return null
 	}
@@ -44,11 +43,14 @@ export async function getCurrentUser(request: Request): Promise<ClerkUser | null
 	try {
 		const payload = await verifyToken(token, { secretKey })
 		const userId = payload.sub
-		const email = z.email().optional().parse(payload.email)
 
-		if (!userId || !email) {
+		if (!userId) {
 			return null
 		}
+
+		// Email may not be in the token - use empty string as fallback
+		// The email can be looked up from the user profile if needed
+		const email = z.email().optional().parse(payload.email) ?? ''
 
 		return { userId, email }
 	} catch {

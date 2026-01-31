@@ -5,6 +5,7 @@ import * as ClerkReact from '@clerk/clerk-react'
 import { HttpResponse, http } from 'msw'
 import { useUpdateUserProfile } from '../useUpdateUserProfile'
 import { server } from '@/test/mocks/server'
+import { ApiError } from '@/lib/errors'
 
 vi.mock('@clerk/clerk-react')
 
@@ -79,16 +80,17 @@ describe('useUpdateUserProfile', () => {
 		const { result } = renderHook(() => useUpdateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toThrow(
-			'Not authenticated',
-		)
+		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toThrow(ApiError)
+		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toMatchObject({
+			code: 'NOT_AUTHENTICATED',
+		})
 	})
 
 	it('handles API error response', async () => {
 		// Arrange
 		server.use(
 			http.put('/api/user/profile', () => {
-				return HttpResponse.json({ error: 'Profile not found' }, { status: 404 })
+				return HttpResponse.json({ error: { code: 'PROFILE_NOT_FOUND' } }, { status: 404 })
 			}),
 		)
 
@@ -96,19 +98,17 @@ describe('useUpdateUserProfile', () => {
 		const { result } = renderHook(() => useUpdateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toThrow(
-			'Profile not found',
-		)
+		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toThrow(ApiError)
+		await expect(result.current.mutateAsync({ displayName: 'New Name' })).rejects.toMatchObject({
+			code: 'PROFILE_NOT_FOUND',
+		})
 	})
 
 	it('handles validation error response', async () => {
 		// Arrange
 		server.use(
 			http.put('/api/user/profile', () => {
-				return HttpResponse.json(
-					{ error: 'At least one field (displayName or avatarUrl) must be provided' },
-					{ status: 400 },
-				)
+				return HttpResponse.json({ error: { code: 'VALIDATION_ERROR' } }, { status: 400 })
 			}),
 		)
 
@@ -116,9 +116,10 @@ describe('useUpdateUserProfile', () => {
 		const { result } = renderHook(() => useUpdateUserProfile(), { wrapper })
 
 		// Assert
-		await expect(result.current.mutateAsync({})).rejects.toThrow(
-			'At least one field (displayName or avatarUrl) must be provided',
-		)
+		await expect(result.current.mutateAsync({})).rejects.toThrow(ApiError)
+		await expect(result.current.mutateAsync({})).rejects.toMatchObject({
+			code: 'VALIDATION_ERROR',
+		})
 	})
 
 	it('updates profile with avatarUrl', async () => {
