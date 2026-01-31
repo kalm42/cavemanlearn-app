@@ -1,25 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { count, eq } from 'drizzle-orm'
-import { z } from 'zod'
 
 import { db } from '@/db/index.ts'
 import { organizationMembers, organizations } from '@/db/schema.ts'
-import { organizationSchema } from '@/db/validators.ts'
+import { organizationSchema, organizationWithRoleSchema } from '@/db/validators.ts'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
-import { canDeleteOrganization, getUserOrgRole, hasMinimumRole } from '@/lib/permissions.ts'
+import { canDeleteOrganization, hasMinimumRole } from '@/lib/permissions.ts'
+import { getUserOrgRole } from '@/lib/permissions.server.ts'
 import { generateUniqueSlug } from '@/lib/slug.ts'
 import { validateUuid } from '@/lib/validation/common.ts'
 import { updateOrganizationRequestSchema } from '@/lib/validation/organization.ts'
-
-/**
- * ## organizationWithMemberCountSchema
- *
- * Zod schema for validating organization data with member count included.
- * Extends the base organization schema with a memberCount field.
- */
-const organizationWithMemberCountSchema = organizationSchema.extend({
-	memberCount: z.number(),
-})
 
 /**
  * ## handleGetOrganization
@@ -75,10 +65,11 @@ export async function handleGetOrganization(request: Request, orgId: string): Pr
 
 	const memberCount = memberCountResults.at(0)?.count ?? 0
 
-	// Validate and return organization with member count
-	const validatedOrganization = organizationWithMemberCountSchema.parse({
+	// Validate and return organization with member count and user's role
+	const validatedOrganization = organizationWithRoleSchema.parse({
 		...organization,
 		memberCount,
+		role,
 	})
 
 	return Response.json({ organization: validatedOrganization })

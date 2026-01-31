@@ -1,28 +1,34 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Suspense } from 'react'
+import { LoadingScreen } from '@/components/LoadingScreen'
+import { OrganizationLayout, OrganizationNotFound } from '@/components/organization/OrganizationLayout'
+import { useSuspenseOrganization } from '@/hooks/useSuspenseOrganization'
 
 export const Route = createFileRoute('/publisher/organizations/$orgId')({
-	component: OrganizationDashboardPage,
+	component: OrganizationLayoutRoute,
 })
 
-/**
- * ## OrganizationDashboardPage
- *
- * Placeholder page for viewing an organization's dashboard. This page will be
- * fully implemented in Phase 1.15 with organization details, stats, and
- * navigation tabs.
- *
- * @example
- * // Route is automatically registered via createFileRoute
- * // Publishers navigate to /publisher/organizations/:orgId to view an org
- */
-function OrganizationDashboardPage() {
+function OrganizationLayoutRoute() {
 	const { orgId } = Route.useParams()
 
 	return (
-		<div className="bg-slate-800 rounded-xl p-8">
-			<h1 className="text-2xl font-bold text-white mb-4">Organization Dashboard</h1>
-			<p className="text-gray-400">Organization ID: {orgId}</p>
-			<p className="text-gray-400 mt-2">Coming soon in Phase 1.15</p>
-		</div>
+		<Suspense fallback={<LoadingScreen />}>
+			<OrganizationLayoutLoader orgId={orgId} />
+		</Suspense>
+	)
+}
+
+function OrganizationLayoutLoader(props: { orgId: string }) {
+	const { orgId } = props
+	const { organization } = useSuspenseOrganization(orgId)
+
+	if (!organization) {
+		return <OrganizationNotFound />
+	}
+
+	return (
+		<OrganizationLayout organization={organization}>
+			<Outlet />
+		</OrganizationLayout>
 	)
 }

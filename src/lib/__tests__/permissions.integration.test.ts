@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { InsufficientRoleError, getUserOrgRole, requireOrgRole } from '../permissions'
+import { InsufficientRoleError } from '../permissions'
+import { getUserOrgRole, requireOrgRole } from '../permissions.server'
 import type { Organization, OrganizationMember, UserProfile } from '@/db/schema'
 import { organizationMembers, organizations, userProfiles } from '@/db/schema'
 
