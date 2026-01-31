@@ -5,7 +5,8 @@ import { db } from '@/db/index.ts'
 import { organizationMembers, userProfiles } from '@/db/schema.ts'
 import { captureServerException } from '@/integrations/posthog'
 import { getCurrentUser, getUserProfile } from '@/lib/auth.ts'
-import { canManageMembers, getUserOrgRole } from '@/lib/permissions.ts'
+import { canManageMembers } from '@/lib/permissions.ts'
+import { getUserOrgRole } from '@/lib/permissions.server.ts'
 import { validateUuid } from '@/lib/validation/common.ts'
 import {
 	addMemberRequestSchema,
