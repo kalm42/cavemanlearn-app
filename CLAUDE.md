@@ -129,10 +129,56 @@ For mapping technical errors to user messages, see `src/lib/errors.ts` which con
 
 - `src/routes/` - File-based routes (TanStack Router). Files prefixed with `demo` are examples.
 - `src/routes/demo/api.*.ts` - API route handlers (server functions)
+- `src/components/` - Reusable UI components
 - `src/integrations/` - Third-party integrations (Clerk, TanStack Query providers)
 - `src/db/` - Drizzle schema and database connection
 - `src/paraglide/` - Auto-generated i18n runtime (do not edit)
 - `src/env.ts` - Type-safe environment variables via T3Env
+
+### Route Files
+
+Route files in `src/routes/` should be thin wrappers that handle routing concerns only. Extract UI and business logic into separate component files in `src/components/`.
+
+**Route files should:**
+
+- Define the route with `createFileRoute`
+- Handle route params and data loading (Suspense boundaries, loaders)
+- Import and render the component
+
+**Route files should NOT:**
+
+- Contain complex JSX or UI logic
+- Implement business logic directly
+
+This separation keeps route files minimal and enables proper unit testing of components without mocking router internals.
+
+```typescript
+// src/routes/publisher/organizations/$orgId/index.tsx - GOOD
+import { createFileRoute } from '@tanstack/react-router'
+import { Suspense } from 'react'
+import { LoadingScreen } from '@/components/LoadingScreen'
+import { OrganizationDashboard } from '@/components/organization/OrganizationDashboard'
+import { useSuspenseOrganization } from '@/hooks/useSuspenseOrganization'
+
+export const Route = createFileRoute('/publisher/organizations/$orgId/')({
+	component: OrganizationDashboardRoute,
+})
+
+function OrganizationDashboardRoute() {
+	const { orgId } = Route.useParams()
+	return (
+		<Suspense fallback={<LoadingScreen />}>
+			<OrganizationDashboardLoader orgId={orgId} />
+		</Suspense>
+	)
+}
+
+function OrganizationDashboardLoader(props: { orgId: string }) {
+	const { organization } = useSuspenseOrganization(props.orgId)
+	if (!organization) return null
+	return <OrganizationDashboard organization={organization} />
+}
+```
 
 ### Server Entry
 
