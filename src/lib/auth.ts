@@ -1,4 +1,3 @@
-import { verifyToken } from '@clerk/backend'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
@@ -17,6 +16,11 @@ export type ClerkUser = {
  * Extracts and validates the current user from the Authorization header of a request.
  * Verifies the Bearer token using Clerk's backend SDK and returns the user's ID and email
  * if the token is valid. Returns null if authentication fails or the token is invalid.
+ *
+ * Note: Uses dynamic import for @clerk/backend to prevent it from being bundled
+ * into the client-side code. This is necessary because TanStack Router's route
+ * tree imports all routes including API routes, which would otherwise pull
+ * Node.js-only dependencies into the browser bundle.
  *
  * @example
  * const user = await getCurrentUser(request)
@@ -41,6 +45,8 @@ export async function getCurrentUser(request: Request): Promise<ClerkUser | null
 	}
 
 	try {
+		// Dynamic import to prevent @clerk/backend from being bundled into client code
+		const { verifyToken } = await import('@clerk/backend')
 		const payload = await verifyToken(token, { secretKey })
 		const userId = payload.sub
 
