@@ -19,6 +19,7 @@ export const env = createEnv({
 		VITE_CLERK_PUBLISHABLE_KEY: z.string().min(1),
 		VITE_PUBLIC_POSTHOG_KEY: z.string().min(1),
 		VITE_PUBLIC_POSTHOG_HOST: z.string().min(1),
+		VITE_DISABLE_POSTHOG: z.string().optional(),
 	},
 
 	/**
