@@ -189,7 +189,9 @@ export function AddMemberModal(props: AddMemberModalProps) {
 						disabled={!canSubmit}
 						className="flex-1 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 disabled:bg-cyan-800 disabled:opacity-50 text-white rounded-lg transition-colors"
 					>
-						{isPending ? m.organization_members_add_submitting() : m.organization_members_add_submit()}
+						{isPending
+							? m.organization_members_add_submitting()
+							: m.organization_members_add_submit()}
 					</button>
 				</div>
 			</form>

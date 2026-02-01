@@ -8,7 +8,8 @@ const selectVariants = cva(
 		variants: {
 			disabled: {
 				true: 'opacity-50 cursor-not-allowed',
-				false: 'hover:border-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none',
+				false:
+					'hover:border-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none',
 			},
 		},
 		defaultVariants: {
