@@ -198,7 +198,9 @@ test.describe('Organization Member Management', () => {
 		await page.getByRole('link', { name: 'Members', exact: true }).click()
 
 		// Wait for members page to load (use level: 1 to target the h1, not the dashboard h3)
-		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({ timeout: 15000 })
+		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({
+			timeout: 15000,
+		})
 
 		// Click the "Add Member" button (the one outside the modal)
 		await page.getByRole('button', { name: /add member/i }).click()
@@ -247,7 +249,9 @@ test.describe('Organization Member Management', () => {
 		await page.getByRole('link', { name: 'Members', exact: true }).click()
 
 		// Wait for members page to load (use level: 1 to target the h1, not the dashboard h3)
-		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({ timeout: 15000 })
+		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({
+			timeout: 15000,
+		})
 
 		// Add a member first
 		await page.getByRole('button', { name: /add member/i }).click()
@@ -296,7 +300,9 @@ test.describe('Organization Member Management', () => {
 		await page.getByRole('link', { name: 'Members', exact: true }).click()
 
 		// Wait for members page to load (use level: 1 to target the h1, not the dashboard h3)
-		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({ timeout: 15000 })
+		await expect(page.getByRole('heading', { name: 'Members', level: 1 })).toBeVisible({
+			timeout: 15000,
+		})
 
 		// Add a member first
 		await page.getByRole('button', { name: /add member/i }).click()
