@@ -6,7 +6,12 @@ import { createClerkClient } from '@clerk/backend'
 import { clerk, clerkSetup } from '@clerk/testing/playwright'
 import { expect, test as setup } from '@playwright/test'
 
-import { cleanupTestOrganizations, createE2ePool, seedPublisherUser } from './e2e-seed'
+import {
+	cleanupTestOrganizations,
+	createE2ePool,
+	seedPublisherUser,
+	seedTestMemberUser,
+} from './e2e-seed'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -88,6 +93,9 @@ setup('seed database for e2e tests', async () => {
 
 		// Ensure the test user exists as a publisher
 		await seedPublisherUser(pool, { clerkId, email })
+
+		// Seed a test member user for member management tests
+		await seedTestMemberUser(pool)
 	} finally {
 		await pool.end()
 	}

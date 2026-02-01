@@ -48,5 +48,8 @@ export default defineConfig({
 		command: 'pnpm dev',
 		url: 'http://localhost:3000',
 		reuseExistingServer: !process.env.CI,
+		env: {
+			VITE_DISABLE_POSTHOG: 'true',
+		},
 	},
 })

@@ -5,6 +5,12 @@ import { createTestDb, getTestDatabaseUrl } from './integration/test-db'
 import { organizations, userProfiles } from '@/db/schema'
 
 /**
+ * E2E test member email - used to seed a second user that can be added as an organization member.
+ * This user doesn't need a real Clerk account since they're only looked up by email in the database.
+ */
+export const E2E_TEST_MEMBER_EMAIL = 'e2e-test-member@example.com'
+
+/**
  * ## seedPublisherUser
  *
  * Ensures the test user exists in the database as a publisher. Creates the user profile
@@ -28,6 +34,40 @@ export async function seedPublisherUser(
 			.onConflictDoUpdate({
 				target: userProfiles.clerkId,
 				set: { userType: 'publisher' },
+			})
+	} finally {
+		client.release()
+	}
+}
+
+/**
+ * ## seedTestMemberUser
+ *
+ * Creates a test user profile that can be added as an organization member in E2E tests.
+ * This user doesn't need a real Clerk account - they're only used for testing the
+ * member management flow (add, update role, remove).
+ *
+ * @example
+ * await seedTestMemberUser(pool)
+ */
+export async function seedTestMemberUser(pool: pg.Pool): Promise<void> {
+	const client = await pool.connect()
+	try {
+		const db = createTestDb(client)
+		await db
+			.insert(userProfiles)
+			.values({
+				clerkId: 'e2e_test_member_clerk_id',
+				email: E2E_TEST_MEMBER_EMAIL,
+				displayName: 'E2E Test Member',
+				userType: 'learner',
+			})
+			.onConflictDoUpdate({
+				target: userProfiles.clerkId,
+				set: {
+					email: E2E_TEST_MEMBER_EMAIL,
+					displayName: 'E2E Test Member',
+				},
 			})
 	} finally {
 		client.release()
