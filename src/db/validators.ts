@@ -1,7 +1,12 @@
 import { z } from 'zod'
 
-import { ORG_ROLES } from './schema.ts'
-import type { Organization, OrganizationMember, UserProfile } from './schema.ts'
+import { NOTIFICATION_TYPES, ORG_ROLES } from './schema.ts'
+import type {
+	Notification,
+	Organization,
+	OrganizationMember,
+	UserProfile,
+} from './schema.ts'
 
 // Zod schemas for database record validation
 export const userTypeSchema = z.enum(['learner', 'publisher'])
@@ -81,3 +86,28 @@ export const organizationWithRoleSchema = organizationSchema.extend({
 })
 
 export type OrganizationWithRole = z.infer<typeof organizationWithRoleSchema>
+
+// Notification schemas
+export const notificationTypeSchema = z.enum(NOTIFICATION_TYPES)
+
+export const notificationSchema = z.object({
+	id: z.uuid(),
+	userId: z.uuid(),
+	type: notificationTypeSchema,
+	title: z.string(),
+	message: z.string(),
+	relatedQuestionId: z.uuid().nullable(),
+	relatedDeckId: z.uuid().nullable(),
+	read: z.boolean(),
+	createdAt: z.coerce.date(),
+}) satisfies z.ZodType<Notification>
+
+export const insertNotificationSchema = z.object({
+	userId: z.uuid(),
+	type: notificationTypeSchema,
+	title: z.string().min(1),
+	message: z.string().min(1),
+	relatedQuestionId: z.uuid().nullable().optional(),
+	relatedDeckId: z.uuid().nullable().optional(),
+	read: z.boolean().optional(),
+})
