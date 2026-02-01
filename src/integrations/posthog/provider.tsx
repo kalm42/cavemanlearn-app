@@ -6,18 +6,20 @@ import { env } from '@/env'
 
 const POSTHOG_KEY = env.VITE_PUBLIC_POSTHOG_KEY
 const POSTHOG_HOST = env.VITE_PUBLIC_POSTHOG_HOST
+const POSTHOG_DISABLED = env.VITE_DISABLE_POSTHOG === 'true'
 
 /**
  * ## initPostHog
  *
  * Initializes the PostHog client with the configured API key and host.
- * Only initializes on the client side and only once.
+ * Only initializes on the client side and only once. Skips initialization
+ * if VITE_DISABLE_POSTHOG is set to 'true' (useful for e2e tests).
  *
  * @example
  * initPostHog()
  */
 function initPostHog() {
-	if (posthog.__loaded) {
+	if (POSTHOG_DISABLED || posthog.__loaded) {
 		return
 	}
 
