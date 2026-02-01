@@ -34,640 +34,683 @@ import { Route as PublisherOrganizationsOrgIdMembersRouteImport } from './routes
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as ApiOrganizationsOrgIdSettingsRouteImport } from './routes/api.organizations.$orgId.settings'
 import { Route as ApiOrganizationsOrgIdMembersRouteImport } from './routes/api.organizations.$orgId.members'
 import { Route as ApiOrganizationsOrgIdMembersMemberIdRouteImport } from './routes/api.organizations.$orgId.members.$memberId'
 
 const SettingsRoute = SettingsRouteImport.update({
-	id: '/settings',
-	path: '/settings',
-	getParentRoute: () => rootRouteImport,
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PublisherRoute = PublisherRouteImport.update({
-	id: '/publisher',
-	path: '/publisher',
-	getParentRoute: () => rootRouteImport,
+  id: '/publisher',
+  path: '/publisher',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
-	id: '/onboarding',
-	path: '/onboarding',
-	getParentRoute: () => rootRouteImport,
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
-	id: '/',
-	path: '/',
-	getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
-	id: '/profile',
-	path: '/profile',
-	getParentRoute: () => SettingsRoute,
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-	id: '/demo/tanstack-query',
-	path: '/demo/tanstack-query',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/tanstack-query',
+  path: '/demo/tanstack-query',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoI18nRoute = DemoI18nRouteImport.update({
-	id: '/demo/i18n',
-	path: '/demo/i18n',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/i18n',
+  path: '/demo/i18n',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoClerkRoute = DemoClerkRouteImport.update({
-	id: '/demo/clerk',
-	path: '/demo/clerk',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/clerk',
+  path: '/demo/clerk',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiOrganizationsRoute = ApiOrganizationsRouteImport.update({
-	id: '/api/organizations',
-	path: '/api/organizations',
-	getParentRoute: () => rootRouteImport,
+  id: '/api/organizations',
+  path: '/api/organizations',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const PublisherOrganizationsIndexRoute = PublisherOrganizationsIndexRouteImport.update({
-	id: '/organizations/',
-	path: '/organizations/',
-	getParentRoute: () => PublisherRoute,
-} as any)
-const PublisherOrganizationsNewRoute = PublisherOrganizationsNewRouteImport.update({
-	id: '/organizations/new',
-	path: '/organizations/new',
-	getParentRoute: () => PublisherRoute,
-} as any)
-const PublisherOrganizationsOrgIdRoute = PublisherOrganizationsOrgIdRouteImport.update({
-	id: '/organizations/$orgId',
-	path: '/organizations/$orgId',
-	getParentRoute: () => PublisherRoute,
-} as any)
+const PublisherOrganizationsIndexRoute =
+  PublisherOrganizationsIndexRouteImport.update({
+    id: '/organizations/',
+    path: '/organizations/',
+    getParentRoute: () => PublisherRoute,
+  } as any)
+const PublisherOrganizationsNewRoute =
+  PublisherOrganizationsNewRouteImport.update({
+    id: '/organizations/new',
+    path: '/organizations/new',
+    getParentRoute: () => PublisherRoute,
+  } as any)
+const PublisherOrganizationsOrgIdRoute =
+  PublisherOrganizationsOrgIdRouteImport.update({
+    id: '/organizations/$orgId',
+    path: '/organizations/$orgId',
+    getParentRoute: () => PublisherRoute,
+  } as any)
 const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-	id: '/demo/start/api-request',
-	path: '/demo/start/api-request',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/start/api-request',
+  path: '/demo/start/api-request',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoApiTqTodosRoute = DemoApiTqTodosRouteImport.update({
-	id: '/demo/api/tq-todos',
-	path: '/demo/api/tq-todos',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/api/tq-todos',
+  path: '/demo/api/tq-todos',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
-	id: '/demo/api/names',
-	path: '/demo/api/names',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/api/names',
+  path: '/demo/api/names',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiWebhooksClerkRoute = ApiWebhooksClerkRouteImport.update({
-	id: '/api/webhooks/clerk',
-	path: '/api/webhooks/clerk',
-	getParentRoute: () => rootRouteImport,
+  id: '/api/webhooks/clerk',
+  path: '/api/webhooks/clerk',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUserProfileRoute = ApiUserProfileRouteImport.update({
-	id: '/api/user/profile',
-	path: '/api/user/profile',
-	getParentRoute: () => rootRouteImport,
+  id: '/api/user/profile',
+  path: '/api/user/profile',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiOrganizationsOrgIdRoute = ApiOrganizationsOrgIdRouteImport.update({
-	id: '/$orgId',
-	path: '/$orgId',
-	getParentRoute: () => ApiOrganizationsRoute,
+  id: '/$orgId',
+  path: '/$orgId',
+  getParentRoute: () => ApiOrganizationsRoute,
 } as any)
-const PublisherOrganizationsOrgIdIndexRoute = PublisherOrganizationsOrgIdIndexRouteImport.update({
-	id: '/',
-	path: '/',
-	getParentRoute: () => PublisherOrganizationsOrgIdRoute,
-} as any)
+const PublisherOrganizationsOrgIdIndexRoute =
+  PublisherOrganizationsOrgIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => PublisherOrganizationsOrgIdRoute,
+  } as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
-	id: '/demo/start/ssr/',
-	path: '/demo/start/ssr/',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/start/ssr/',
+  path: '/demo/start/ssr/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PublisherOrganizationsOrgIdSettingsRoute =
-	PublisherOrganizationsOrgIdSettingsRouteImport.update({
-		id: '/settings',
-		path: '/settings',
-		getParentRoute: () => PublisherOrganizationsOrgIdRoute,
-	} as any)
+  PublisherOrganizationsOrgIdSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => PublisherOrganizationsOrgIdRoute,
+  } as any)
 const PublisherOrganizationsOrgIdMembersRoute =
-	PublisherOrganizationsOrgIdMembersRouteImport.update({
-		id: '/members',
-		path: '/members',
-		getParentRoute: () => PublisherOrganizationsOrgIdRoute,
-	} as any)
+  PublisherOrganizationsOrgIdMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => PublisherOrganizationsOrgIdRoute,
+  } as any)
 const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
-	id: '/demo/start/ssr/spa-mode',
-	path: '/demo/start/ssr/spa-mode',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/start/ssr/spa-mode',
+  path: '/demo/start/ssr/spa-mode',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrFullSsrRoute = DemoStartSsrFullSsrRouteImport.update({
-	id: '/demo/start/ssr/full-ssr',
-	path: '/demo/start/ssr/full-ssr',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/start/ssr/full-ssr',
+  path: '/demo/start/ssr/full-ssr',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
-	id: '/demo/start/ssr/data-only',
-	path: '/demo/start/ssr/data-only',
-	getParentRoute: () => rootRouteImport,
+  id: '/demo/start/ssr/data-only',
+  path: '/demo/start/ssr/data-only',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ApiOrganizationsOrgIdMembersRoute = ApiOrganizationsOrgIdMembersRouteImport.update({
-	id: '/members',
-	path: '/members',
-	getParentRoute: () => ApiOrganizationsOrgIdRoute,
-} as any)
+const ApiOrganizationsOrgIdSettingsRoute =
+  ApiOrganizationsOrgIdSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => ApiOrganizationsOrgIdRoute,
+  } as any)
+const ApiOrganizationsOrgIdMembersRoute =
+  ApiOrganizationsOrgIdMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => ApiOrganizationsOrgIdRoute,
+  } as any)
 const ApiOrganizationsOrgIdMembersMemberIdRoute =
-	ApiOrganizationsOrgIdMembersMemberIdRouteImport.update({
-		id: '/$memberId',
-		path: '/$memberId',
-		getParentRoute: () => ApiOrganizationsOrgIdMembersRoute,
-	} as any)
+  ApiOrganizationsOrgIdMembersMemberIdRouteImport.update({
+    id: '/$memberId',
+    path: '/$memberId',
+    getParentRoute: () => ApiOrganizationsOrgIdMembersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-	'/': typeof IndexRoute
-	'/onboarding': typeof OnboardingRoute
-	'/publisher': typeof PublisherRouteWithChildren
-	'/settings': typeof SettingsRouteWithChildren
-	'/api/organizations': typeof ApiOrganizationsRouteWithChildren
-	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/i18n': typeof DemoI18nRoute
-	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
-	'/settings/profile': typeof SettingsProfileRoute
-	'/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
-	'/api/user/profile': typeof ApiUserProfileRoute
-	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-	'/demo/api/names': typeof DemoApiNamesRoute
-	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-	'/demo/start/api-request': typeof DemoStartApiRequestRoute
-	'/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
-	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
-	'/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
-	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
-	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-	'/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
-	'/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
-	'/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-	'/publisher/organizations/$orgId/': typeof PublisherOrganizationsOrgIdIndexRoute
-	'/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
+  '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
+  '/settings': typeof SettingsRouteWithChildren
+  '/api/organizations': typeof ApiOrganizationsRouteWithChildren
+  '/demo/clerk': typeof DemoClerkRoute
+  '/demo/i18n': typeof DemoI18nRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
+  '/api/user/profile': typeof ApiUserProfileRoute
+  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+  '/demo/api/names': typeof DemoApiNamesRoute
+  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+  '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
+  '/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/publisher/organizations/$orgId/': typeof PublisherOrganizationsOrgIdIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRoutesByTo {
-	'/': typeof IndexRoute
-	'/onboarding': typeof OnboardingRoute
-	'/publisher': typeof PublisherRouteWithChildren
-	'/settings': typeof SettingsRouteWithChildren
-	'/api/organizations': typeof ApiOrganizationsRouteWithChildren
-	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/i18n': typeof DemoI18nRoute
-	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
-	'/settings/profile': typeof SettingsProfileRoute
-	'/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
-	'/api/user/profile': typeof ApiUserProfileRoute
-	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-	'/demo/api/names': typeof DemoApiNamesRoute
-	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-	'/demo/start/api-request': typeof DemoStartApiRequestRoute
-	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
-	'/publisher/organizations': typeof PublisherOrganizationsIndexRoute
-	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
-	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-	'/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
-	'/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
-	'/demo/start/ssr': typeof DemoStartSsrIndexRoute
-	'/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdIndexRoute
-	'/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
+  '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
+  '/settings': typeof SettingsRouteWithChildren
+  '/api/organizations': typeof ApiOrganizationsRouteWithChildren
+  '/demo/clerk': typeof DemoClerkRoute
+  '/demo/i18n': typeof DemoI18nRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
+  '/api/user/profile': typeof ApiUserProfileRoute
+  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+  '/demo/api/names': typeof DemoApiNamesRoute
+  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations': typeof PublisherOrganizationsIndexRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+  '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
+  '/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport
-	'/': typeof IndexRoute
-	'/onboarding': typeof OnboardingRoute
-	'/publisher': typeof PublisherRouteWithChildren
-	'/settings': typeof SettingsRouteWithChildren
-	'/api/organizations': typeof ApiOrganizationsRouteWithChildren
-	'/demo/clerk': typeof DemoClerkRoute
-	'/demo/i18n': typeof DemoI18nRoute
-	'/demo/tanstack-query': typeof DemoTanstackQueryRoute
-	'/settings/profile': typeof SettingsProfileRoute
-	'/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
-	'/api/user/profile': typeof ApiUserProfileRoute
-	'/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
-	'/demo/api/names': typeof DemoApiNamesRoute
-	'/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-	'/demo/start/api-request': typeof DemoStartApiRequestRoute
-	'/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
-	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
-	'/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
-	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
-	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-	'/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
-	'/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
-	'/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-	'/publisher/organizations/$orgId/': typeof PublisherOrganizationsOrgIdIndexRoute
-	'/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/publisher': typeof PublisherRouteWithChildren
+  '/settings': typeof SettingsRouteWithChildren
+  '/api/organizations': typeof ApiOrganizationsRouteWithChildren
+  '/demo/clerk': typeof DemoClerkRoute
+  '/demo/i18n': typeof DemoI18nRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
+  '/api/user/profile': typeof ApiUserProfileRoute
+  '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
+  '/demo/api/names': typeof DemoApiNamesRoute
+  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
+  '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
+  '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
+  '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+  '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
+  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
+  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/publisher/organizations/$orgId/members': typeof PublisherOrganizationsOrgIdMembersRoute
+  '/publisher/organizations/$orgId/settings': typeof PublisherOrganizationsOrgIdSettingsRoute
+  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/publisher/organizations/$orgId/': typeof PublisherOrganizationsOrgIdIndexRoute
+  '/api/organizations/$orgId/members/$memberId': typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath
-	fullPaths:
-		| '/'
-		| '/onboarding'
-		| '/publisher'
-		| '/settings'
-		| '/api/organizations'
-		| '/demo/clerk'
-		| '/demo/i18n'
-		| '/demo/tanstack-query'
-		| '/settings/profile'
-		| '/api/organizations/$orgId'
-		| '/api/user/profile'
-		| '/api/webhooks/clerk'
-		| '/demo/api/names'
-		| '/demo/api/tq-todos'
-		| '/demo/start/api-request'
-		| '/publisher/organizations/$orgId'
-		| '/publisher/organizations/new'
-		| '/publisher/organizations/'
-		| '/api/organizations/$orgId/members'
-		| '/demo/start/ssr/data-only'
-		| '/demo/start/ssr/full-ssr'
-		| '/demo/start/ssr/spa-mode'
-		| '/publisher/organizations/$orgId/members'
-		| '/publisher/organizations/$orgId/settings'
-		| '/demo/start/ssr/'
-		| '/publisher/organizations/$orgId/'
-		| '/api/organizations/$orgId/members/$memberId'
-	fileRoutesByTo: FileRoutesByTo
-	to:
-		| '/'
-		| '/onboarding'
-		| '/publisher'
-		| '/settings'
-		| '/api/organizations'
-		| '/demo/clerk'
-		| '/demo/i18n'
-		| '/demo/tanstack-query'
-		| '/settings/profile'
-		| '/api/organizations/$orgId'
-		| '/api/user/profile'
-		| '/api/webhooks/clerk'
-		| '/demo/api/names'
-		| '/demo/api/tq-todos'
-		| '/demo/start/api-request'
-		| '/publisher/organizations/new'
-		| '/publisher/organizations'
-		| '/api/organizations/$orgId/members'
-		| '/demo/start/ssr/data-only'
-		| '/demo/start/ssr/full-ssr'
-		| '/demo/start/ssr/spa-mode'
-		| '/publisher/organizations/$orgId/members'
-		| '/publisher/organizations/$orgId/settings'
-		| '/demo/start/ssr'
-		| '/publisher/organizations/$orgId'
-		| '/api/organizations/$orgId/members/$memberId'
-	id:
-		| '__root__'
-		| '/'
-		| '/onboarding'
-		| '/publisher'
-		| '/settings'
-		| '/api/organizations'
-		| '/demo/clerk'
-		| '/demo/i18n'
-		| '/demo/tanstack-query'
-		| '/settings/profile'
-		| '/api/organizations/$orgId'
-		| '/api/user/profile'
-		| '/api/webhooks/clerk'
-		| '/demo/api/names'
-		| '/demo/api/tq-todos'
-		| '/demo/start/api-request'
-		| '/publisher/organizations/$orgId'
-		| '/publisher/organizations/new'
-		| '/publisher/organizations/'
-		| '/api/organizations/$orgId/members'
-		| '/demo/start/ssr/data-only'
-		| '/demo/start/ssr/full-ssr'
-		| '/demo/start/ssr/spa-mode'
-		| '/publisher/organizations/$orgId/members'
-		| '/publisher/organizations/$orgId/settings'
-		| '/demo/start/ssr/'
-		| '/publisher/organizations/$orgId/'
-		| '/api/organizations/$orgId/members/$memberId'
-	fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/onboarding'
+    | '/publisher'
+    | '/settings'
+    | '/api/organizations'
+    | '/demo/clerk'
+    | '/demo/i18n'
+    | '/demo/tanstack-query'
+    | '/settings/profile'
+    | '/api/organizations/$orgId'
+    | '/api/user/profile'
+    | '/api/webhooks/clerk'
+    | '/demo/api/names'
+    | '/demo/api/tq-todos'
+    | '/demo/start/api-request'
+    | '/publisher/organizations/$orgId'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations/'
+    | '/api/organizations/$orgId/members'
+    | '/api/organizations/$orgId/settings'
+    | '/demo/start/ssr/data-only'
+    | '/demo/start/ssr/full-ssr'
+    | '/demo/start/ssr/spa-mode'
+    | '/publisher/organizations/$orgId/members'
+    | '/publisher/organizations/$orgId/settings'
+    | '/demo/start/ssr/'
+    | '/publisher/organizations/$orgId/'
+    | '/api/organizations/$orgId/members/$memberId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/onboarding'
+    | '/publisher'
+    | '/settings'
+    | '/api/organizations'
+    | '/demo/clerk'
+    | '/demo/i18n'
+    | '/demo/tanstack-query'
+    | '/settings/profile'
+    | '/api/organizations/$orgId'
+    | '/api/user/profile'
+    | '/api/webhooks/clerk'
+    | '/demo/api/names'
+    | '/demo/api/tq-todos'
+    | '/demo/start/api-request'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations'
+    | '/api/organizations/$orgId/members'
+    | '/api/organizations/$orgId/settings'
+    | '/demo/start/ssr/data-only'
+    | '/demo/start/ssr/full-ssr'
+    | '/demo/start/ssr/spa-mode'
+    | '/publisher/organizations/$orgId/members'
+    | '/publisher/organizations/$orgId/settings'
+    | '/demo/start/ssr'
+    | '/publisher/organizations/$orgId'
+    | '/api/organizations/$orgId/members/$memberId'
+  id:
+    | '__root__'
+    | '/'
+    | '/onboarding'
+    | '/publisher'
+    | '/settings'
+    | '/api/organizations'
+    | '/demo/clerk'
+    | '/demo/i18n'
+    | '/demo/tanstack-query'
+    | '/settings/profile'
+    | '/api/organizations/$orgId'
+    | '/api/user/profile'
+    | '/api/webhooks/clerk'
+    | '/demo/api/names'
+    | '/demo/api/tq-todos'
+    | '/demo/start/api-request'
+    | '/publisher/organizations/$orgId'
+    | '/publisher/organizations/new'
+    | '/publisher/organizations/'
+    | '/api/organizations/$orgId/members'
+    | '/api/organizations/$orgId/settings'
+    | '/demo/start/ssr/data-only'
+    | '/demo/start/ssr/full-ssr'
+    | '/demo/start/ssr/spa-mode'
+    | '/publisher/organizations/$orgId/members'
+    | '/publisher/organizations/$orgId/settings'
+    | '/demo/start/ssr/'
+    | '/publisher/organizations/$orgId/'
+    | '/api/organizations/$orgId/members/$memberId'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute
-	OnboardingRoute: typeof OnboardingRoute
-	PublisherRoute: typeof PublisherRouteWithChildren
-	SettingsRoute: typeof SettingsRouteWithChildren
-	ApiOrganizationsRoute: typeof ApiOrganizationsRouteWithChildren
-	DemoClerkRoute: typeof DemoClerkRoute
-	DemoI18nRoute: typeof DemoI18nRoute
-	DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-	ApiUserProfileRoute: typeof ApiUserProfileRoute
-	ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
-	DemoApiNamesRoute: typeof DemoApiNamesRoute
-	DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
-	DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-	DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
-	DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
-	DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-	DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
+  IndexRoute: typeof IndexRoute
+  OnboardingRoute: typeof OnboardingRoute
+  PublisherRoute: typeof PublisherRouteWithChildren
+  SettingsRoute: typeof SettingsRouteWithChildren
+  ApiOrganizationsRoute: typeof ApiOrganizationsRouteWithChildren
+  DemoClerkRoute: typeof DemoClerkRoute
+  DemoI18nRoute: typeof DemoI18nRoute
+  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  ApiUserProfileRoute: typeof ApiUserProfileRoute
+  ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
+  DemoApiNamesRoute: typeof DemoApiNamesRoute
+  DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
+  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
+  DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
+  DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
+  DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
+  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
 }
 
 declare module '@tanstack/react-router' {
-	interface FileRoutesByPath {
-		'/settings': {
-			id: '/settings'
-			path: '/settings'
-			fullPath: '/settings'
-			preLoaderRoute: typeof SettingsRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/publisher': {
-			id: '/publisher'
-			path: '/publisher'
-			fullPath: '/publisher'
-			preLoaderRoute: typeof PublisherRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/onboarding': {
-			id: '/onboarding'
-			path: '/onboarding'
-			fullPath: '/onboarding'
-			preLoaderRoute: typeof OnboardingRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/': {
-			id: '/'
-			path: '/'
-			fullPath: '/'
-			preLoaderRoute: typeof IndexRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/settings/profile': {
-			id: '/settings/profile'
-			path: '/profile'
-			fullPath: '/settings/profile'
-			preLoaderRoute: typeof SettingsProfileRouteImport
-			parentRoute: typeof SettingsRoute
-		}
-		'/demo/tanstack-query': {
-			id: '/demo/tanstack-query'
-			path: '/demo/tanstack-query'
-			fullPath: '/demo/tanstack-query'
-			preLoaderRoute: typeof DemoTanstackQueryRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/i18n': {
-			id: '/demo/i18n'
-			path: '/demo/i18n'
-			fullPath: '/demo/i18n'
-			preLoaderRoute: typeof DemoI18nRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/clerk': {
-			id: '/demo/clerk'
-			path: '/demo/clerk'
-			fullPath: '/demo/clerk'
-			preLoaderRoute: typeof DemoClerkRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/api/organizations': {
-			id: '/api/organizations'
-			path: '/api/organizations'
-			fullPath: '/api/organizations'
-			preLoaderRoute: typeof ApiOrganizationsRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/publisher/organizations/': {
-			id: '/publisher/organizations/'
-			path: '/organizations'
-			fullPath: '/publisher/organizations/'
-			preLoaderRoute: typeof PublisherOrganizationsIndexRouteImport
-			parentRoute: typeof PublisherRoute
-		}
-		'/publisher/organizations/new': {
-			id: '/publisher/organizations/new'
-			path: '/organizations/new'
-			fullPath: '/publisher/organizations/new'
-			preLoaderRoute: typeof PublisherOrganizationsNewRouteImport
-			parentRoute: typeof PublisherRoute
-		}
-		'/publisher/organizations/$orgId': {
-			id: '/publisher/organizations/$orgId'
-			path: '/organizations/$orgId'
-			fullPath: '/publisher/organizations/$orgId'
-			preLoaderRoute: typeof PublisherOrganizationsOrgIdRouteImport
-			parentRoute: typeof PublisherRoute
-		}
-		'/demo/start/api-request': {
-			id: '/demo/start/api-request'
-			path: '/demo/start/api-request'
-			fullPath: '/demo/start/api-request'
-			preLoaderRoute: typeof DemoStartApiRequestRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/api/tq-todos': {
-			id: '/demo/api/tq-todos'
-			path: '/demo/api/tq-todos'
-			fullPath: '/demo/api/tq-todos'
-			preLoaderRoute: typeof DemoApiTqTodosRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/api/names': {
-			id: '/demo/api/names'
-			path: '/demo/api/names'
-			fullPath: '/demo/api/names'
-			preLoaderRoute: typeof DemoApiNamesRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/api/webhooks/clerk': {
-			id: '/api/webhooks/clerk'
-			path: '/api/webhooks/clerk'
-			fullPath: '/api/webhooks/clerk'
-			preLoaderRoute: typeof ApiWebhooksClerkRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/api/user/profile': {
-			id: '/api/user/profile'
-			path: '/api/user/profile'
-			fullPath: '/api/user/profile'
-			preLoaderRoute: typeof ApiUserProfileRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/api/organizations/$orgId': {
-			id: '/api/organizations/$orgId'
-			path: '/$orgId'
-			fullPath: '/api/organizations/$orgId'
-			preLoaderRoute: typeof ApiOrganizationsOrgIdRouteImport
-			parentRoute: typeof ApiOrganizationsRoute
-		}
-		'/publisher/organizations/$orgId/': {
-			id: '/publisher/organizations/$orgId/'
-			path: '/'
-			fullPath: '/publisher/organizations/$orgId/'
-			preLoaderRoute: typeof PublisherOrganizationsOrgIdIndexRouteImport
-			parentRoute: typeof PublisherOrganizationsOrgIdRoute
-		}
-		'/demo/start/ssr/': {
-			id: '/demo/start/ssr/'
-			path: '/demo/start/ssr'
-			fullPath: '/demo/start/ssr/'
-			preLoaderRoute: typeof DemoStartSsrIndexRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/publisher/organizations/$orgId/settings': {
-			id: '/publisher/organizations/$orgId/settings'
-			path: '/settings'
-			fullPath: '/publisher/organizations/$orgId/settings'
-			preLoaderRoute: typeof PublisherOrganizationsOrgIdSettingsRouteImport
-			parentRoute: typeof PublisherOrganizationsOrgIdRoute
-		}
-		'/publisher/organizations/$orgId/members': {
-			id: '/publisher/organizations/$orgId/members'
-			path: '/members'
-			fullPath: '/publisher/organizations/$orgId/members'
-			preLoaderRoute: typeof PublisherOrganizationsOrgIdMembersRouteImport
-			parentRoute: typeof PublisherOrganizationsOrgIdRoute
-		}
-		'/demo/start/ssr/spa-mode': {
-			id: '/demo/start/ssr/spa-mode'
-			path: '/demo/start/ssr/spa-mode'
-			fullPath: '/demo/start/ssr/spa-mode'
-			preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/start/ssr/full-ssr': {
-			id: '/demo/start/ssr/full-ssr'
-			path: '/demo/start/ssr/full-ssr'
-			fullPath: '/demo/start/ssr/full-ssr'
-			preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/demo/start/ssr/data-only': {
-			id: '/demo/start/ssr/data-only'
-			path: '/demo/start/ssr/data-only'
-			fullPath: '/demo/start/ssr/data-only'
-			preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
-			parentRoute: typeof rootRouteImport
-		}
-		'/api/organizations/$orgId/members': {
-			id: '/api/organizations/$orgId/members'
-			path: '/members'
-			fullPath: '/api/organizations/$orgId/members'
-			preLoaderRoute: typeof ApiOrganizationsOrgIdMembersRouteImport
-			parentRoute: typeof ApiOrganizationsOrgIdRoute
-		}
-		'/api/organizations/$orgId/members/$memberId': {
-			id: '/api/organizations/$orgId/members/$memberId'
-			path: '/$memberId'
-			fullPath: '/api/organizations/$orgId/members/$memberId'
-			preLoaderRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRouteImport
-			parentRoute: typeof ApiOrganizationsOrgIdMembersRoute
-		}
-	}
+  interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publisher': {
+      id: '/publisher'
+      path: '/publisher'
+      fullPath: '/publisher'
+      preLoaderRoute: typeof PublisherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/i18n': {
+      id: '/demo/i18n'
+      path: '/demo/i18n'
+      fullPath: '/demo/i18n'
+      preLoaderRoute: typeof DemoI18nRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/clerk': {
+      id: '/demo/clerk'
+      path: '/demo/clerk'
+      fullPath: '/demo/clerk'
+      preLoaderRoute: typeof DemoClerkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/organizations': {
+      id: '/api/organizations'
+      path: '/api/organizations'
+      fullPath: '/api/organizations'
+      preLoaderRoute: typeof ApiOrganizationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publisher/organizations/': {
+      id: '/publisher/organizations/'
+      path: '/organizations'
+      fullPath: '/publisher/organizations/'
+      preLoaderRoute: typeof PublisherOrganizationsIndexRouteImport
+      parentRoute: typeof PublisherRoute
+    }
+    '/publisher/organizations/new': {
+      id: '/publisher/organizations/new'
+      path: '/organizations/new'
+      fullPath: '/publisher/organizations/new'
+      preLoaderRoute: typeof PublisherOrganizationsNewRouteImport
+      parentRoute: typeof PublisherRoute
+    }
+    '/publisher/organizations/$orgId': {
+      id: '/publisher/organizations/$orgId'
+      path: '/organizations/$orgId'
+      fullPath: '/publisher/organizations/$orgId'
+      preLoaderRoute: typeof PublisherOrganizationsOrgIdRouteImport
+      parentRoute: typeof PublisherRoute
+    }
+    '/demo/start/api-request': {
+      id: '/demo/start/api-request'
+      path: '/demo/start/api-request'
+      fullPath: '/demo/start/api-request'
+      preLoaderRoute: typeof DemoStartApiRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/api/tq-todos': {
+      id: '/demo/api/tq-todos'
+      path: '/demo/api/tq-todos'
+      fullPath: '/demo/api/tq-todos'
+      preLoaderRoute: typeof DemoApiTqTodosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/api/names': {
+      id: '/demo/api/names'
+      path: '/demo/api/names'
+      fullPath: '/demo/api/names'
+      preLoaderRoute: typeof DemoApiNamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/webhooks/clerk': {
+      id: '/api/webhooks/clerk'
+      path: '/api/webhooks/clerk'
+      fullPath: '/api/webhooks/clerk'
+      preLoaderRoute: typeof ApiWebhooksClerkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/user/profile': {
+      id: '/api/user/profile'
+      path: '/api/user/profile'
+      fullPath: '/api/user/profile'
+      preLoaderRoute: typeof ApiUserProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/organizations/$orgId': {
+      id: '/api/organizations/$orgId'
+      path: '/$orgId'
+      fullPath: '/api/organizations/$orgId'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdRouteImport
+      parentRoute: typeof ApiOrganizationsRoute
+    }
+    '/publisher/organizations/$orgId/': {
+      id: '/publisher/organizations/$orgId/'
+      path: '/'
+      fullPath: '/publisher/organizations/$orgId/'
+      preLoaderRoute: typeof PublisherOrganizationsOrgIdIndexRouteImport
+      parentRoute: typeof PublisherOrganizationsOrgIdRoute
+    }
+    '/demo/start/ssr/': {
+      id: '/demo/start/ssr/'
+      path: '/demo/start/ssr'
+      fullPath: '/demo/start/ssr/'
+      preLoaderRoute: typeof DemoStartSsrIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publisher/organizations/$orgId/settings': {
+      id: '/publisher/organizations/$orgId/settings'
+      path: '/settings'
+      fullPath: '/publisher/organizations/$orgId/settings'
+      preLoaderRoute: typeof PublisherOrganizationsOrgIdSettingsRouteImport
+      parentRoute: typeof PublisherOrganizationsOrgIdRoute
+    }
+    '/publisher/organizations/$orgId/members': {
+      id: '/publisher/organizations/$orgId/members'
+      path: '/members'
+      fullPath: '/publisher/organizations/$orgId/members'
+      preLoaderRoute: typeof PublisherOrganizationsOrgIdMembersRouteImport
+      parentRoute: typeof PublisherOrganizationsOrgIdRoute
+    }
+    '/demo/start/ssr/spa-mode': {
+      id: '/demo/start/ssr/spa-mode'
+      path: '/demo/start/ssr/spa-mode'
+      fullPath: '/demo/start/ssr/spa-mode'
+      preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/start/ssr/full-ssr': {
+      id: '/demo/start/ssr/full-ssr'
+      path: '/demo/start/ssr/full-ssr'
+      fullPath: '/demo/start/ssr/full-ssr'
+      preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/start/ssr/data-only': {
+      id: '/demo/start/ssr/data-only'
+      path: '/demo/start/ssr/data-only'
+      fullPath: '/demo/start/ssr/data-only'
+      preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/organizations/$orgId/settings': {
+      id: '/api/organizations/$orgId/settings'
+      path: '/settings'
+      fullPath: '/api/organizations/$orgId/settings'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdSettingsRouteImport
+      parentRoute: typeof ApiOrganizationsOrgIdRoute
+    }
+    '/api/organizations/$orgId/members': {
+      id: '/api/organizations/$orgId/members'
+      path: '/members'
+      fullPath: '/api/organizations/$orgId/members'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdMembersRouteImport
+      parentRoute: typeof ApiOrganizationsOrgIdRoute
+    }
+    '/api/organizations/$orgId/members/$memberId': {
+      id: '/api/organizations/$orgId/members/$memberId'
+      path: '/$memberId'
+      fullPath: '/api/organizations/$orgId/members/$memberId'
+      preLoaderRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRouteImport
+      parentRoute: typeof ApiOrganizationsOrgIdMembersRoute
+    }
+  }
 }
 
 interface PublisherOrganizationsOrgIdRouteChildren {
-	PublisherOrganizationsOrgIdMembersRoute: typeof PublisherOrganizationsOrgIdMembersRoute
-	PublisherOrganizationsOrgIdSettingsRoute: typeof PublisherOrganizationsOrgIdSettingsRoute
-	PublisherOrganizationsOrgIdIndexRoute: typeof PublisherOrganizationsOrgIdIndexRoute
+  PublisherOrganizationsOrgIdMembersRoute: typeof PublisherOrganizationsOrgIdMembersRoute
+  PublisherOrganizationsOrgIdSettingsRoute: typeof PublisherOrganizationsOrgIdSettingsRoute
+  PublisherOrganizationsOrgIdIndexRoute: typeof PublisherOrganizationsOrgIdIndexRoute
 }
 
-const PublisherOrganizationsOrgIdRouteChildren: PublisherOrganizationsOrgIdRouteChildren = {
-	PublisherOrganizationsOrgIdMembersRoute: PublisherOrganizationsOrgIdMembersRoute,
-	PublisherOrganizationsOrgIdSettingsRoute: PublisherOrganizationsOrgIdSettingsRoute,
-	PublisherOrganizationsOrgIdIndexRoute: PublisherOrganizationsOrgIdIndexRoute,
-}
+const PublisherOrganizationsOrgIdRouteChildren: PublisherOrganizationsOrgIdRouteChildren =
+  {
+    PublisherOrganizationsOrgIdMembersRoute:
+      PublisherOrganizationsOrgIdMembersRoute,
+    PublisherOrganizationsOrgIdSettingsRoute:
+      PublisherOrganizationsOrgIdSettingsRoute,
+    PublisherOrganizationsOrgIdIndexRoute:
+      PublisherOrganizationsOrgIdIndexRoute,
+  }
 
 const PublisherOrganizationsOrgIdRouteWithChildren =
-	PublisherOrganizationsOrgIdRoute._addFileChildren(PublisherOrganizationsOrgIdRouteChildren)
+  PublisherOrganizationsOrgIdRoute._addFileChildren(
+    PublisherOrganizationsOrgIdRouteChildren,
+  )
 
 interface PublisherRouteChildren {
-	PublisherOrganizationsOrgIdRoute: typeof PublisherOrganizationsOrgIdRouteWithChildren
-	PublisherOrganizationsNewRoute: typeof PublisherOrganizationsNewRoute
-	PublisherOrganizationsIndexRoute: typeof PublisherOrganizationsIndexRoute
+  PublisherOrganizationsOrgIdRoute: typeof PublisherOrganizationsOrgIdRouteWithChildren
+  PublisherOrganizationsNewRoute: typeof PublisherOrganizationsNewRoute
+  PublisherOrganizationsIndexRoute: typeof PublisherOrganizationsIndexRoute
 }
 
 const PublisherRouteChildren: PublisherRouteChildren = {
-	PublisherOrganizationsOrgIdRoute: PublisherOrganizationsOrgIdRouteWithChildren,
-	PublisherOrganizationsNewRoute: PublisherOrganizationsNewRoute,
-	PublisherOrganizationsIndexRoute: PublisherOrganizationsIndexRoute,
+  PublisherOrganizationsOrgIdRoute:
+    PublisherOrganizationsOrgIdRouteWithChildren,
+  PublisherOrganizationsNewRoute: PublisherOrganizationsNewRoute,
+  PublisherOrganizationsIndexRoute: PublisherOrganizationsIndexRoute,
 }
 
-const PublisherRouteWithChildren = PublisherRoute._addFileChildren(PublisherRouteChildren)
+const PublisherRouteWithChildren = PublisherRoute._addFileChildren(
+  PublisherRouteChildren,
+)
 
 interface SettingsRouteChildren {
-	SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
-	SettingsProfileRoute: SettingsProfileRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
 }
 
-const SettingsRouteWithChildren = SettingsRoute._addFileChildren(SettingsRouteChildren)
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
 
 interface ApiOrganizationsOrgIdMembersRouteChildren {
-	ApiOrganizationsOrgIdMembersMemberIdRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRoute
+  ApiOrganizationsOrgIdMembersMemberIdRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
 
-const ApiOrganizationsOrgIdMembersRouteChildren: ApiOrganizationsOrgIdMembersRouteChildren = {
-	ApiOrganizationsOrgIdMembersMemberIdRoute: ApiOrganizationsOrgIdMembersMemberIdRoute,
-}
+const ApiOrganizationsOrgIdMembersRouteChildren: ApiOrganizationsOrgIdMembersRouteChildren =
+  {
+    ApiOrganizationsOrgIdMembersMemberIdRoute:
+      ApiOrganizationsOrgIdMembersMemberIdRoute,
+  }
 
 const ApiOrganizationsOrgIdMembersRouteWithChildren =
-	ApiOrganizationsOrgIdMembersRoute._addFileChildren(ApiOrganizationsOrgIdMembersRouteChildren)
+  ApiOrganizationsOrgIdMembersRoute._addFileChildren(
+    ApiOrganizationsOrgIdMembersRouteChildren,
+  )
 
 interface ApiOrganizationsOrgIdRouteChildren {
-	ApiOrganizationsOrgIdMembersRoute: typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+  ApiOrganizationsOrgIdMembersRoute: typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+  ApiOrganizationsOrgIdSettingsRoute: typeof ApiOrganizationsOrgIdSettingsRoute
 }
 
 const ApiOrganizationsOrgIdRouteChildren: ApiOrganizationsOrgIdRouteChildren = {
-	ApiOrganizationsOrgIdMembersRoute: ApiOrganizationsOrgIdMembersRouteWithChildren,
+  ApiOrganizationsOrgIdMembersRoute:
+    ApiOrganizationsOrgIdMembersRouteWithChildren,
+  ApiOrganizationsOrgIdSettingsRoute: ApiOrganizationsOrgIdSettingsRoute,
 }
 
-const ApiOrganizationsOrgIdRouteWithChildren = ApiOrganizationsOrgIdRoute._addFileChildren(
-	ApiOrganizationsOrgIdRouteChildren,
-)
+const ApiOrganizationsOrgIdRouteWithChildren =
+  ApiOrganizationsOrgIdRoute._addFileChildren(
+    ApiOrganizationsOrgIdRouteChildren,
+  )
 
 interface ApiOrganizationsRouteChildren {
-	ApiOrganizationsOrgIdRoute: typeof ApiOrganizationsOrgIdRouteWithChildren
+  ApiOrganizationsOrgIdRoute: typeof ApiOrganizationsOrgIdRouteWithChildren
 }
 
 const ApiOrganizationsRouteChildren: ApiOrganizationsRouteChildren = {
-	ApiOrganizationsOrgIdRoute: ApiOrganizationsOrgIdRouteWithChildren,
+  ApiOrganizationsOrgIdRoute: ApiOrganizationsOrgIdRouteWithChildren,
 }
 
-const ApiOrganizationsRouteWithChildren = ApiOrganizationsRoute._addFileChildren(
-	ApiOrganizationsRouteChildren,
-)
+const ApiOrganizationsRouteWithChildren =
+  ApiOrganizationsRoute._addFileChildren(ApiOrganizationsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	OnboardingRoute: OnboardingRoute,
-	PublisherRoute: PublisherRouteWithChildren,
-	SettingsRoute: SettingsRouteWithChildren,
-	ApiOrganizationsRoute: ApiOrganizationsRouteWithChildren,
-	DemoClerkRoute: DemoClerkRoute,
-	DemoI18nRoute: DemoI18nRoute,
-	DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-	ApiUserProfileRoute: ApiUserProfileRoute,
-	ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,
-	DemoApiNamesRoute: DemoApiNamesRoute,
-	DemoApiTqTodosRoute: DemoApiTqTodosRoute,
-	DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-	DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
-	DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
-	DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-	DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
+  IndexRoute: IndexRoute,
+  OnboardingRoute: OnboardingRoute,
+  PublisherRoute: PublisherRouteWithChildren,
+  SettingsRoute: SettingsRouteWithChildren,
+  ApiOrganizationsRoute: ApiOrganizationsRouteWithChildren,
+  DemoClerkRoute: DemoClerkRoute,
+  DemoI18nRoute: DemoI18nRoute,
+  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  ApiUserProfileRoute: ApiUserProfileRoute,
+  ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,
+  DemoApiNamesRoute: DemoApiNamesRoute,
+  DemoApiTqTodosRoute: DemoApiTqTodosRoute,
+  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
+  DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
+  DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
+  DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
+  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
 }
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>()
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
-	interface Register {
-		ssr: true
-		router: Awaited<ReturnType<typeof getRouter>>
-	}
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
