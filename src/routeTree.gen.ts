@@ -34,6 +34,7 @@ import { Route as PublisherOrganizationsOrgIdMembersRouteImport } from './routes
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as ApiOrganizationsOrgIdSettingsRouteImport } from './routes/api.organizations.$orgId.settings'
 import { Route as ApiOrganizationsOrgIdMembersRouteImport } from './routes/api.organizations.$orgId.members'
 import { Route as ApiOrganizationsOrgIdMembersMemberIdRouteImport } from './routes/api.organizations.$orgId.members.$memberId'
 
@@ -164,6 +165,11 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 	path: '/demo/start/ssr/data-only',
 	getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOrganizationsOrgIdSettingsRoute = ApiOrganizationsOrgIdSettingsRouteImport.update({
+	id: '/settings',
+	path: '/settings',
+	getParentRoute: () => ApiOrganizationsOrgIdRoute,
+} as any)
 const ApiOrganizationsOrgIdMembersRoute = ApiOrganizationsOrgIdMembersRouteImport.update({
 	id: '/members',
 	path: '/members',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
 	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
 	'/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
 	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+	'/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
 	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
 	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
 	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -224,6 +231,7 @@ export interface FileRoutesByTo {
 	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
 	'/publisher/organizations': typeof PublisherOrganizationsIndexRoute
 	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+	'/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
 	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
 	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
 	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -254,6 +262,7 @@ export interface FileRoutesById {
 	'/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
 	'/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
 	'/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+	'/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
 	'/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
 	'/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
 	'/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
 		| '/publisher/organizations/new'
 		| '/publisher/organizations/'
 		| '/api/organizations/$orgId/members'
+		| '/api/organizations/$orgId/settings'
 		| '/demo/start/ssr/data-only'
 		| '/demo/start/ssr/full-ssr'
 		| '/demo/start/ssr/spa-mode'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
 		| '/publisher/organizations/new'
 		| '/publisher/organizations'
 		| '/api/organizations/$orgId/members'
+		| '/api/organizations/$orgId/settings'
 		| '/demo/start/ssr/data-only'
 		| '/demo/start/ssr/full-ssr'
 		| '/demo/start/ssr/spa-mode'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
 		| '/publisher/organizations/new'
 		| '/publisher/organizations/'
 		| '/api/organizations/$orgId/members'
+		| '/api/organizations/$orgId/settings'
 		| '/demo/start/ssr/data-only'
 		| '/demo/start/ssr/full-ssr'
 		| '/demo/start/ssr/spa-mode'
@@ -549,6 +561,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
 			parentRoute: typeof rootRouteImport
 		}
+		'/api/organizations/$orgId/settings': {
+			id: '/api/organizations/$orgId/settings'
+			path: '/settings'
+			fullPath: '/api/organizations/$orgId/settings'
+			preLoaderRoute: typeof ApiOrganizationsOrgIdSettingsRouteImport
+			parentRoute: typeof ApiOrganizationsOrgIdRoute
+		}
 		'/api/organizations/$orgId/members': {
 			id: '/api/organizations/$orgId/members'
 			path: '/members'
@@ -618,10 +637,12 @@ const ApiOrganizationsOrgIdMembersRouteWithChildren =
 
 interface ApiOrganizationsOrgIdRouteChildren {
 	ApiOrganizationsOrgIdMembersRoute: typeof ApiOrganizationsOrgIdMembersRouteWithChildren
+	ApiOrganizationsOrgIdSettingsRoute: typeof ApiOrganizationsOrgIdSettingsRoute
 }
 
 const ApiOrganizationsOrgIdRouteChildren: ApiOrganizationsOrgIdRouteChildren = {
 	ApiOrganizationsOrgIdMembersRoute: ApiOrganizationsOrgIdMembersRouteWithChildren,
+	ApiOrganizationsOrgIdSettingsRoute: ApiOrganizationsOrgIdSettingsRoute,
 }
 
 const ApiOrganizationsOrgIdRouteWithChildren = ApiOrganizationsOrgIdRoute._addFileChildren(
