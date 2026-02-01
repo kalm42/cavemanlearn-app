@@ -1,16 +1,8 @@
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 
-import {
-	NOTIFICATION_TYPES,
-	notifications,
-	questions,
-	decks,
-	userProfiles,
-	type Notification,
-	type NewNotification,
-	type NotificationType,
-} from '../schema'
+import { NOTIFICATION_TYPES, decks, notifications, questions, userProfiles } from '../schema'
+import type { NewNotification, Notification, NotificationType } from '../schema'
 
 /**
  * ## notifications
@@ -66,10 +58,7 @@ describe('notifications', () => {
 			})
 			.returning()
 
-		const [question] = await globalThis.testDb
-			.insert(questions)
-			.values({})
-			.returning()
+		const [question] = await globalThis.testDb.insert(questions).values({}).returning()
 
 		const newNotification: NewNotification = {
 			userId: user.id,
@@ -241,10 +230,7 @@ describe('notifications', () => {
 			})
 			.returning()
 
-		const [question] = await globalThis.testDb
-			.insert(questions)
-			.values({})
-			.returning()
+		const [question] = await globalThis.testDb.insert(questions).values({}).returning()
 
 		const [notification] = await globalThis.testDb
 			.insert(notifications)
