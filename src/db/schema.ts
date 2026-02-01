@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
 export const userProfiles = pgTable('user_profiles', {
@@ -52,6 +52,24 @@ export const organizationMembers = pgTable(
 
 export type OrganizationMember = InferSelectModel<typeof organizationMembers>
 export type NewOrganizationMember = InferInsertModel<typeof organizationMembers>
+
+export const organizationSettings = pgTable('organization_settings', {
+	id: uuid().primaryKey().defaultRandom(),
+	organizationId: uuid('organization_id')
+		.references(() => organizations.id, { onDelete: 'cascade' })
+		.notNull()
+		.unique(),
+	defaultMonthlyPrice: integer('default_monthly_price'),
+	defaultYearlyPrice: integer('default_yearly_price'),
+	brandColorPrimary: text('brand_color_primary'),
+	brandColorSecondary: text('brand_color_secondary'),
+	brandLogoUrl: text('brand_logo_url'),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export type OrganizationSettings = InferSelectModel<typeof organizationSettings>
+export type NewOrganizationSettings = InferInsertModel<typeof organizationSettings>
 
 // Stub tables for foreign key references (will be fully implemented in Phase 2)
 export const questions = pgTable('questions', {

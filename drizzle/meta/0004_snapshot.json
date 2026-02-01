@@ -1,6 +1,6 @@
 {
-	"id": "a0580b0c-af5c-4441-8585-a212d0a4aa84",
-	"prevId": "614d4b3f-0798-4ad5-80a5-2b693cce301d",
+	"id": "4ed0b552-837f-446e-aa82-86554cc7ceea",
+	"prevId": "a0580b0c-af5c-4441-8585-a212d0a4aa84",
 	"version": "7",
 	"dialect": "postgresql",
 	"tables": {
@@ -186,6 +186,92 @@
 					"name": "organization_members_organization_id_user_id_unique",
 					"nullsNotDistinct": false,
 					"columns": ["organization_id", "user_id"]
+				}
+			},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.organization_settings": {
+			"name": "organization_settings",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "uuid",
+					"primaryKey": true,
+					"notNull": true,
+					"default": "gen_random_uuid()"
+				},
+				"organization_id": {
+					"name": "organization_id",
+					"type": "uuid",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"default_monthly_price": {
+					"name": "default_monthly_price",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"default_yearly_price": {
+					"name": "default_yearly_price",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"brand_color_primary": {
+					"name": "brand_color_primary",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"brand_color_secondary": {
+					"name": "brand_color_secondary",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"brand_logo_url": {
+					"name": "brand_logo_url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": false,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": false,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"organization_settings_organization_id_organizations_id_fk": {
+					"name": "organization_settings_organization_id_organizations_id_fk",
+					"tableFrom": "organization_settings",
+					"tableTo": "organizations",
+					"columnsFrom": ["organization_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"organization_settings_organization_id_unique": {
+					"name": "organization_settings_organization_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["organization_id"]
 				}
 			},
 			"policies": {},
