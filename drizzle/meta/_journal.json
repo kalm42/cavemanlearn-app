@@ -22,6 +22,20 @@
 			"when": 1769027730159,
 			"tag": "0002_classy_starhawk",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1769954663844,
+			"tag": "0003_volatile_white_queen",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1769969053273,
+			"tag": "0004_futuristic_stellaris",
+			"breakpoints": true
 		}
 	]
 }

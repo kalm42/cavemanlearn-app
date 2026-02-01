@@ -87,9 +87,7 @@ describe('OrganizationSettings', () => {
 			render(<OrganizationSettings {...defaultProps} organization={org} />)
 
 			// Assert
-			expect(
-				screen.queryByText(m.organization_settings_access_denied()),
-			).not.toBeInTheDocument()
+			expect(screen.queryByText(m.organization_settings_access_denied())).not.toBeInTheDocument()
 			expect(screen.getByLabelText(m.organization_settings_name_label())).toBeInTheDocument()
 		})
 
@@ -101,9 +99,7 @@ describe('OrganizationSettings', () => {
 			render(<OrganizationSettings {...defaultProps} organization={org} />)
 
 			// Assert
-			expect(
-				screen.queryByText(m.organization_settings_access_denied()),
-			).not.toBeInTheDocument()
+			expect(screen.queryByText(m.organization_settings_access_denied())).not.toBeInTheDocument()
 			expect(screen.getByLabelText(m.organization_settings_name_label())).toBeInTheDocument()
 		})
 	})
@@ -220,9 +216,7 @@ describe('OrganizationSettings', () => {
 			const org = { ...baseOrganization, role: 'owner' as const }
 
 			// Act
-			render(
-				<OrganizationSettings {...defaultProps} organization={org} isPendingDelete={true} />,
-			)
+			render(<OrganizationSettings {...defaultProps} organization={org} isPendingDelete={true} />)
 
 			// Assert
 			expect(
@@ -235,9 +229,7 @@ describe('OrganizationSettings', () => {
 			const org = { ...baseOrganization, role: 'owner' as const }
 
 			// Act
-			render(
-				<OrganizationSettings {...defaultProps} organization={org} isPendingDelete={true} />,
-			)
+			render(<OrganizationSettings {...defaultProps} organization={org} isPendingDelete={true} />)
 
 			// Assert
 			expect(

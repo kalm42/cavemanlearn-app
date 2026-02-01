@@ -5,11 +5,20 @@ import type { OrganizationWithRole } from '@/db/validators'
 import { m } from '@/paraglide/messages'
 
 vi.mock('@tanstack/react-router', () => ({
-	Link: (props: { to: string; params?: Record<string, string>; children: React.ReactNode; className?: string }) => {
+	Link: (props: {
+		to: string
+		params?: Record<string, string>
+		children: React.ReactNode
+		className?: string
+	}) => {
 		const href = props.params
 			? props.to.replace(/\$(\w+)/g, (_, key) => props.params?.[key] ?? '')
 			: props.to
-		return <a href={href} className={props.className}>{props.children}</a>
+		return (
+			<a href={href} className={props.className}>
+				{props.children}
+			</a>
+		)
 	},
 }))
 

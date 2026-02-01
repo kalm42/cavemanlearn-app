@@ -1,7 +1,13 @@
 import { z } from 'zod'
 
-import { ORG_ROLES } from './schema.ts'
-import type { Organization, OrganizationMember, UserProfile } from './schema.ts'
+import { NOTIFICATION_TYPES, ORG_ROLES } from './schema.ts'
+import type {
+	Notification,
+	Organization,
+	OrganizationMember,
+	OrganizationSettings,
+	UserProfile,
+} from './schema.ts'
 
 // Zod schemas for database record validation
 export const userTypeSchema = z.enum(['learner', 'publisher'])
@@ -81,3 +87,50 @@ export const organizationWithRoleSchema = organizationSchema.extend({
 })
 
 export type OrganizationWithRole = z.infer<typeof organizationWithRoleSchema>
+
+// Organization settings schemas
+export const organizationSettingsSchema = z.object({
+	id: z.uuid(),
+	organizationId: z.uuid(),
+	defaultMonthlyPrice: z.number().int().positive().nullable(),
+	defaultYearlyPrice: z.number().int().positive().nullable(),
+	brandColorPrimary: z.string().nullable(),
+	brandColorSecondary: z.string().nullable(),
+	brandLogoUrl: z.string().nullable(),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
+}) satisfies z.ZodType<OrganizationSettings>
+
+export const insertOrganizationSettingsSchema = z.object({
+	organizationId: z.uuid(),
+	defaultMonthlyPrice: z.number().int().positive().nullable().optional(),
+	defaultYearlyPrice: z.number().int().positive().nullable().optional(),
+	brandColorPrimary: z.string().nullable().optional(),
+	brandColorSecondary: z.string().nullable().optional(),
+	brandLogoUrl: z.url().nullable().optional(),
+})
+
+// Notification schemas
+export const notificationTypeSchema = z.enum(NOTIFICATION_TYPES)
+
+export const notificationSchema = z.object({
+	id: z.uuid(),
+	userId: z.uuid(),
+	type: notificationTypeSchema,
+	title: z.string(),
+	message: z.string(),
+	relatedQuestionId: z.uuid().nullable(),
+	relatedDeckId: z.uuid().nullable(),
+	read: z.boolean(),
+	createdAt: z.coerce.date(),
+}) satisfies z.ZodType<Notification>
+
+export const insertNotificationSchema = z.object({
+	userId: z.uuid(),
+	type: notificationTypeSchema,
+	title: z.string().min(1),
+	message: z.string().min(1),
+	relatedQuestionId: z.uuid().nullable().optional(),
+	relatedDeckId: z.uuid().nullable().optional(),
+	read: z.boolean().optional(),
+})

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
 export const userProfiles = pgTable('user_profiles', {
@@ -52,3 +52,62 @@ export const organizationMembers = pgTable(
 
 export type OrganizationMember = InferSelectModel<typeof organizationMembers>
 export type NewOrganizationMember = InferInsertModel<typeof organizationMembers>
+
+export const organizationSettings = pgTable('organization_settings', {
+	id: uuid().primaryKey().defaultRandom(),
+	organizationId: uuid('organization_id')
+		.references(() => organizations.id, { onDelete: 'cascade' })
+		.notNull()
+		.unique(),
+	defaultMonthlyPrice: integer('default_monthly_price'),
+	defaultYearlyPrice: integer('default_yearly_price'),
+	brandColorPrimary: text('brand_color_primary'),
+	brandColorSecondary: text('brand_color_secondary'),
+	brandLogoUrl: text('brand_logo_url'),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export type OrganizationSettings = InferSelectModel<typeof organizationSettings>
+export type NewOrganizationSettings = InferInsertModel<typeof organizationSettings>
+
+// Stub tables for foreign key references (will be fully implemented in Phase 2)
+export const questions = pgTable('questions', {
+	id: uuid().primaryKey().defaultRandom(),
+})
+
+export const decks = pgTable('decks', {
+	id: uuid().primaryKey().defaultRandom(),
+})
+
+export const NOTIFICATION_TYPES = [
+	'question_submitted_for_review',
+	'question_comment_added',
+	'question_revision_requested',
+	'question_approved',
+	'question_rejected',
+	'deck_scheduled_published',
+] as const
+
+export type NotificationType = (typeof NOTIFICATION_TYPES)[number]
+
+export const notifications = pgTable('notifications', {
+	id: uuid().primaryKey().defaultRandom(),
+	userId: uuid('user_id')
+		.references(() => userProfiles.id, { onDelete: 'cascade' })
+		.notNull(),
+	type: text({ enum: NOTIFICATION_TYPES }).notNull(),
+	title: text().notNull(),
+	message: text().notNull(),
+	relatedQuestionId: uuid('related_question_id').references(() => questions.id, {
+		onDelete: 'cascade',
+	}),
+	relatedDeckId: uuid('related_deck_id').references(() => decks.id, {
+		onDelete: 'cascade',
+	}),
+	read: boolean().notNull().default(false),
+	createdAt: timestamp('created_at').defaultNow(),
+})
+
+export type Notification = InferSelectModel<typeof notifications>
+export type NewNotification = InferInsertModel<typeof notifications>

@@ -61,7 +61,9 @@ describe('MemberList', () => {
 
 		it('renders member email', () => {
 			// Arrange
-			const member = createMember({ profile: { ...createMember().profile, email: 'test@example.com' } })
+			const member = createMember({
+				profile: { ...createMember().profile, email: 'test@example.com' },
+			})
 
 			// Act
 			render(<MemberList {...defaultProps} members={[member]} />)
@@ -201,9 +203,7 @@ describe('MemberList', () => {
 			render(<MemberList {...defaultProps} members={[ownerMember]} />)
 
 			// Assert
-			expect(
-				screen.queryByRole('button', { name: /remove/i }),
-			).not.toBeInTheDocument()
+			expect(screen.queryByRole('button', { name: /remove/i })).not.toBeInTheDocument()
 		})
 	})
 
@@ -285,13 +285,7 @@ describe('MemberList', () => {
 			const onRoleChange = vi.fn()
 			const member = createMember({ id: 'test-member', role: 'viewer' })
 
-			render(
-				<MemberList
-					{...defaultProps}
-					members={[member]}
-					onRoleChange={onRoleChange}
-				/>,
-			)
+			render(<MemberList {...defaultProps} members={[member]} onRoleChange={onRoleChange} />)
 
 			// Act
 			const select = screen.getByRole('combobox')
@@ -324,7 +318,9 @@ describe('MemberList', () => {
 		it('opens confirmation modal when remove button is clicked', async () => {
 			// Arrange
 			const user = userEvent.setup()
-			const member = createMember({ profile: { ...createMember().profile, displayName: 'John Doe' } })
+			const member = createMember({
+				profile: { ...createMember().profile, displayName: 'John Doe' },
+			})
 
 			render(<MemberList {...defaultProps} members={[member]} />)
 
