@@ -44,6 +44,12 @@ export async function createNotification(args: CreateNotificationArgs): Promise<
 	return notificationSchema.parse(notification)
 }
 
+type NotifyQuestionSubmittedArgs = {
+	userId: string
+	questionId: string
+	questionTitle: string
+}
+
 /**
  * ## notifyQuestionSubmitted
  *
@@ -57,11 +63,9 @@ export async function createNotification(args: CreateNotificationArgs): Promise<
  *   questionTitle: 'What is React?',
  * })
  */
-export async function notifyQuestionSubmitted(args: {
-	userId: string
-	questionId: string
-	questionTitle: string
-}): Promise<Notification> {
+export async function notifyQuestionSubmitted(
+	args: NotifyQuestionSubmittedArgs,
+): Promise<Notification> {
 	const { userId, questionId, questionTitle } = args
 
 	return createNotification({
@@ -71,6 +75,13 @@ export async function notifyQuestionSubmitted(args: {
 		message: `A new question "${questionTitle}" has been submitted and is awaiting review.`,
 		relatedQuestionId: questionId,
 	})
+}
+
+type NotifyCommentAddedArgs = {
+	userId: string
+	questionId: string
+	questionTitle: string
+	commenterName: string
 }
 
 /**
@@ -87,12 +98,7 @@ export async function notifyQuestionSubmitted(args: {
  *   commenterName: 'John Doe',
  * })
  */
-export async function notifyCommentAdded(args: {
-	userId: string
-	questionId: string
-	questionTitle: string
-	commenterName: string
-}): Promise<Notification> {
+export async function notifyCommentAdded(args: NotifyCommentAddedArgs): Promise<Notification> {
 	const { userId, questionId, questionTitle, commenterName } = args
 
 	return createNotification({
@@ -102,6 +108,12 @@ export async function notifyCommentAdded(args: {
 		message: `${commenterName} commented on your question "${questionTitle}".`,
 		relatedQuestionId: questionId,
 	})
+}
+
+type NotifyRevisionRequestedArgs = {
+	userId: string
+	questionId: string
+	questionTitle: string
 }
 
 /**
@@ -117,11 +129,9 @@ export async function notifyCommentAdded(args: {
  *   questionTitle: 'What is React?',
  * })
  */
-export async function notifyRevisionRequested(args: {
-	userId: string
-	questionId: string
-	questionTitle: string
-}): Promise<Notification> {
+export async function notifyRevisionRequested(
+	args: NotifyRevisionRequestedArgs,
+): Promise<Notification> {
 	const { userId, questionId, questionTitle } = args
 
 	return createNotification({
