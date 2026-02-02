@@ -1,27 +1,36 @@
+import { dollarsToCents } from './priceFormatting'
+
 const HEX_COLOR_REGEX = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
 
 /**
- * ## validatePrice
+ * ## validatePriceDollars
  *
- * Validates a price string value. Returns the parsed number if valid,
- * null if empty (clearing the field), or undefined if invalid.
- * Prices must be positive integers (in cents).
+ * Validates a dollar price string and converts to cents. Returns the
+ * price in cents if valid, null if empty (clearing the field), or
+ * undefined if invalid. Dollar amounts must be positive and have at
+ * most 2 decimal places.
  *
  * @example
- * validatePrice('999')  // returns 999
- * validatePrice('')     // returns null
- * validatePrice('0')    // returns undefined (invalid)
- * validatePrice('abc')  // returns undefined (invalid)
+ * validatePriceDollars('9.99')  // returns 999
+ * validatePriceDollars('19')    // returns 1900
+ * validatePriceDollars('')      // returns null
+ * validatePriceDollars('0')     // returns undefined (invalid)
+ * validatePriceDollars('abc')   // returns undefined (invalid)
  */
-export function validatePrice(value: string): number | null | undefined {
+export function validatePriceDollars(value: string): number | null | undefined {
 	if (value === '') {
 		return null
 	}
-	const num = parseInt(value, 10)
-	if (isNaN(num) || num <= 0 || !Number.isInteger(num)) {
+	const num = parseFloat(value)
+	if (isNaN(num) || num <= 0) {
 		return undefined
 	}
-	return num
+	// Check for more than 2 decimal places
+	const decimalPart = value.split('.')[1]
+	if (decimalPart && decimalPart.length > 2) {
+		return undefined
+	}
+	return dollarsToCents(num)
 }
 
 /**
@@ -85,15 +94,22 @@ export function parseStringToNullable(value: string): string | null {
 }
 
 /**
- * ## parsePriceToNullable
+ * ## parsePriceDollarsToNullableCents
  *
- * Converts a price string to its nullable number form for comparison.
- * Empty strings become null, valid numbers are parsed.
+ * Converts a dollar price string to its nullable cents form for comparison.
+ * Empty strings become null, valid numbers are converted to cents.
  *
  * @example
- * parsePriceToNullable('')    // returns null
- * parsePriceToNullable('999') // returns 999
+ * parsePriceDollarsToNullableCents('')      // returns null
+ * parsePriceDollarsToNullableCents('9.99')  // returns 999
  */
-export function parsePriceToNullable(value: string): number | null {
-	return value === '' ? null : parseInt(value, 10)
+export function parsePriceDollarsToNullableCents(value: string): number | null {
+	if (value === '') {
+		return null
+	}
+	const num = parseFloat(value)
+	if (isNaN(num)) {
+		return null
+	}
+	return dollarsToCents(num)
 }
