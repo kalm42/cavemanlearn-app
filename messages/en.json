@@ -166,5 +166,6 @@
 	"organization_settings_defaults_save": "Save Defaults",
 	"organization_settings_defaults_saving": "Saving...",
 	"organization_settings_defaults_save_success": "Default settings saved successfully",
-	"organization_settings_defaults_save_error": "Failed to save default settings"
+	"organization_settings_defaults_save_error": "Failed to save default settings",
+	"error_notification_not_found": "Notification not found"
 }
