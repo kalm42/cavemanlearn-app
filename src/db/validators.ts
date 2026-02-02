@@ -134,3 +134,23 @@ export const insertNotificationSchema = z.object({
 	relatedDeckId: z.uuid().nullable().optional(),
 	read: z.boolean().optional(),
 })
+
+/**
+ * ## paginatedNotificationsResponseSchema
+ *
+ * Zod schema for validating paginated notification API responses.
+ * Includes the notifications array and pagination metadata with cursor-based navigation.
+ *
+ * @example
+ * const response = paginatedNotificationsResponseSchema.parse(apiResponse)
+ * console.log(response.pagination.hasMore)
+ */
+export const paginatedNotificationsResponseSchema = z.object({
+	notifications: z.array(notificationSchema),
+	pagination: z.object({
+		nextCursor: z.iso.datetime().nullable(),
+		hasMore: z.boolean(),
+	}),
+})
+
+export type PaginatedNotificationsResponse = z.infer<typeof paginatedNotificationsResponseSchema>
