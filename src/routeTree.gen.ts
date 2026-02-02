@@ -18,6 +18,7 @@ import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-qu
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
 import { Route as ApiOrganizationsRouteImport } from './routes/api.organizations'
+import { Route as ApiNotificationsRouteImport } from './routes/api.notifications'
 import { Route as PublisherOrganizationsIndexRouteImport } from './routes/publisher/organizations/index'
 import { Route as PublisherOrganizationsNewRouteImport } from './routes/publisher/organizations/new'
 import { Route as PublisherOrganizationsOrgIdRouteImport } from './routes/publisher/organizations/$orgId'
@@ -27,6 +28,7 @@ import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
 import { Route as ApiWebhooksClerkRouteImport } from './routes/api.webhooks.clerk'
 import { Route as ApiUserProfileRouteImport } from './routes/api.user.profile'
 import { Route as ApiOrganizationsOrgIdRouteImport } from './routes/api.organizations.$orgId'
+import { Route as ApiNotificationsReadAllRouteImport } from './routes/api.notifications.read-all'
 import { Route as PublisherOrganizationsOrgIdIndexRouteImport } from './routes/publisher/organizations/$orgId/index'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as PublisherOrganizationsOrgIdSettingsRouteImport } from './routes/publisher/organizations/$orgId/settings'
@@ -36,6 +38,7 @@ import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 import { Route as ApiOrganizationsOrgIdSettingsRouteImport } from './routes/api.organizations.$orgId.settings'
 import { Route as ApiOrganizationsOrgIdMembersRouteImport } from './routes/api.organizations.$orgId.members'
+import { Route as ApiNotificationsNotificationIdReadRouteImport } from './routes/api.notifications.$notificationId.read'
 import { Route as ApiOrganizationsOrgIdMembersMemberIdRouteImport } from './routes/api.organizations.$orgId.members.$memberId'
 
 const SettingsRoute = SettingsRouteImport.update({
@@ -81,6 +84,11 @@ const DemoClerkRoute = DemoClerkRouteImport.update({
 const ApiOrganizationsRoute = ApiOrganizationsRouteImport.update({
   id: '/api/organizations',
   path: '/api/organizations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiNotificationsRoute = ApiNotificationsRouteImport.update({
+  id: '/api/notifications',
+  path: '/api/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublisherOrganizationsIndexRoute =
@@ -130,6 +138,11 @@ const ApiOrganizationsOrgIdRoute = ApiOrganizationsOrgIdRouteImport.update({
   id: '/$orgId',
   path: '/$orgId',
   getParentRoute: () => ApiOrganizationsRoute,
+} as any)
+const ApiNotificationsReadAllRoute = ApiNotificationsReadAllRouteImport.update({
+  id: '/read-all',
+  path: '/read-all',
+  getParentRoute: () => ApiNotificationsRoute,
 } as any)
 const PublisherOrganizationsOrgIdIndexRoute =
   PublisherOrganizationsOrgIdIndexRouteImport.update({
@@ -181,6 +194,12 @@ const ApiOrganizationsOrgIdMembersRoute =
     path: '/members',
     getParentRoute: () => ApiOrganizationsOrgIdRoute,
   } as any)
+const ApiNotificationsNotificationIdReadRoute =
+  ApiNotificationsNotificationIdReadRouteImport.update({
+    id: '/$notificationId/read',
+    path: '/$notificationId/read',
+    getParentRoute: () => ApiNotificationsRoute,
+  } as any)
 const ApiOrganizationsOrgIdMembersMemberIdRoute =
   ApiOrganizationsOrgIdMembersMemberIdRouteImport.update({
     id: '/$memberId',
@@ -193,11 +212,13 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
+  '/api/notifications': typeof ApiNotificationsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/api/notifications/read-all': typeof ApiNotificationsReadAllRoute
   '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -207,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
   '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
   '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
+  '/api/notifications/$notificationId/read': typeof ApiNotificationsNotificationIdReadRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
@@ -223,11 +245,13 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
+  '/api/notifications': typeof ApiNotificationsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/api/notifications/read-all': typeof ApiNotificationsReadAllRoute
   '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -236,6 +260,7 @@ export interface FileRoutesByTo {
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
   '/publisher/organizations': typeof PublisherOrganizationsIndexRoute
+  '/api/notifications/$notificationId/read': typeof ApiNotificationsNotificationIdReadRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
@@ -253,11 +278,13 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/publisher': typeof PublisherRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
+  '/api/notifications': typeof ApiNotificationsRouteWithChildren
   '/api/organizations': typeof ApiOrganizationsRouteWithChildren
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/api/notifications/read-all': typeof ApiNotificationsReadAllRoute
   '/api/organizations/$orgId': typeof ApiOrganizationsOrgIdRouteWithChildren
   '/api/user/profile': typeof ApiUserProfileRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -267,6 +294,7 @@ export interface FileRoutesById {
   '/publisher/organizations/$orgId': typeof PublisherOrganizationsOrgIdRouteWithChildren
   '/publisher/organizations/new': typeof PublisherOrganizationsNewRoute
   '/publisher/organizations/': typeof PublisherOrganizationsIndexRoute
+  '/api/notifications/$notificationId/read': typeof ApiNotificationsNotificationIdReadRoute
   '/api/organizations/$orgId/members': typeof ApiOrganizationsOrgIdMembersRouteWithChildren
   '/api/organizations/$orgId/settings': typeof ApiOrganizationsOrgIdSettingsRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
@@ -285,11 +313,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/publisher'
     | '/settings'
+    | '/api/notifications'
     | '/api/organizations'
     | '/demo/clerk'
     | '/demo/i18n'
     | '/demo/tanstack-query'
     | '/settings/profile'
+    | '/api/notifications/read-all'
     | '/api/organizations/$orgId'
     | '/api/user/profile'
     | '/api/webhooks/clerk'
@@ -299,6 +329,7 @@ export interface FileRouteTypes {
     | '/publisher/organizations/$orgId'
     | '/publisher/organizations/new'
     | '/publisher/organizations/'
+    | '/api/notifications/$notificationId/read'
     | '/api/organizations/$orgId/members'
     | '/api/organizations/$orgId/settings'
     | '/demo/start/ssr/data-only'
@@ -315,11 +346,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/publisher'
     | '/settings'
+    | '/api/notifications'
     | '/api/organizations'
     | '/demo/clerk'
     | '/demo/i18n'
     | '/demo/tanstack-query'
     | '/settings/profile'
+    | '/api/notifications/read-all'
     | '/api/organizations/$orgId'
     | '/api/user/profile'
     | '/api/webhooks/clerk'
@@ -328,6 +361,7 @@ export interface FileRouteTypes {
     | '/demo/start/api-request'
     | '/publisher/organizations/new'
     | '/publisher/organizations'
+    | '/api/notifications/$notificationId/read'
     | '/api/organizations/$orgId/members'
     | '/api/organizations/$orgId/settings'
     | '/demo/start/ssr/data-only'
@@ -344,11 +378,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/publisher'
     | '/settings'
+    | '/api/notifications'
     | '/api/organizations'
     | '/demo/clerk'
     | '/demo/i18n'
     | '/demo/tanstack-query'
     | '/settings/profile'
+    | '/api/notifications/read-all'
     | '/api/organizations/$orgId'
     | '/api/user/profile'
     | '/api/webhooks/clerk'
@@ -358,6 +394,7 @@ export interface FileRouteTypes {
     | '/publisher/organizations/$orgId'
     | '/publisher/organizations/new'
     | '/publisher/organizations/'
+    | '/api/notifications/$notificationId/read'
     | '/api/organizations/$orgId/members'
     | '/api/organizations/$orgId/settings'
     | '/demo/start/ssr/data-only'
@@ -375,6 +412,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PublisherRoute: typeof PublisherRouteWithChildren
   SettingsRoute: typeof SettingsRouteWithChildren
+  ApiNotificationsRoute: typeof ApiNotificationsRouteWithChildren
   ApiOrganizationsRoute: typeof ApiOrganizationsRouteWithChildren
   DemoClerkRoute: typeof DemoClerkRoute
   DemoI18nRoute: typeof DemoI18nRoute
@@ -455,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOrganizationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/notifications': {
+      id: '/api/notifications'
+      path: '/api/notifications'
+      fullPath: '/api/notifications'
+      preLoaderRoute: typeof ApiNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/publisher/organizations/': {
       id: '/publisher/organizations/'
       path: '/organizations'
@@ -517,6 +562,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/organizations/$orgId'
       preLoaderRoute: typeof ApiOrganizationsOrgIdRouteImport
       parentRoute: typeof ApiOrganizationsRoute
+    }
+    '/api/notifications/read-all': {
+      id: '/api/notifications/read-all'
+      path: '/read-all'
+      fullPath: '/api/notifications/read-all'
+      preLoaderRoute: typeof ApiNotificationsReadAllRouteImport
+      parentRoute: typeof ApiNotificationsRoute
     }
     '/publisher/organizations/$orgId/': {
       id: '/publisher/organizations/$orgId/'
@@ -581,6 +633,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOrganizationsOrgIdMembersRouteImport
       parentRoute: typeof ApiOrganizationsOrgIdRoute
     }
+    '/api/notifications/$notificationId/read': {
+      id: '/api/notifications/$notificationId/read'
+      path: '/$notificationId/read'
+      fullPath: '/api/notifications/$notificationId/read'
+      preLoaderRoute: typeof ApiNotificationsNotificationIdReadRouteImport
+      parentRoute: typeof ApiNotificationsRoute
+    }
     '/api/organizations/$orgId/members/$memberId': {
       id: '/api/organizations/$orgId/members/$memberId'
       path: '/$memberId'
@@ -641,6 +700,20 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
   SettingsRouteChildren,
 )
 
+interface ApiNotificationsRouteChildren {
+  ApiNotificationsReadAllRoute: typeof ApiNotificationsReadAllRoute
+  ApiNotificationsNotificationIdReadRoute: typeof ApiNotificationsNotificationIdReadRoute
+}
+
+const ApiNotificationsRouteChildren: ApiNotificationsRouteChildren = {
+  ApiNotificationsReadAllRoute: ApiNotificationsReadAllRoute,
+  ApiNotificationsNotificationIdReadRoute:
+    ApiNotificationsNotificationIdReadRoute,
+}
+
+const ApiNotificationsRouteWithChildren =
+  ApiNotificationsRoute._addFileChildren(ApiNotificationsRouteChildren)
+
 interface ApiOrganizationsOrgIdMembersRouteChildren {
   ApiOrganizationsOrgIdMembersMemberIdRoute: typeof ApiOrganizationsOrgIdMembersMemberIdRoute
 }
@@ -688,6 +761,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PublisherRoute: PublisherRouteWithChildren,
   SettingsRoute: SettingsRouteWithChildren,
+  ApiNotificationsRoute: ApiNotificationsRouteWithChildren,
   ApiOrganizationsRoute: ApiOrganizationsRouteWithChildren,
   DemoClerkRoute: DemoClerkRoute,
   DemoI18nRoute: DemoI18nRoute,
