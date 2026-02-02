@@ -172,6 +172,150 @@ test.describe('Publisher Organizations', () => {
 	})
 })
 
+test.describe('Organization Settings - Defaults', () => {
+	test('admin can update organization default pricing and branding', async ({ page }) => {
+		// First create an organization
+		await page.goto('/publisher/organizations/new')
+		await expect(page.getByRole('heading', { name: /create organization/i })).toBeVisible({
+			timeout: 15000,
+		})
+
+		await page.keyboard.press('Escape')
+
+		const orgName = `E2E Test Defaults Org ${String(Date.now())}`
+		const nameInput = page.getByLabel(/organization name/i)
+		await nameInput.click()
+		await nameInput.fill(orgName)
+		await page.getByRole('button', { name: /create organization/i }).click()
+
+		// Should redirect to the organization's dashboard
+		await expect(page).toHaveURL(/\/publisher\/organizations\/[a-f0-9-]+/, { timeout: 15000 })
+
+		// Navigate to settings page
+		await expect(page.getByRole('link', { name: 'Settings', exact: true })).toBeVisible({
+			timeout: 15000,
+		})
+		await page.getByRole('link', { name: 'Settings', exact: true }).click()
+
+		// Wait for settings page to load - look for the Default Pricing section
+		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
+
+		// Fill in default monthly price (in cents)
+		const monthlyPriceInput = page.getByLabel(/default monthly price/i)
+		await monthlyPriceInput.fill('999')
+
+		// Fill in default yearly price (in cents)
+		const yearlyPriceInput = page.getByLabel(/default yearly price/i)
+		await yearlyPriceInput.fill('9999')
+
+		// Fill in primary brand color
+		const primaryColorInput = page.getByLabel(/primary brand color/i)
+		await primaryColorInput.fill('#FF5733')
+
+		// Fill in secondary brand color
+		const secondaryColorInput = page.getByLabel(/secondary brand color/i)
+		await secondaryColorInput.fill('#3498DB')
+
+		// Fill in brand logo URL
+		const logoUrlInput = page.getByLabel(/brand logo url/i)
+		await logoUrlInput.fill('https://example.com/logo.png')
+
+		// Save the defaults
+		await page.getByRole('button', { name: /save defaults/i }).click()
+
+		// Wait for success message
+		await expect(page.getByText(/default settings saved successfully/i)).toBeVisible({
+			timeout: 15000,
+		})
+
+		// Refresh the page and verify values were persisted
+		await page.reload()
+		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
+
+		await expect(monthlyPriceInput).toHaveValue('999')
+		await expect(yearlyPriceInput).toHaveValue('9999')
+		await expect(primaryColorInput).toHaveValue('#FF5733')
+		await expect(secondaryColorInput).toHaveValue('#3498DB')
+		await expect(logoUrlInput).toHaveValue('https://example.com/logo.png')
+	})
+
+	test('settings form validates invalid pricing', async ({ page }) => {
+		// First create an organization
+		await page.goto('/publisher/organizations/new')
+		await expect(page.getByRole('heading', { name: /create organization/i })).toBeVisible({
+			timeout: 15000,
+		})
+
+		await page.keyboard.press('Escape')
+
+		const orgName = `E2E Test Validation Org ${String(Date.now())}`
+		const nameInput = page.getByLabel(/organization name/i)
+		await nameInput.click()
+		await nameInput.fill(orgName)
+		await page.getByRole('button', { name: /create organization/i }).click()
+
+		// Should redirect to the organization's dashboard
+		await expect(page).toHaveURL(/\/publisher\/organizations\/[a-f0-9-]+/, { timeout: 15000 })
+
+		// Navigate to settings page
+		await expect(page.getByRole('link', { name: 'Settings', exact: true })).toBeVisible({
+			timeout: 15000,
+		})
+		await page.getByRole('link', { name: 'Settings', exact: true }).click()
+
+		// Wait for settings page to load
+		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
+
+		// Try to enter an invalid price (0 is not allowed)
+		const monthlyPriceInput = page.getByLabel(/default monthly price/i)
+		await monthlyPriceInput.fill('0')
+
+		// Try to save
+		await page.getByRole('button', { name: /save defaults/i }).click()
+
+		// Should see validation error
+		await expect(page.getByText(/price must be a positive whole number/i)).toBeVisible()
+	})
+
+	test('settings form validates invalid hex color', async ({ page }) => {
+		// First create an organization
+		await page.goto('/publisher/organizations/new')
+		await expect(page.getByRole('heading', { name: /create organization/i })).toBeVisible({
+			timeout: 15000,
+		})
+
+		await page.keyboard.press('Escape')
+
+		const orgName = `E2E Test Color Validation Org ${String(Date.now())}`
+		const nameInput = page.getByLabel(/organization name/i)
+		await nameInput.click()
+		await nameInput.fill(orgName)
+		await page.getByRole('button', { name: /create organization/i }).click()
+
+		// Should redirect to the organization's dashboard
+		await expect(page).toHaveURL(/\/publisher\/organizations\/[a-f0-9-]+/, { timeout: 15000 })
+
+		// Navigate to settings page
+		await expect(page.getByRole('link', { name: 'Settings', exact: true })).toBeVisible({
+			timeout: 15000,
+		})
+		await page.getByRole('link', { name: 'Settings', exact: true }).click()
+
+		// Wait for settings page to load
+		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
+
+		// Try to enter an invalid color
+		const primaryColorInput = page.getByLabel(/primary brand color/i)
+		await primaryColorInput.fill('not-a-color')
+
+		// Try to save
+		await page.getByRole('button', { name: /save defaults/i }).click()
+
+		// Should see validation error
+		await expect(page.getByText(/must be a valid hex color/i)).toBeVisible()
+	})
+})
+
 test.describe('Organization Member Management', () => {
 	test('owner can add a new member', async ({ page }) => {
 		// First create an organization
