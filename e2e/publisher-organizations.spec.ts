@@ -200,13 +200,13 @@ test.describe('Organization Settings - Defaults', () => {
 		// Wait for settings page to load - look for the Default Pricing section
 		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
 
-		// Fill in default monthly price (in cents)
+		// Fill in default monthly price (in dollars)
 		const monthlyPriceInput = page.getByLabel(/default monthly price/i)
-		await monthlyPriceInput.fill('999')
+		await monthlyPriceInput.fill('9.99')
 
-		// Fill in default yearly price (in cents)
+		// Fill in default yearly price (in dollars)
 		const yearlyPriceInput = page.getByLabel(/default yearly price/i)
-		await yearlyPriceInput.fill('9999')
+		await yearlyPriceInput.fill('99.99')
 
 		// Fill in primary brand color
 		const primaryColorInput = page.getByLabel(/primary brand color/i)
@@ -232,8 +232,8 @@ test.describe('Organization Settings - Defaults', () => {
 		await page.reload()
 		await expect(page.getByText(/default pricing/i)).toBeVisible({ timeout: 15000 })
 
-		await expect(monthlyPriceInput).toHaveValue('999')
-		await expect(yearlyPriceInput).toHaveValue('9999')
+		await expect(monthlyPriceInput).toHaveValue('9.99')
+		await expect(yearlyPriceInput).toHaveValue('99.99')
 		await expect(primaryColorInput).toHaveValue('#FF5733')
 		await expect(secondaryColorInput).toHaveValue('#3498DB')
 		await expect(logoUrlInput).toHaveValue('https://example.com/logo.png')
@@ -274,7 +274,7 @@ test.describe('Organization Settings - Defaults', () => {
 		await page.getByRole('button', { name: /save defaults/i }).click()
 
 		// Should see validation error
-		await expect(page.getByText(/price must be a positive whole number/i)).toBeVisible()
+		await expect(page.getByText(/price must be a positive number/i)).toBeVisible()
 	})
 
 	test('settings form validates invalid hex color', async ({ page }) => {
