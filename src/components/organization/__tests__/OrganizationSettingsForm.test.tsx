@@ -119,28 +119,28 @@ describe('OrganizationSettingsForm', () => {
 	})
 
 	describe('initial values', () => {
-		it('displays existing monthly price', () => {
-			// Arrange
+		it('displays existing monthly price in dollars', () => {
+			// Arrange - 999 cents stored in settings
 			const settings = { ...baseSettings, defaultMonthlyPrice: 999 }
 
 			// Act
 			render(<OrganizationSettingsForm {...defaultProps} settings={settings} />)
 
-			// Assert
+			// Assert - displayed as dollars (9.99)
 			const input = screen.getByLabelText(m.organization_settings_monthly_price_label())
-			expect(input).toHaveValue(999)
+			expect(input).toHaveValue(9.99)
 		})
 
-		it('displays existing yearly price', () => {
-			// Arrange
+		it('displays existing yearly price in dollars', () => {
+			// Arrange - 9999 cents stored in settings
 			const settings = { ...baseSettings, defaultYearlyPrice: 9999 }
 
 			// Act
 			render(<OrganizationSettingsForm {...defaultProps} settings={settings} />)
 
-			// Assert
+			// Assert - displayed as dollars (99.99)
 			const input = screen.getByLabelText(m.organization_settings_yearly_price_label())
-			expect(input).toHaveValue(9999)
+			expect(input).toHaveValue(99.99)
 		})
 
 		it('displays existing primary color', () => {
@@ -272,19 +272,19 @@ describe('OrganizationSettingsForm', () => {
 	})
 
 	describe('form submission', () => {
-		it('calls onSubmit with changed pricing values', async () => {
+		it('calls onSubmit with dollar input converted to cents', async () => {
 			// Arrange
 			const user = userEvent.setup()
 			const onSubmit = vi.fn()
 			render(<OrganizationSettingsForm {...defaultProps} onSubmit={onSubmit} />)
 
-			// Act
+			// Act - user enters dollars
 			const monthlyInput = screen.getByLabelText(m.organization_settings_monthly_price_label())
-			await user.type(monthlyInput, '999')
+			await user.type(monthlyInput, '9.99')
 			const form = screen.getByRole('button', { name: m.organization_settings_defaults_save() })
 			await user.click(form)
 
-			// Assert
+			// Assert - submitted as cents
 			expect(onSubmit).toHaveBeenCalledWith(
 				expect.objectContaining({
 					defaultMonthlyPrice: 999,

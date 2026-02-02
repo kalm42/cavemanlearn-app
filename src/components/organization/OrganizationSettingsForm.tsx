@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react'
 import { ColorInput } from './ColorInput'
 import { LogoUrlInput } from './LogoUrlInput'
 import { PriceInput } from './PriceInput'
+import { centsToDollars } from './priceFormatting'
 import {
-	parsePriceToNullable,
+	parsePriceDollarsToNullableCents,
 	parseStringToNullable,
 	validateHexColor,
-	validatePrice,
+	validatePriceDollars,
 	validateUrl,
 } from './settingsValidation'
 import type { OrganizationSettings } from '@/db/schema'
@@ -45,11 +46,32 @@ export type OrganizationSettingsFormProps = {
  *   onSubmit={handleSubmit}
  * />
  */
+/**
+ * ## formatCentsAsDollarsString
+ *
+ * Converts a cents value to a dollar string for form input initialization.
+ * Returns empty string if null/undefined.
+ *
+ * @example
+ * formatCentsAsDollarsString(999)  // returns '9.99'
+ * formatCentsAsDollarsString(null) // returns ''
+ */
+function formatCentsAsDollarsString(cents: number | null | undefined): string {
+	if (cents == null) {
+		return ''
+	}
+	return centsToDollars(cents).toString()
+}
+
 export function OrganizationSettingsForm(props: OrganizationSettingsFormProps) {
 	const { settings, successMessage, errorMessage, isPending, onSubmit } = props
 
-	const [monthlyPrice, setMonthlyPrice] = useState(settings.defaultMonthlyPrice?.toString() ?? '')
-	const [yearlyPrice, setYearlyPrice] = useState(settings.defaultYearlyPrice?.toString() ?? '')
+	const [monthlyPrice, setMonthlyPrice] = useState(
+		formatCentsAsDollarsString(settings.defaultMonthlyPrice),
+	)
+	const [yearlyPrice, setYearlyPrice] = useState(
+		formatCentsAsDollarsString(settings.defaultYearlyPrice),
+	)
 	const [primaryColor, setPrimaryColor] = useState(settings.brandColorPrimary ?? '')
 	const [secondaryColor, setSecondaryColor] = useState(settings.brandColorSecondary ?? '')
 	const [logoUrl, setLogoUrl] = useState(settings.brandLogoUrl ?? '')
@@ -62,8 +84,8 @@ export function OrganizationSettingsForm(props: OrganizationSettingsFormProps) {
 
 	const hasChanges = useMemo(() => {
 		return (
-			parsePriceToNullable(monthlyPrice) !== settings.defaultMonthlyPrice ||
-			parsePriceToNullable(yearlyPrice) !== settings.defaultYearlyPrice ||
+			parsePriceDollarsToNullableCents(monthlyPrice) !== settings.defaultMonthlyPrice ||
+			parsePriceDollarsToNullableCents(yearlyPrice) !== settings.defaultYearlyPrice ||
 			parseStringToNullable(primaryColor) !== settings.brandColorPrimary ||
 			parseStringToNullable(secondaryColor) !== settings.brandColorSecondary ||
 			parseStringToNullable(logoUrl) !== settings.brandLogoUrl
@@ -115,19 +137,19 @@ export function OrganizationSettingsForm(props: OrganizationSettingsFormProps) {
 		let hasErrors = false
 		const data: OrganizationSettingsFormData = {}
 
-		const validatedMonthly = validatePrice(monthlyPrice)
+		const validatedMonthly = validatePriceDollars(monthlyPrice)
 		if (validatedMonthly === undefined) {
 			setMonthlyPriceError(m.organization_settings_invalid_price())
 			hasErrors = true
-		} else if (parsePriceToNullable(monthlyPrice) !== settings.defaultMonthlyPrice) {
+		} else if (parsePriceDollarsToNullableCents(monthlyPrice) !== settings.defaultMonthlyPrice) {
 			data.defaultMonthlyPrice = validatedMonthly
 		}
 
-		const validatedYearly = validatePrice(yearlyPrice)
+		const validatedYearly = validatePriceDollars(yearlyPrice)
 		if (validatedYearly === undefined) {
 			setYearlyPriceError(m.organization_settings_invalid_price())
 			hasErrors = true
-		} else if (parsePriceToNullable(yearlyPrice) !== settings.defaultYearlyPrice) {
+		} else if (parsePriceDollarsToNullableCents(yearlyPrice) !== settings.defaultYearlyPrice) {
 			data.defaultYearlyPrice = validatedYearly
 		}
 
